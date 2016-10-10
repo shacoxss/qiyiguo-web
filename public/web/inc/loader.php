@@ -1,1 +1,0 @@
-<div class="loader"><h1 class="loadingtext">奇异果<span>聚合</span></h1><p>QiYIGUO.COM 看点有意思的...</p><br><img src="img/loader2.gif" alt=""></div>
