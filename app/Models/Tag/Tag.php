@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Tag;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Overtrue\Pinyin\Pinyin;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 
@@ -13,47 +14,74 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  */
 class Tag extends Model
 {
+    use TagAliases;
+
     const PINYIN_BREAK = '-';
+    const TAG_URL = '/tag/';
+    const AUTO_SUFFIX_LIMIT = 1;
+
+    const RELATION_TABLE = 'tag_relations';
+    const RELATION_ALIAS = 'alias';
+    const RELATION_NAME_COLUMN = 'relation';
+    const RELATION_KEY_COLUMN = 'one_id';
+    const RELATION_OTHER_COLUMN = 'other_id';
+    const RELATION_WEIGHT_COLUMN = 'weight';
     //
     protected $fillable = ['name', 'url', 'pinyin'];
 
     /**
      * Save a new model and return the instance.
      *
-     * @param  array  $attributes
+     * @param  array $attributes
+     * @param bool $auto_compute_url
      * @return static
      */
-    public static function create(array $attributes = [])
+    public static function create(array $attributes = [], $auto_compute_url = true)
     {
         $model = new static($attributes);
 
-        if(empty($model->url) || empty($model->pinyin)) {
-            $model->autoComputeAttributes();
-        }
-        $model->save();
-
-        return $model;
-    }
-
-    /**
-     * 当url或者pinyin为空时自动为其设置
-     *
-     *
-     * @return static
-     */
-    public function autoComputeAttributes()
-    {
-        if($msg = $this->isInvalidName()) {
+        if ($msg = $model->isInvalidName()) {
             throw new InvalidArgumentException($msg);
         }
 
-        if(empty($this->pinyin)) {
-            $pinyin = new Pinyin();
-            $this->pinyin = $pinyin->permalink($this->name, self::PINYIN_BREAK);
+        if (empty($model->pinyin)) {
+            $model->autoComputePinyin();
         }
 
-        if(empty($this->url)) {
-            $this->url = '/tag/'. $this->pinyin;
+        if ($auto_compute_url and empty($model->url)) {
+            $model->autoComputeUrl();
+        }
+
+        $model->save();
+        return $model;
+    }
+
+    /**auto compute pinyin
+     *
+     * @return static
+     */
+    private function autoComputePinyin()
+    {
+        $pinyin = new Pinyin();
+        $this->pinyin = $pinyin->permalink($this->name, self::PINYIN_BREAK);
+        return $this;
+    }
+
+    /**auto compute unique url
+     *
+     * @return static
+     */
+    private function autoComputeUrl()
+    {
+        if (empty($this->pinyin)) {
+            $this->autoComputePinyin();
+        }
+
+        $this->url = self::TAG_URL.$this->pinyin;
+
+        //set the url unique
+        while (self::where('url', $this->url)->first()) {
+            $this->url .= '-'.strtolower(Str::random(self::AUTO_SUFFIX_LIMIT));
         }
 
         return $this;
@@ -68,7 +96,7 @@ class Tag extends Model
     {
         $error_message = '';
 
-        if(empty($this->name)) {
+        if (empty($this->name)) {
             $error_message = '标签名不能为空。';
         }
 
@@ -103,7 +131,7 @@ class Tag extends Model
         }
 
         $where = '%';
-        foreach(str_split_unicode($query) as $word) {
+        foreach (str_split_unicode($query) as $word) {
             $where .= $word.'%';
         }
 
