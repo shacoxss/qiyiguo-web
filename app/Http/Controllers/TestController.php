@@ -11,7 +11,8 @@ class TestController extends Controller
 
     public function index(Request $request)
     {
-        dd(Tag::find(7)->getPrimaryName());
+        //Tag::find(4)->setToRelationKey();
+        echo 'ok';
 //        dd(Tag::create([
 //            'name' => $request->name
 //        ]));
