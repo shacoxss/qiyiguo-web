@@ -14,7 +14,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  */
 class Tag extends Model
 {
-    use TagAliases;
+    use TagAliases,TagRelated;
 
     const PINYIN_BREAK = '-';
     const TAG_URL = '/tag/';
@@ -22,6 +22,7 @@ class Tag extends Model
 
     const RELATION_TABLE = 'tag_relations';
     const RELATION_ALIAS = 'alias';
+    const RELATION_RELATED = 'related';
     const RELATION_NAME_COLUMN = 'relation';
     const RELATION_KEY_COLUMN = 'one_id';
     const RELATION_OTHER_COLUMN = 'other_id';
@@ -138,5 +139,39 @@ class Tag extends Model
         return self::where('name', 'like', $where)
             ->orWhere('pinyin', 'like', $where)
             ->get();
+    }
+
+    /**
+     * 把一组标签id、标签名、Tag实例包装成Tag id 集合
+     *
+     * @param array $tags
+     * 如果标签名不存在，是否创建它
+     * @param bool $create_it
+     * @return \Illuminate\Support\Collection
+     */
+    public static function wrapToTagIdCollect(array $tags, $create_it = false)
+    {
+        return collect($tags)
+            ->map(function ($alias) use($create_it) {
+                if ($alias instanceof static) {
+                    return $alias->id;
+                }
+
+                if (is_numeric($alias)) {
+                    return $alias;
+                }
+
+                if (is_string($alias)) {
+                    if ($tag = self::where('name', $alias)->value('id')) {
+                        return $tag;
+                    }
+
+                    if ($create_it) {
+                        return self::create(['name' => $alias])->id;
+                    }
+                }
+
+                throw new \Exception('Invalid Tag Type: '.$alias);
+            });
     }
 }
