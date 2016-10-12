@@ -14,19 +14,19 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  */
 class Tag extends Model
 {
-    use TagAliases,TagRelated;
+    use RelationAble, TagAliases, TagRelated;
 
     const PINYIN_BREAK = '-';
     const TAG_URL = '/tag/';
     const AUTO_SUFFIX_LIMIT = 1;
 
     const RELATION_TABLE = 'tag_relations';
-    const RELATION_ALIAS = 'alias';
-    const RELATION_RELATED = 'related';
-    const RELATION_NAME_COLUMN = 'relation';
-    const RELATION_KEY_COLUMN = 'one_id';
-    const RELATION_OTHER_COLUMN = 'other_id';
-    const RELATION_WEIGHT_COLUMN = 'weight';
+    const RELATION = 'relation';
+    const RELATION_ALIAS= 'alias';
+    const RELATION_RELATED= 'related';
+    const RELATION_LEFT = 'left_id';
+    const RELATION_RIGHT = 'right_id';
+    const RELATION_WEIGHT = 'weight';
     //
     protected $fillable = ['name', 'url', 'pinyin'];
 
@@ -173,5 +173,10 @@ class Tag extends Model
 
                 throw new \Exception('Invalid Tag Type: '.$alias);
             });
+    }
+
+    public static function test ()
+    {
+        dd(\DB::table(self::RELATION_TABLE)->alias()->get());
     }
 }

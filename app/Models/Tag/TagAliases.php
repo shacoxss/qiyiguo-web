@@ -17,11 +17,11 @@ trait TagAliases
             ->belongsToMany(
                 static::class,
                 self::RELATION_TABLE,
-                self::RELATION_KEY_COLUMN,
-                self::RELATION_OTHER_COLUMN
+                self::RELATION_LEFT,
+                self::RELATION_RIGHT
             )
-            ->wherePivot(self::RELATION_NAME_COLUMN, self::RELATION_ALIAS)
-            ->withPivot(self::RELATION_WEIGHT_COLUMN);
+            ->wherePivot(self::RELATION, self::RELATION_ALIAS)
+            ->withPivot(self::RELATION_WEIGHT);
     }
 
     /**
@@ -60,8 +60,8 @@ trait TagAliases
                 )
                 ->all(),
             [
-                self::RELATION_NAME_COLUMN => self::RELATION_ALIAS,
-                self::RELATION_WEIGHT_COLUMN => 0,
+                self::RELATION => self::RELATION_ALIAS,
+                self::RELATION_WEIGHT => 0,
             ]
         );
 
