@@ -18,7 +18,7 @@ class CreateTagRelationsTable extends Migration
             $table->unsignedInteger('one_id');
             $table->unsignedInteger('other_id');
             $table->string('relation');
-            $table->decimal('weight', 10, 5)->nullable();
+            $table->decimal('weight', 10, 5)->defualt(0);
         });
     }
 
