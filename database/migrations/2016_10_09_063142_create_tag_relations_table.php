@@ -15,10 +15,10 @@ class CreateTagRelationsTable extends Migration
     {
         Schema::create('tag_relations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('one_id');
-            $table->unsignedInteger('other_id');
+            $table->unsignedInteger('left_id')->references('id')->on('tags');
+            $table->unsignedInteger('right_id')->references('id')->on('tags');
             $table->string('relation');
-            $table->decimal('weight', 10, 5)->nullable();
+            $table->decimal('weight', 10, 5)->defualt(0);
         });
     }
 

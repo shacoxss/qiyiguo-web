@@ -201,12 +201,6 @@ trait TagAliases
                 ->delete()
 
             ;
-
-            //这里是做主名别名的转换的，暂时不需要了
-//            + DB::table(self::RELATION_TABLE)
-//                ->where(self::RELATION_NAME_COLUMN ,self::RELATION_ALIAS)
-//                ->where(self::RELATION_OTHER_COLUMN, $receiver)
-//                ->update([self::RELATION_OTHER_COLUMN => DB::raw('`'.self::RELATION_KEY_COLUMN).'`'])
     }
 
 }
