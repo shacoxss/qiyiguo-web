@@ -14,6 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 946d37f4370beb232a9214373ada85e81b27cada
 
 Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
     Route::any('/','loginController@login');
@@ -52,6 +56,12 @@ Route::group(['prefix'=>'member','namespace'=>'Member'],function(){
     Route::get('index','indexController@userIndex');
     Route::get('masterIndex','indexController@masterIndex');
 });
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 946d37f4370beb232a9214373ada85e81b27cada
 Route::get('/test', 'TestController@index');
 
 Route::get('/tag/{tag_name}', 'TestController@tag')->name('tag.show');
@@ -61,3 +71,7 @@ Route::bind('tag_name', function ($name) {
         ->orWhere('name', $name)
         ->firstOrFail();
 });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 946d37f4370beb232a9214373ada85e81b27cada
