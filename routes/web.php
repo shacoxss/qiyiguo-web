@@ -14,7 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
-<<<<<<< HEAD
 
 Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
     Route::any('/','loginController@login');
@@ -53,14 +52,12 @@ Route::group(['prefix'=>'member','namespace'=>'Member'],function(){
     Route::get('index','indexController@userIndex');
     Route::get('masterIndex','indexController@masterIndex');
 });
-=======
 Route::get('/test', 'TestController@index');
 
 Route::get('/tag/{tag_name}', 'TestController@tag')->name('tag.show');
 
 Route::bind('tag_name', function ($name) {
-    return \App\Models\Tag::where('pinyin', $name)
+    return App\Models\Tag\Tag::where('pinyin', $name)
         ->orWhere('name', $name)
         ->firstOrFail();
 });
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa

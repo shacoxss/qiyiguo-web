@@ -19,7 +19,7 @@ class CreateTagAttributesTable extends Migration
             $table->string('name');
             $table->string('icon')->nullable();
             $table->string('link')->nullable();
-            $table->integer('sort')->defualt(0);
+            $table->integer('sort')->default(0);
         });
     }
 

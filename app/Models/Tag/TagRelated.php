@@ -13,18 +13,18 @@ trait TagRelated
      *
      * @return BelongsToMany
      */
-    private function relatedTags()
+    private function related_tags()
     {
         return $this
-            ->getPrimaryName()
+            ->primary_tag
             ->belongsToMany(
                 static::class,
-                self::RELATION_TABLE,
-                self::RELATION_KEY_COLUMN,
-                self::RELATION_OTHER_COLUMN
+                TagRelation::RELATION_TABLE,
+                TagRelation::RELATION_LEFT,
+                TagRelation::RELATION_RIGHT
             )
-            ->wherePivot(self::RELATION_NAME_COLUMN, self::RELATION_RELATED)
-            ->withPivot(self::RELATION_WEIGHT_COLUMN);
+            ->wherePivot(TagRelation::RELATION, TagRelation::RELATION_RELATED)
+            ->withPivot(TagRelation::RELATION_WEIGHT);
     }
 
     /**
@@ -34,20 +34,19 @@ trait TagRelated
      */
     public function attachRelatedTags(array $tags, $create_it = false)
     {
-        $tags = self::wrapToTagIdCollect($tags, $create_it)
-//            ->map(function ($tag) {
-//                return $tag->getPrimaryName();
-//            })
+        $tags = self::wrapToPrimaryId(
+            self::wrapToTagIdCollect($tags, $create_it)
+        )
             //防止重复添加
-            ->diff($this->getRelatedTags($only_id = true)->push($this->id))
+            ->diff($this->getRelatedTags($only_id = true)->push($this->primary_id))
             ->all();
 
         //写入数据库
-        $this->relatedTags()->attach(
+        $this->related_tags()->attach(
             $tags,
             [
-                self::RELATION_NAME_COLUMN => self::RELATION_RELATED,
-                self::RELATION_WEIGHT_COLUMN => 1,
+                TagRelation::RELATION => TagRelation::RELATION_RELATED,
+                TagRelation::RELATION_WEIGHT => 1,
             ]
         );
 
@@ -64,33 +63,28 @@ trait TagRelated
     public function getRelatedTags($depth = 1, $only_id = false)
     {
         //$increment 为增量，$ids 为总量
-        $ids = $increment = collect([$this->getPrimaryName()->id]);
+        $ids = $increment = collect([$this->primary_id]);
         $result = collect();
 
         for ($i = 0; $i < $depth; $i++) {
-            $tmp = DB::table(self::RELATION_TABLE)
 
-                ->where(self::RELATION_NAME_COLUMN, self::RELATION_RELATED)
-
-                ->where(function ($query) use($increment) {
-                    $query->whereIn(self::RELATION_KEY_COLUMN, $increment)
-                        ->orWhereIn(self::RELATION_OTHER_COLUMN, $increment);
-                })
-
-                ->get([
-                    self::RELATION_KEY_COLUMN,
-                    self::RELATION_OTHER_COLUMN
-                ]);
+            $tmp = TagRelation
+                ::related()
+                ->allIn($increment)
+                ->getId()
+            ;
 
             if($tmp->isEmpty()) break;
 
-            $ids = $ids->merge(
-                $increment = $tmp
-                    ->pluck(self::RELATION_KEY_COLUMN)
-                    ->merge(
-                        $tmp->pluck(self::RELATION_OTHER_COLUMN)
-                    )->diff($ids)
-            );
+            $increment = $tmp
+                ->pluck(TagRelation::RELATION_LEFT)
+                ->merge(
+                    $tmp->pluck(TagRelation::RELATION_RIGHT)
+                )
+                ->diff($ids)
+            ;
+
+            $ids = $ids->merge($increment);
 
             if (!$only_id) {
                 $result = $result->merge(
@@ -99,7 +93,7 @@ trait TagRelated
                 );
             }
         }
-
+        $ids->shift();
         return $only_id ? $ids : $result;
     }
 

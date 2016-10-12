@@ -177,12 +177,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
-<<<<<<< HEAD
-
-=======
         Barryvdh\Debugbar\ServiceProvider::class,
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
 
     ],
 
@@ -231,11 +226,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-<<<<<<< HEAD
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-=======
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
 
     ],
 

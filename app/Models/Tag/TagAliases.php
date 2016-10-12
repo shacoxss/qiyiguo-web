@@ -13,15 +13,15 @@ trait TagAliases
      */
     public function aliases()
     {
-        return $this->getPrimaryName()
+        return $this->primary_tag
             ->belongsToMany(
                 static::class,
-                self::RELATION_TABLE,
-                self::RELATION_LEFT,
-                self::RELATION_RIGHT
+                TagRelation::RELATION_TABLE,
+                TagRelation::RELATION_LEFT,
+                TagRelation::RELATION_RIGHT
             )
-            ->wherePivot(self::RELATION, self::RELATION_ALIAS)
-            ->withPivot(self::RELATION_WEIGHT);
+            ->wherePivot(TagRelation::RELATION, TagRelation::RELATION_ALIAS)
+            ->withPivot(TagRelation::RELATION_WEIGHT);
     }
 
     /**
@@ -43,27 +43,31 @@ trait TagAliases
         bool $create_it = false,    $enforce = false
     )
     {
-        $tags = self::wrapToTagIdCollect($aliases, $create_it);
+        $tags = self
+            ::wrapToTagIdCollect($aliases, $create_it)
+            ->diff(
+                $this->aliases()
+                    ->pluck('tags.id')
+                    ->push($this->primary_id)
+            )
+        ;
+
+        if($tags->isEmpty()) return $this;
 
         if (!$enforce) {
-            $this->checkRepeat($tags, $on_error);
+            $this->checkCross($tags, $on_error);
         }
-
-        self::relationTransfer($tags, $this->id);
 
         //写入数据库
         $this->aliases()->attach(
-            $tags
-                //防止重复添加
-                ->diff(
-                    $this->aliases()->get()->pluck('id')->push($this->id)
-                )
-                ->all(),
+            $tags->all(),
             [
-                self::RELATION => self::RELATION_ALIAS,
-                self::RELATION_WEIGHT => 0,
+                TagRelation::RELATION => TagRelation::RELATION_ALIAS,
+                TagRelation::RELATION_WEIGHT => 0,
             ]
         );
+
+        TagRelation::relationTransfer($tags, $this->primary_id);
 
         return $this;
     }
@@ -76,39 +80,59 @@ trait TagAliases
      * @return bool
      * @throws \Exception
      */
-    private function checkRepeat($tags, $on_error)
+    private function checkCross($tags, $on_error)
     {
-        $repeat = DB::table(self::RELATION_TABLE)
-            ->where(self::RELATION_NAME_COLUMN, self::RELATION_ALIAS)
-            ->whereIn(self::RELATION_KEY_COLUMN, $tags)
-            ->groupBy(self::RELATION_KEY_COLUMN)
-            ->get([self::RELATION_KEY_COLUMN.' as '.self::RELATION_KEY_COLUMN, self::RELATION_KEY_COLUMN.' as '.self::RELATION_OTHER_COLUMN])
-            ->merge(
-                DB::table(self::RELATION_TABLE)
-                    ->where(self::RELATION_NAME_COLUMN, self::RELATION_ALIAS)
-                    ->whereIn(self::RELATION_OTHER_COLUMN, $tags)
-                    ->where(self::RELATION_KEY_COLUMN, '!=', $this->getPrimaryName()->id)
-                    ->get()
-            )
+        $cross = TagRelation
+            ::alias()
+            ->leftIn($tags)
+            //->groupBy(TagRelation::RELATION_LEFT)
+            ->getId()
+        ;
+        $cross = TagRelation
+            ::alias()
+            ->rightIn($tags)
+            ->where(TagRelation::RELATION_LEFT, '!=', $this->primary_id)
+            ->getId()
+            ->merge($cross)
         ;
 
-        if($repeat->isEmpty()) {
-            return true;
-        } else {
-            if ($on_error) {
-                return $on_error(
-                    $repeat->map(function ($tag) {
-                        return [
-                            'primary_name' => $tag->{self::RELATION_KEY_COLUMN},
-                            'alias_name' => $tag->{self::RELATION_OTHER_COLUMN},
-                        ];
-                    })
-                );
-            }
+        if ($cross->isEmpty()) return true;
 
-            throw new \Exception('禁止交叉添加别名');
-        }
+        if ($on_error) return $on_error($cross);
+
+        throw new \Exception('禁止交叉添加别名');
     }
+
+
+
+    /**
+     * 把左值修改为$this标签
+     * 设置主名不仅仅是更改获取方式，在设置主名的同时还要把所有的关联关系关联到新的主名上
+     *
+     * @return $this
+     */
+//    public function setToPrimaryName()
+//    {
+//        $old_id = $this->getPrimaryName()->id;
+//        if($old_id == $this->id) return $this;
+//
+//        DB::table(TagRelation::RELATION_TABLE)
+//            ->where(TagRelation::RELATION_LEFT, $old_id)
+//            ->update([TagRelation::RELATION_LEFT => $this->id]);
+//
+//        DB::table(TagRelation::RELATION_TABLE)
+//            ->where(TagRelation::RELATION_RIGHT, $old_id)
+//            ->update([TagRelation::RELATION_RIGHT => $this->id]);
+//
+//        DB::table(TagRelation::RELATION_TABLE)
+//            ->where(TagRelation::RELATION_LEFT, DB::raw('`'.self::RELATION_RIGHT.'`'))
+//            ->update([TagRelation::RELATION_RIGHT => $old_id]);
+//
+//        unset($this->cache['primary_key']);
+//
+//        return $this;
+//    }
+
 
     /**
      * 获取关系表中的左值对应的标签，该标签即为所有别名的主要命名
@@ -117,90 +141,44 @@ trait TagAliases
      * 从而避免交叉关联别名
      *
      */
-    public function getPrimaryName()
+    public function getPrimaryTagAttribute()
     {
         if (isset($this->cache['primary_name'])) {
             return $this->cache['primary_name'];
         }
 
-        $key_id = DB::table(self::RELATION_TABLE)
-            ->where(self::RELATION_NAME_COLUMN, self::RELATION_ALIAS)
-            ->where(function ($query) {
-                return $query
-                    ->where(self::RELATION_KEY_COLUMN, $this->id)
-                    ->orWhere(self::RELATION_OTHER_COLUMN, $this->id);
-            })
-            ->value(self::RELATION_KEY_COLUMN);
+        $key_id = TagRelation
+            ::alias()
+            ->allHas($this->id)
+            ->value(TagRelation::RELATION_LEFT);
 
         return $this->cache['primary_name']
             = ($key_id and $key_id != $this->id)
-                ? static::find($key_id)
-                : $this;
+            ? static::find($key_id)
+            : $this;
+    }
+
+    public function getPrimaryIdAttribute()
+    {
+        return $this->getPrimaryTagAttribute()->id;
     }
 
     /**
-     * 把左值修改为$this标签
-     * 设置主名不仅仅是更改获取方式，在设置主名的同时还要把所有的关联关系关联到新的主名上
-     *
-     * @return $this
+     * @param Collection $ids
+     * @return Collection
      */
-    public function setToPrimaryName()
+    public static function wrapToPrimaryId($ids)
     {
-        $old_id = $this->getPrimaryName()->id;
-        if($old_id == $this->id) return $this;
-
-        DB::table(self::RELATION_TABLE)
-            ->where(self::RELATION_KEY_COLUMN, $old_id)
-            ->update([self::RELATION_KEY_COLUMN => $this->id]);
-
-        DB::table(self::RELATION_TABLE)
-            ->where(self::RELATION_OTHER_COLUMN, $old_id)
-            ->update([self::RELATION_OTHER_COLUMN => $this->id]);
-
-        DB::table(self::RELATION_TABLE)
-            ->where(self::RELATION_KEY_COLUMN, DB::raw('`'.self::RELATION_OTHER_COLUMN.'`'))
-            ->update([self::RELATION_OTHER_COLUMN => $old_id]);
-
-        unset($this->cache['primary_key']);
-
-        return $this;
+        $aliases = TagRelation
+            ::rightIn($ids)
+            ->getId()
+        ;
+        return $ids
+            ->diff($aliases->pluck(TagRelation::RELATION_RIGHT))
+            ->merge($aliases->pluck(TagRelation::RELATION_LEFT))
+            ->unique()
+        ;
     }
 
-    /**
-     * 直接操作数据库来进行关系的转移
-     * 为了维持系统的一致性，转移后仅删除重复的项目，应该在调用后自己维持业务逻辑的需要
-     *
-     * @param Collection|array $transfer
-     * @param int $receiver
-     * @return  int
-     */
-    public static function relationTransfer($transfer, $receiver)
-    {
-        return
-            + DB::table(self::RELATION_TABLE)
-                ->whereIn(self::RELATION_KEY_COLUMN, $transfer)
-                ->update([self::RELATION_KEY_COLUMN => $receiver])
-
-            + DB::table(self::RELATION_TABLE)
-                ->where(self::RELATION_NAME_COLUMN ,self::RELATION_RELATED)
-                ->whereIn(self::RELATION_OTHER_COLUMN, $transfer)
-                ->update([self::RELATION_OTHER_COLUMN => $receiver])
-
-            + DB::table(self::RELATION_TABLE)
-                ->where(self::RELATION_NAME_COLUMN ,self::RELATION_ALIAS)
-                ->whereIn(self::RELATION_OTHER_COLUMN, $transfer)
-                ->update([self::RELATION_KEY_COLUMN => $receiver])
-
-            + DB::table(self::RELATION_TABLE)
-                ->where(self::RELATION_KEY_COLUMN, DB::raw('`'.self::RELATION_OTHER_COLUMN.'`'))
-                ->delete()
-
-            + DB::table(self::RELATION_TABLE)
-                ->where(self::RELATION_NAME_COLUMN ,self::RELATION_ALIAS)
-                ->where(self::RELATION_OTHER_COLUMN, $receiver)
-                ->delete()
-
-            ;
-    }
 
 }

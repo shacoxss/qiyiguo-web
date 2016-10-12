@@ -8,9 +8,12 @@ use Overtrue\Pinyin\Pinyin;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 /**
+ * @property int  id
  * @property string  name
  * @property string  url
  * @property string  pinyin
+ * @property string  primary_id
+ * @property $this  primary_tag
  */
 class Tag extends Model
 {
@@ -19,14 +22,6 @@ class Tag extends Model
     const PINYIN_BREAK = '-';
     const TAG_URL = '/tag/';
     const AUTO_SUFFIX_LIMIT = 1;
-
-    const RELATION_TABLE = 'tag_relations';
-    const RELATION = 'relation';
-    const RELATION_ALIAS= 'alias';
-    const RELATION_RELATED= 'related';
-    const RELATION_LEFT = 'left_id';
-    const RELATION_RIGHT = 'right_id';
-    const RELATION_WEIGHT = 'weight';
     //
     protected $fillable = ['name', 'url', 'pinyin'];
 
@@ -177,6 +172,6 @@ class Tag extends Model
 
     public static function test ()
     {
-        dd(\DB::table(self::RELATION_TABLE)->alias()->get());
+        dd(TagRelation::select());
     }
 }

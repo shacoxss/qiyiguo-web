@@ -18,10 +18,10 @@ class CreateTagsTable extends Migration
             $table->string('name')->unique();
             $table->string('url')->unique();
             $table->string('pinyin');
-            $table->char('background_color', 8)->defualt('normal');
+            $table->char('background_color', 8)->nullable();
             $table->string('logo')->nullable();
-            $table->char('type', 20)->defualt('normal');
-            $table->decimal('weight', 10, 5)->defualt(0);
+            $table->char('type', 20)->default('normal');
+            $table->decimal('weight', 10, 5)->default(0);
             $table->string('notice')->nullable();
             $table->string('template')->nullable();
             $table->string('anchor_name')->nullable();
