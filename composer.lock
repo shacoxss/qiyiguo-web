@@ -4,13 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "hash": "cae48e6ea9494b64712dfa25a91cbabe",
-    "content-hash": "d8cd673b70986d9039681d5202c5878e",
-=======
-    "hash": "c5bd7e602620d610be2eccb0e2c73023",
-    "content-hash": "1f92e6c72eedaee53d81619648e0cc01",
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
+    "hash": "6f148d2d2712e2d44f4a3293ef623b51",
+    "content-hash": "c4a4c05512057ca0a8186a5d0ed338a0",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -221,7 +216,56 @@
             "time": "2015-11-06 14:35:42"
         },
         {
-<<<<<<< HEAD
+            "name": "fukuball/jieba-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fukuball/jieba-php.git",
+                "reference": "bdd030d7d71364dd8ea8fefff523d6b751ea0624"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fukuball/jieba-php/zipball/bdd030d7d71364dd8ea8fefff523d6b751ea0624",
+                "reference": "bdd030d7d71364dd8ea8fefff523d6b751ea0624",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">= 5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.4.1",
+                "satooshi/php-coveralls": "dev-master",
+                "squizlabs/php_codesniffer": "1.5.6"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/class/Jieba.php",
+                    "src/class/JiebaAnalyse.php",
+                    "src/class/Finalseg.php",
+                    "src/class/Posseg.php",
+                    "src/vendor/multi-array/MultiArray.php",
+                    "src/vendor/multi-array/Factory/MultiArrayFactory.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "fukuball",
+                    "email": "fukuball@gmail.com"
+                }
+            ],
+            "description": "結巴中文分詞（PHP 版本）：做最好的 PHP 中文分詞、中文斷詞組件",
+            "keywords": [
+                "Jieba",
+                "php"
+            ],
+            "time": "2016-10-04 09:28:08"
+        },
+        {
             "name": "gee-team/gt-php-sdk",
             "version": "15.12.04",
             "source": {
@@ -406,38 +450,6 @@
                 },
                 "files": [
                     "src/functions_include.php"
-=======
-            "name": "fukuball/jieba-php",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/fukuball/jieba-php.git",
-                "reference": "bdd030d7d71364dd8ea8fefff523d6b751ea0624"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/fukuball/jieba-php/zipball/bdd030d7d71364dd8ea8fefff523d6b751ea0624",
-                "reference": "bdd030d7d71364dd8ea8fefff523d6b751ea0624",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">= 5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.4.1",
-                "satooshi/php-coveralls": "dev-master",
-                "squizlabs/php_codesniffer": "1.5.6"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/class/Jieba.php",
-                    "src/class/JiebaAnalyse.php",
-                    "src/class/Finalseg.php",
-                    "src/class/Posseg.php",
-                    "src/vendor/multi-array/MultiArray.php",
-                    "src/vendor/multi-array/Factory/MultiArrayFactory.php"
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -446,7 +458,6 @@
             ],
             "authors": [
                 {
-<<<<<<< HEAD
                     "name": "Michael Dowling",
                     "email": "mtdowling@gmail.com",
                     "homepage": "https://github.com/mtdowling"
@@ -460,18 +471,6 @@
                 "uri"
             ],
             "time": "2016-06-24 23:00:38"
-=======
-                    "name": "fukuball",
-                    "email": "fukuball@gmail.com"
-                }
-            ],
-            "description": "結巴中文分詞（PHP 版本）：做最好的 PHP 中文分詞、中文斷詞組件",
-            "keywords": [
-                "Jieba",
-                "php"
-            ],
-            "time": "2016-10-04 09:28:08"
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -884,7 +883,6 @@
             "time": "2016-10-07 12:20:37"
         },
         {
-<<<<<<< HEAD
             "name": "league/oauth1-client",
             "version": "1.7.0",
             "source": {
@@ -906,7 +904,48 @@
                 "mockery/mockery": "^0.9",
                 "phpunit/phpunit": "^4.0",
                 "squizlabs/php_codesniffer": "^2.0"
-=======
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\OAuth1\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Corlett",
+                    "email": "bencorlett@me.com",
+                    "homepage": "http://www.webcomm.com.au",
+                    "role": "Developer"
+                }
+            ],
+            "description": "OAuth 1.0 Client Library",
+            "keywords": [
+                "Authentication",
+                "SSO",
+                "authorization",
+                "bitbucket",
+                "identity",
+                "idp",
+                "oauth",
+                "oauth1",
+                "single sign on",
+                "trello",
+                "tumblr",
+                "twitter"
+            ],
+            "time": "2016-08-17 00:36:58"
+        },
+        {
             "name": "maximebf/debugbar",
             "version": "v1.13.0",
             "source": {
@@ -932,25 +971,16 @@
                 "kriswallsmith/assetic": "The best way to manage assets",
                 "monolog/monolog": "Log using Monolog",
                 "predis/predis": "Redis storage"
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-<<<<<<< HEAD
-                    "dev-master": "1.0-dev"
-=======
                     "dev-master": "1.13-dev"
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
                 }
             },
             "autoload": {
                 "psr-4": {
-<<<<<<< HEAD
-                    "League\\OAuth1\\": "src/"
-=======
                     "DebugBar\\": "src/DebugBar/"
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -959,30 +989,6 @@
             ],
             "authors": [
                 {
-<<<<<<< HEAD
-                    "name": "Ben Corlett",
-                    "email": "bencorlett@me.com",
-                    "homepage": "http://www.webcomm.com.au",
-                    "role": "Developer"
-                }
-            ],
-            "description": "OAuth 1.0 Client Library",
-            "keywords": [
-                "Authentication",
-                "SSO",
-                "authorization",
-                "bitbucket",
-                "identity",
-                "idp",
-                "oauth",
-                "oauth1",
-                "single sign on",
-                "trello",
-                "tumblr",
-                "twitter"
-            ],
-            "time": "2016-08-17 00:36:58"
-=======
                     "name": "Maxime Bouroumeau-Fuseau",
                     "email": "maxime.bouroumeau@gmail.com",
                     "homepage": "http://maximebf.com"
@@ -999,7 +1005,6 @@
                 "debugbar"
             ],
             "time": "2016-09-15 14:01:59"
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
         },
         {
             "name": "monolog/monolog",
@@ -1366,16 +1371,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0"
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/5277094ed527a1c4477177d102fe4c53551953e0",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
                 "shasum": ""
             },
             "require": {
@@ -1409,7 +1414,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-09-19 16:02:08"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "psy/psysh",
@@ -1564,7 +1569,29 @@
             "time": "2016-10-02 15:51:17"
         },
         {
-<<<<<<< HEAD
+            "name": "shx/file-model",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://git.oschina.net/shacoxss/file-model",
+                "reference": "47a63817e4f8a8f3ac9dda243d5091ed3806a7fa"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Shx\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "shx",
+                    "email": "shaocxss@yeah.net"
+                }
+            ],
+            "time": "2016-10-10 05:21:23"
+        },
+        {
             "name": "socialiteproviders/manager",
             "version": "v2.1.8",
             "source": {
@@ -1660,19 +1687,10 @@
             "require": {
                 "php": "^5.6 || ^7.0",
                 "socialiteproviders/manager": "~2.0"
-=======
-            "name": "shx/file-model",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://git.oschina.net/shacoxss/file-model",
-                "reference": "47a63817e4f8a8f3ac9dda243d5091ed3806a7fa"
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-<<<<<<< HEAD
                     "SocialiteProviders\\Weibo\\": "src/"
                 }
             },
@@ -1725,19 +1743,6 @@
             ],
             "description": "Weixin-Web OAuth2 Provider for Laravel Socialite",
             "time": "2016-08-06 06:55:03"
-=======
-                    "Shx\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "shx",
-                    "email": "shaocxss@yeah.net"
-                }
-            ],
-            "time": "2016-10-10 05:21:23"
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3537,13 +3542,8 @@
             },
             "dist": {
                 "type": "zip",
-<<<<<<< HEAD
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/03500345483e1e17b52e2e4d34a89c9408ab2902",
-                "reference": "03500345483e1e17b52e2e4d34a89c9408ab2902",
-=======
                 "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/238d7a2723bce689c79eeac9c7d5e1d623bb9dc2",
                 "reference": "238d7a2723bce689c79eeac9c7d5e1d623bb9dc2",
->>>>>>> b1d3e9055cbdd4952a3757f8e406f80989347eaa
                 "shasum": ""
             },
             "require": {
