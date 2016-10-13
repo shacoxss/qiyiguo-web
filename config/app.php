@@ -177,16 +177,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-<<<<<<< HEAD
         Barryvdh\Debugbar\ServiceProvider::class,
-=======
-
-
-
-
         Barryvdh\Debugbar\ServiceProvider::class,
-
->>>>>>> 946d37f4370beb232a9214373ada85e81b27cada
 
     ],
 
@@ -237,10 +229,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-<<<<<<< HEAD
-
-=======
->>>>>>> 946d37f4370beb232a9214373ada85e81b27cada
     ],
 
 ];

@@ -170,8 +170,9 @@ class Tag extends Model
             });
     }
 
-    public static function test ()
+
+    public function refreshBaiduIndex()
     {
-        dd(TagRelation::select());
+        //$this->
     }
 }

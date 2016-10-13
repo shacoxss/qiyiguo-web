@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag\Tag;
+use App\Models\Tag\TagFinder;
 use App\Models\Tag\TagRelation;
 use Illuminate\Http\Request;
 
@@ -15,10 +16,10 @@ class TestController extends Controller
         //dd(Tag::wrapToPrimaryId(collect([2,9,4,5,6,7])));
         //Tag::find(2)->attachAliases([1,3,4,5,10]);
         //(Tag::find(8)->attachAliases([6]));
-        TagRelation::relationTransfer([3,4,5], 2, true);
+        //TagRelation::relationTransfer([3,4,5], 2, true);
         //Tag::test();
         //(Tag::find(9)->getRelatedTags(1, true));
-        echo 'ok';
+       // echo 'ok';
 //        (Tag::create([
 //            'name' => $request->name
 //        ]));
