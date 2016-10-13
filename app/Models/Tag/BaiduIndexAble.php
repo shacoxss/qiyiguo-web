@@ -6,13 +6,13 @@ use GuzzleHttp;
 
 trait BaiduIndexAble
 {
-    private static $baidu_index_url = 'http://api.91cha.com/';
+    private static $api_url = 'http://api.91cha.com/';
 
 
     private static function getAPIData(array $names)
     {
         $client = new GuzzleHttp\Client([
-            'base_uri' => self::$baidu_index_url,
+            'base_uri' => self::$api_url,
         ]);
 
         $query = [
@@ -43,7 +43,7 @@ trait BaiduIndexAble
         $res = self::getAPIData($tags->pluck('name')->all());
 
         if (empty($res->data)) {
-            throw new \Exception("Failed to load data from: ".self::$baidu_index_url.'.');
+            throw new \Exception("Failed to load data from: ".self::$api_url.'.');
         }
 
         foreach ($res->data as $item) {
