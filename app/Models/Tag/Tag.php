@@ -18,7 +18,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  */
 class Tag extends Model
 {
-    use RelationAble, TagAliases, TagRelated, BaiduIndexAble;
+    use RelationAble, Aliases, Similars, BaiduIndexAble;
 
     const PINYIN_BREAK = '-';
     const TAG_URL = '/tag/';
@@ -33,7 +33,7 @@ class Tag extends Model
      * @param bool $auto_compute_url
      * @return static
      */
-    public static function create(array $attributes = [], $auto_compute_url = true)
+    public static function create(array $attributes = [])
     {
         $model = new static($attributes);
 
@@ -45,7 +45,7 @@ class Tag extends Model
             $model->autoComputePinyin();
         }
 
-        if ($auto_compute_url and empty($model->url)) {
+        if (empty($model->url)) {
             $model->autoComputeUrl();
         }
 
@@ -145,10 +145,11 @@ class Tag extends Model
      * @param bool $create_it
      * @return \Illuminate\Support\Collection
      */
-    public static function wrapToTagIdCollect(array $tags, $create_it = false)
+    public static function wrapToIds(array $tags, $create_it = false)
     {
         return collect($tags)
             ->map(function ($alias) use($create_it) {
+                
                 if ($alias instanceof static) {
                     return $alias->id;
                 }

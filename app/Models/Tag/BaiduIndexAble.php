@@ -9,7 +9,7 @@ trait BaiduIndexAble
     private static $api_url = 'http://api.91cha.com/';
 
 
-    private static function getAPIData(array $names)
+    private static function getBaiduIndex4API(array $names)
     {
         $client = new GuzzleHttp\Client([
             'base_uri' => self::$api_url,
@@ -22,9 +22,7 @@ trait BaiduIndexAble
 
         return json_decode(
             $client
-                ->request('GET', 'index', [
-                    'query' => $query,
-                ])
+                ->request('GET', 'index', ['query' => $query])
                 ->getBody()
                 ->getContents()
         );
@@ -36,11 +34,11 @@ trait BaiduIndexAble
      */
     public static function refreshBaiduIndex(array $ids)
     {
-        $ids = self::wrapToTagIdCollect($ids);
+        $ids = self::wrapToIds($ids);
 
         $tags = self::findMany($ids);
 
-        $res = self::getAPIData($tags->pluck('name')->all());
+        $res = self::getBaiduIndex4API($tags->pluck('name')->all());
 
         if (empty($res->data)) {
             throw new \Exception("Failed to load data from: ".self::$api_url.'.');
@@ -48,6 +46,7 @@ trait BaiduIndexAble
 
         foreach ($res->data as $item) {
             $item = (array) $item;
+            
             $tag = $tags
                 ->first(function ($value) use($item) {
                     return $value->name == $item['keyword'];

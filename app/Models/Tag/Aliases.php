@@ -5,10 +5,11 @@ namespace App\Models\Tag;
 use DB;
 use Illuminate\Support\Collection;
 
-trait TagAliases
+trait Aliases
 {
     protected $cache;
     /**
+     * 一对多关联
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function aliases()
@@ -16,12 +17,12 @@ trait TagAliases
         return $this->primary_tag
             ->belongsToMany(
                 static::class,
-                TagRelation::RELATION_TABLE,
-                TagRelation::RELATION_LEFT,
-                TagRelation::RELATION_RIGHT
+                Relation::TABLE,
+                Relation::LEFT,
+                Relation::RIGHT
             )
-            ->wherePivot(TagRelation::RELATION, TagRelation::RELATION_ALIAS)
-            ->withPivot(TagRelation::RELATION_WEIGHT);
+            ->wherePivot(Relation::RELATION, Relation::RELATION_ALIAS)
+            ->withPivot(Relation::WEIGHT);
     }
 
     /**
@@ -33,41 +34,45 @@ trait TagAliases
      *
      * 出现交叉错误的回调函数，如果为空则抛出异常
      * @param callable $on_error
-     * 是否强制执行，如果强制执行将把所要附加的标签的所有关系全部转移的当前主标签上，请谨慎驾驶
-     * @param bool $enforce
+     * 是否检查交叉关联，如果不检查将把所要附加的标签的所有关系全部转移的当前主标签上
+     * 请谨慎驾驶
+     * @param bool $check_cross
      * @return static
      * @throws \Exception
      */
     public function attachAliases(
         array $aliases,             callable $on_error = null,
-        bool $create_it = false,    $enforce = false
+        bool $create_it = false,    $check_cross = true
     )
     {
         $tags = self
-            ::wrapToTagIdCollect($aliases, $create_it)
+            ::wrapToIds($aliases, $create_it)
             ->diff(
                 $this->aliases()
                     ->pluck('tags.id')
                     ->push($this->primary_id)
             )
         ;
-
         if($tags->isEmpty()) return $this;
 
-        if (!$enforce) {
-            $this->checkCross($tags, $on_error);
+        //检查交叉别名
+        if ($check_cross && ($cross = $this->hasCross($tags))) {
+            if($on_error) return $on_error($cross);
+
+            throw new \Exception('禁止交叉添加别名。');
         }
 
         //写入数据库
         $this->aliases()->attach(
             $tags->all(),
             [
-                TagRelation::RELATION => TagRelation::RELATION_ALIAS,
-                TagRelation::RELATION_WEIGHT => 0,
+                Relation::RELATION => Relation::RELATION_ALIAS,
+                Relation::WEIGHT => 0,
             ]
         );
 
-        TagRelation::relationTransfer($tags, $this->primary_id);
+        //把被添加的别名以前所拥有的关系转移到现在的主标签上
+        Relation::relationTransfer($tags, $this->primary_id);
 
         return $this;
     }
@@ -80,27 +85,40 @@ trait TagAliases
      * @return bool
      * @throws \Exception
      */
-    private function checkCross($tags, $on_error)
+    private function hasCross($tags)
     {
-        $cross = TagRelation
-            ::alias()
-            ->leftIn($tags)
-            //->groupBy(TagRelation::RELATION_LEFT)
-            ->getId()
+        return (
+            $cross = Relation
+                ::alias()
+                ->leftIn($tags)
+                ->orWhere(function ($query) use($tags) {
+                    return $query
+                        ->rightIn($tags)
+                        ->where(Relation::LEFT, '!=', $this->primary_id);
+                })
+                //->groupBy(Relation::LEFT)
+                ->onlyId()
+        )
+            ->isEmpty()
+            ? false
+            : $cross
         ;
-        $cross = TagRelation
-            ::alias()
-            ->rightIn($tags)
-            ->where(TagRelation::RELATION_LEFT, '!=', $this->primary_id)
-            ->getId()
-            ->merge($cross)
-        ;
+    }
 
-        if ($cross->isEmpty()) return true;
-
-        if ($on_error) return $on_error($cross);
-
-        throw new \Exception('禁止交叉添加别名');
+    /**
+     * 获取出去他自己以外的别名标签
+     *
+     * @return $this
+     */
+    public function getAliases()
+    {
+        if ($this->id == $this->primary_id) {
+            return $this->aliases()->get();
+        } else {
+            return $this->aliases()
+                ->get()
+                ->push($this->primary_tag);
+        }
     }
 
 
@@ -111,27 +129,10 @@ trait TagAliases
      *
      * @return $this
      */
-//    public function setToPrimaryName()
-//    {
-//        $old_id = $this->getPrimaryName()->id;
-//        if($old_id == $this->id) return $this;
-//
-//        DB::table(TagRelation::RELATION_TABLE)
-//            ->where(TagRelation::RELATION_LEFT, $old_id)
-//            ->update([TagRelation::RELATION_LEFT => $this->id]);
-//
-//        DB::table(TagRelation::RELATION_TABLE)
-//            ->where(TagRelation::RELATION_RIGHT, $old_id)
-//            ->update([TagRelation::RELATION_RIGHT => $this->id]);
-//
-//        DB::table(TagRelation::RELATION_TABLE)
-//            ->where(TagRelation::RELATION_LEFT, DB::raw('`'.self::RELATION_RIGHT.'`'))
-//            ->update([TagRelation::RELATION_RIGHT => $old_id]);
-//
-//        unset($this->cache['primary_key']);
-//
-//        return $this;
-//    }
+     public function setToPrimaryTag()
+     {
+         return $this;
+     }
 
 
     /**
@@ -147,10 +148,10 @@ trait TagAliases
             return $this->cache['primary_name'];
         }
 
-        $key_id = TagRelation
+        $key_id = Relation
             ::alias()
             ->allHas($this->id)
-            ->value(TagRelation::RELATION_LEFT);
+            ->value(Relation::LEFT);
 
         return $this->cache['primary_name']
             = ($key_id and $key_id != $this->id)
@@ -164,18 +165,19 @@ trait TagAliases
     }
 
     /**
+     * 把一组标签id集合转换成他们的主id集合
      * @param Collection $ids
      * @return Collection
      */
-    public static function wrapToPrimaryId($ids)
+    public static function convertToPrimarys($ids)
     {
-        $aliases = TagRelation
+        $aliases = Relation
             ::rightIn($ids)
-            ->getId()
+            ->onlyId()
         ;
         return $ids
-            ->diff($aliases->pluck(TagRelation::RELATION_RIGHT))
-            ->merge($aliases->pluck(TagRelation::RELATION_LEFT))
+            ->diff($aliases->pluck(Relation::RIGHT))
+            ->merge($aliases->pluck(Relation::LEFT))
             ->unique()
         ;
     }

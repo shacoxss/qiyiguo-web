@@ -6,25 +6,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use DB;
 
-trait TagRelated
+trait Similars
 {
     /**
      * BelongsToMany关系为单向关联，仅仅是左值关联右值
-     *
+     * 仅仅能用在调用框架attach方法的时候
      * @return BelongsToMany
      */
-    private function related_tags()
+    private function similars()
     {
         return $this
             ->primary_tag
             ->belongsToMany(
                 static::class,
-                TagRelation::RELATION_TABLE,
-                TagRelation::RELATION_LEFT,
-                TagRelation::RELATION_RIGHT
+                Relation::TABLE,
+                Relation::LEFT,
+                Relation::RIGHT
             )
-            ->wherePivot(TagRelation::RELATION, TagRelation::RELATION_RELATED)
-            ->withPivot(TagRelation::RELATION_WEIGHT);
+            ->wherePivot(Relation::RELATION, Relation::RELATION_SIMILAR)
+            ->withPivot(Relation::WEIGHT);
     }
 
     /**
@@ -32,21 +32,20 @@ trait TagRelated
      * @param bool $create_it
      * @return $this
      */
-    public function attachRelatedTags(array $tags, $create_it = false)
+    public function attachSimilars(array $tags, $create_it = false)
     {
-        $tags = self::wrapToPrimaryId(
-            self::wrapToTagIdCollect($tags, $create_it)
-        )
+        $tags = self
+            ::convertToPrimarys(self::wrapToIds($tags, $create_it))
             //防止重复添加
-            ->diff($this->getRelatedTags($only_id = true)->push($this->primary_id))
+            ->diff($this->getSimilars($only_id = true)->push($this->primary_id))
             ->all();
 
         //写入数据库
-        $this->related_tags()->attach(
+        $this->similars()->attach(
             $tags,
             [
-                TagRelation::RELATION => TagRelation::RELATION_RELATED,
-                TagRelation::RELATION_WEIGHT => 1,
+                Relation::RELATION => Relation::RELATION_SIMILAR,
+                Relation::WEIGHT => 1,
             ]
         );
 
@@ -60,7 +59,7 @@ trait TagRelated
      * @param bool $only_id
      * @return Collection
      */
-    public function getRelatedTags($depth = 1, $only_id = false)
+    public function getSimilars($depth = 1, $only_id = false)
     {
         //$increment 为增量，$ids 为总量
         $ids = $increment = collect([$this->primary_id]);
@@ -68,22 +67,20 @@ trait TagRelated
 
         for ($i = 0; $i < $depth; $i++) {
 
-            $tmp = TagRelation
-                ::related()
+            $tmp = Relation
+                ::similar()
                 ->allIn($increment)
-                ->getId()
+                ->onlyId()
             ;
-
             if($tmp->isEmpty()) break;
 
             $increment = $tmp
-                ->pluck(TagRelation::RELATION_LEFT)
+                ->pluck(Relation::LEFT)
                 ->merge(
-                    $tmp->pluck(TagRelation::RELATION_RIGHT)
+                    $tmp->pluck(Relation::RIGHT)
                 )
                 ->diff($ids)
             ;
-
             $ids = $ids->merge($increment);
 
             if (!$only_id) {
