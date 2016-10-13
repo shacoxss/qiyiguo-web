@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        Tag::observe(TagObserver::class);
+        //Tag::observe(TagObserver::class);
     }
 
     /**

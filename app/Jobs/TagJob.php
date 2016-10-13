@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -34,10 +35,6 @@ class TagJob implements ShouldQueue
      */
     public function handle()
     {
-        $api_key = env('91CHA_API_KEY');
-        //
-        //$this->tag->baidu_index = get();
-
-        $this->tag->save();
+        //$this->tag->refreshBaiduIndex();
     }
 }

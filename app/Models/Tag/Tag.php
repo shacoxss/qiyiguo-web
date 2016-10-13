@@ -2,6 +2,7 @@
 
 namespace App\Models\Tag;
 
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Overtrue\Pinyin\Pinyin;
@@ -17,7 +18,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  */
 class Tag extends Model
 {
-    use RelationAble, TagAliases, TagRelated;
+    use RelationAble, TagAliases, TagRelated, BaiduIndexAble;
 
     const PINYIN_BREAK = '-';
     const TAG_URL = '/tag/';
@@ -168,11 +169,5 @@ class Tag extends Model
 
                 throw new \Exception('Invalid Tag Type: '.$alias);
             });
-    }
-
-
-    public function refreshBaiduIndex()
-    {
-        //$this->
     }
 }

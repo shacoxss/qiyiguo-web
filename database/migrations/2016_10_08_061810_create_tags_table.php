@@ -30,7 +30,7 @@ class CreateTagsTable extends Migration
             $table->string('keywords')->nullable();
             $table->string('description')->nullable();
             $table->string('background_image')->nullable();
-            $table->unsignedInteger('baidu_index')->nullable();
+            $table->string('baidu_index')->nullable();
             $table->timestamps();
         });
     }
