@@ -14,10 +14,10 @@ class TestController extends Controller
     public function index(Request $request)
     {
         //Tag::refreshBaiduIndex([3,4,5,6,7,8,9,10]);
-        // Tag::find(2)->attachAliases([1,3]);
-        // Tag::find(4)->attachSimilars([5,3]);
+        Tag::find(10)->attachAliases([1,2,3]);
+        Tag::find(4)->attachSimilars([4,5,6,7]);
         //(Tag::find(8)->attachAliases([6]));
-        Relation::relationTransfer([4], 3, true);
+        //Relation::relationTransfer([4], 3, true);
         //Tag::test();
         //(Tag::find(9)->getRelatedTags(1, true));
         echo 'ok';

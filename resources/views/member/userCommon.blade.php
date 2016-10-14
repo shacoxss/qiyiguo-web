@@ -52,9 +52,9 @@
                 <div class="userpic">
                     <img src="{{asset('img/100100.png')}}" alt="" class="userpicimg">
                     <!-- 判断是否有后台权限，有后台权限显示此按钮后可互相切换 -->
-                    @if(session('user')->master)
-                        <a href="{{url('member/masterIndex')}}" title="切换至后台用户" class="btn btn-primary settingbtn"><i class="fa fa-random"></i></a>
-                    @endif
+                    {{--@if(session('user')->master)--}}
+                        {{--<a href="{{url('member/masterIndex')}}" title="切换至后台用户" class="btn btn-primary settingbtn"><i class="fa fa-random"></i></a>--}}
+                    {{--@endif--}}
                     <!-- 判断是否有后台权限，有后台权限显示此按钮后可互相切换 -->
                 </div>
                 <h3 class="username">登录帐号</h3>
@@ -135,6 +135,6 @@
         });
     })
 </script>
-
+@yield('scripts')
 </body>
 </html>

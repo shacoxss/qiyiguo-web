@@ -30,7 +30,6 @@ class Tag extends Model
      * Save a new model and return the instance.
      *
      * @param  array $attributes
-     * @param bool $auto_compute_url
      * @return static
      */
     public static function create(array $attributes = [])

@@ -10,6 +10,7 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+require dirname(__FILE__).'/tag.php';
 
 Route::get('/', function () {
     return view('welcome');
@@ -51,15 +52,4 @@ Route::group(['prefix'=>'forget','namespace'=>'Auth'],function(){
 Route::group(['prefix'=>'member','namespace'=>'Member'],function(){
     Route::get('index','indexController@userIndex');
     Route::get('masterIndex','indexController@masterIndex');
-});
-
-
-Route::get('/test', 'TestController@index');
-
-Route::get('/tag/{tag_name}', 'TestController@tag')->name('tag.show');
-
-Route::bind('tag_name', function ($name) {
-    return App\Models\Tag\Tag::where('pinyin', $name)
-        ->orWhere('name', $name)
-        ->firstOrFail();
 });
