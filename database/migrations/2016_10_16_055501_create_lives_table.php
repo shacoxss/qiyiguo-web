@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTagAttributesTable extends Migration
+class CreateLivesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateTagAttributesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tag_attributes', function (Blueprint $table) {
+        Schema::create('lives', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('tag_id');
-            $table->string('name');
-            $table->string('icon')->nullable();
-            $table->string('link')->nullable();
-            $table->integer('sort')->default(0);
+            $table->string('name')->unique();
+            $table->string('url')->unique();
         });
     }
 
@@ -30,6 +27,6 @@ class CreateTagAttributesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tag_attributes');
+        Schema::dropIfExists('lives');
     }
 }

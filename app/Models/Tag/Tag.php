@@ -2,31 +2,28 @@
 
 namespace App\Models\Tag;
 
+use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Overtrue\Pinyin\Pinyin;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 /**
+ * @property int  id
  * @property string  name
  * @property string  url
  * @property string  pinyin
+ * @property string  primary_id
+ * @property $this  primary_tag
  */
 class Tag extends Model
 {
-    use TagAliases,TagRelated;
+    use RelationAble, Aliases, Similars, BaiduIndexAble;
 
     const PINYIN_BREAK = '-';
     const TAG_URL = '/tag/';
     const AUTO_SUFFIX_LIMIT = 1;
-
-    const RELATION_TABLE = 'tag_relations';
-    const RELATION_ALIAS = 'alias';
-    const RELATION_RELATED = 'related';
-    const RELATION_NAME_COLUMN = 'relation';
-    const RELATION_KEY_COLUMN = 'one_id';
-    const RELATION_OTHER_COLUMN = 'other_id';
-    const RELATION_WEIGHT_COLUMN = 'weight';
     //
     protected $fillable = ['name', 'url', 'pinyin'];
 
@@ -34,10 +31,9 @@ class Tag extends Model
      * Save a new model and return the instance.
      *
      * @param  array $attributes
-     * @param bool $auto_compute_url
      * @return static
      */
-    public static function create(array $attributes = [], $auto_compute_url = true)
+    public static function create(array $attributes = [])
     {
         $model = new static($attributes);
 
@@ -49,7 +45,7 @@ class Tag extends Model
             $model->autoComputePinyin();
         }
 
-        if ($auto_compute_url and empty($model->url)) {
+        if (empty($model->url)) {
             $model->autoComputeUrl();
         }
 
@@ -149,10 +145,11 @@ class Tag extends Model
      * @param bool $create_it
      * @return \Illuminate\Support\Collection
      */
-    public static function wrapToTagIdCollect(array $tags, $create_it = false)
+    public static function wrapToIds(array $tags, $create_it = false)
     {
         return collect($tags)
             ->map(function ($alias) use($create_it) {
+                
                 if ($alias instanceof static) {
                     return $alias->id;
                 }
@@ -174,4 +171,16 @@ class Tag extends Model
                 throw new \Exception('Invalid Tag Type: '.$alias);
             });
     }
+
+    /**
+     *
+     * 标签属性多对多
+     * @return HasMany;
+     *
+     */
+
+     public function attributes()
+     {
+         return $this->hasMany('App\Models\Tag\TagAttribute');
+     }
 }

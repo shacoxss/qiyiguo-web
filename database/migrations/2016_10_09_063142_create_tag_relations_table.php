@@ -18,7 +18,7 @@ class CreateTagRelationsTable extends Migration
             $table->unsignedInteger('left_id')->references('id')->on('tags');
             $table->unsignedInteger('right_id')->references('id')->on('tags');
             $table->string('relation');
-            $table->decimal('weight', 10, 5)->defualt(0);
+            $table->decimal('weight', 10, 5)->default(0);
         });
     }
 

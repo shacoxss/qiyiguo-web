@@ -14,8 +14,7 @@
         "fukuball/jieba-php": "dev-master",
         "overtrue/pinyin": "^3.0",
         "barryvdh/laravel-debugbar": "^2.3",
-        "shx/file-model": "dev-master"
-
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -56,5 +55,11 @@
     },
     "config": {
         "preferred-install": "dist"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
     }
 }

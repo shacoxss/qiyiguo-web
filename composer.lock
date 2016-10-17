@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6f148d2d2712e2d44f4a3293ef623b51",
-    "content-hash": "c4a4c05512057ca0a8186a5d0ed338a0",
+    "hash": "747b579ac615064fc4f21b7c500078bb",
+    "content-hash": "4ccbb3f8b889443c7a9d895229b5bc93",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -471,6 +471,68 @@
                 "uri"
             ],
             "time": "2016-06-24 23:00:38"
+        },
+        {
+            "name": "intervention/image",
+            "version": "2.3.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Intervention/image.git",
+                "reference": "4064a980324f6c3bfa2bd981dfb247afa705ec3c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/Intervention/image/4064a980324f6c3bfa2bd981dfb247afa705ec3c.zip",
+                "reference": "4064a980324f6c3bfa2bd981dfb247afa705ec3c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "guzzlehttp/psr7": "~1.1",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.2",
+                "phpunit/phpunit": "3.*"
+            },
+            "suggest": {
+                "ext-gd": "to use GD library based image processing.",
+                "ext-imagick": "to use Imagick based image processing.",
+                "intervention/imagecache": "Caching extension for the Intervention Image library"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Intervention\\Image\\": "src/Intervention/Image"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Vogel",
+                    "email": "oliver@olivervogel.net",
+                    "homepage": "http://olivervogel.net/"
+                }
+            ],
+            "description": "Image handling and manipulation library with support for Laravel integration",
+            "homepage": "http://image.intervention.io/",
+            "keywords": [
+                "gd",
+                "image",
+                "imagick",
+                "laravel",
+                "thumbnail",
+                "watermark"
+            ],
+            "time": "2016-09-01 17:04:03"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -1569,29 +1631,6 @@
             "time": "2016-10-02 15:51:17"
         },
         {
-            "name": "shx/file-model",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://git.oschina.net/shacoxss/file-model",
-                "reference": "47a63817e4f8a8f3ac9dda243d5091ed3806a7fa"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Shx\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "shx",
-                    "email": "shaocxss@yeah.net"
-                }
-            ],
-            "time": "2016-10-10 05:21:23"
-        },
-        {
             "name": "socialiteproviders/manager",
             "version": "v2.1.8",
             "source": {
@@ -1925,7 +1964,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/c0c00c80b3a69132c4e55c3e7db32b4a387615e5",
+                "url": "https://packagist.phpcomposer.com/files/symfony/event-dispatcher/c0c00c80b3a69132c4e55c3e7db32b4a387615e5.zip",
                 "reference": "c0c00c80b3a69132c4e55c3e7db32b4a387615e5",
                 "shasum": ""
             },
@@ -4372,8 +4411,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "fukuball/jieba-php": 20,
-        "shx/file-model": 20
+        "fukuball/jieba-php": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
