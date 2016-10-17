@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('uploadHeadImg','uploadController@uploadHeadImg');
+Route::post('uploadWebLogo','uploadController@uploadWebLogo');
 
 Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
     Route::any('/','loginController@login');
@@ -49,11 +51,30 @@ Route::group(['prefix'=>'forget','namespace'=>'Auth'],function(){
     Route::any('setPassword','ForgotPasswordController@setPassword');
     Route::get('success','ForgotPasswordController@resetSuccess');
 });
-Route::group(['prefix'=>'member','namespace'=>'Member'],function(){
+Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'],function(){
     Route::get('index','indexController@userIndex');
-    Route::get('masterIndex','indexController@masterIndex');
+    Route::get('masterIndex','indexController@masterIndex')->middleware('masterAuth');
+    Route::get('userProfile','userProfileController@index');
+    Route::post('saveHeadImg','userProfileController@saveHeadImg');
+    Route::post('resetPassword','userProfileController@resetPassword');
+    Route::post('resetNickname','userProfileController@resetNickname');
+    Route::post('resetPhone','userProfileController@resetPhone');
+    Route::post('bindingPhone','userProfileController@bindingPhone');
+    Route::resource('userManage','userManageController');
+    Route::post('saveNickname','userManageController@saveNickname')->middleware('userManageAuth');
+    Route::post('savePhonePassword','userManageController@savePhonePassword')->middleware('userManageAuth');
+    Route::post('saveAuth','userManageController@saveAuth')->middleware('userManageAuth');
+    Route::get('masterPowers','powersController@index')->middleware('powersAuth');
+    Route::post('addMaster','powersController@addMaster')->middleware('powersAuth');
+    Route::post('masterPowerEdit','powersController@masterPowerEdit')->middleware('powersAuth');
+    Route::post('delMaster','powersController@delMaster')->middleware('powersAuth');
+    Route::get('masterGlobal','masterGlobalController@index');
+    Route::post('masterGlobal','masterGlobalController@index');
 });
 
+Route::get('noAuth',function(){
+   return view('member.noAuth');
+});
 
 
 Route::get('/test', 'TestController@index');

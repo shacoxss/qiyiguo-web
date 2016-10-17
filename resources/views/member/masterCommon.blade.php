@@ -29,12 +29,13 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{asset('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
 
 </head>
 
 <body>
 <!-- loader-->
-<div class="loader"><h1 class="loadingtext">奇异果<span>聚合</span></h1><p>QiYIGUO.COM 看点有意思的...</p><br><img src="{{asset('img/loader2.gif')}}" alt=""></div>
 
 <!-- loader ends -->
 
@@ -62,13 +63,16 @@
 
             <ul class="nav" id="side-menu">
                 <li> <a href="{{url('member/masterIndex')}}"><i class="fa fa-dashboard fa-fw"></i> 控制中心</a> </li>
+                @if(session('user')->user_manage)
                 <li> <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-users"></i> 用户管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="masterMemberList.php">用户列表</a></li>
+                        <li><a href="{{url('member/userManage')}}">用户列表</a></li>
                         <li><a href="#">编辑绩效</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
+                @endif
+                @if(session('user')->content_manage)
                 <li>
                     <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-save"></i> 内容管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -77,6 +81,8 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
+                @endif
+                @if(session('user')->tag_manage)
                 <li>
                     <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-tag"></i> 标签管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -85,6 +91,8 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
+                @endif
+                @if(session('user')->cat_manage)
                 <li> <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-file"></i> 栏目管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="#">新建栏目</a></li>
@@ -92,9 +100,14 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
-                <li> <a href="index.php"><i class="fa fa-user fa-fw"></i> 权限管理</a> </li>
-                <li> <a href="#"><i class="fa fa-gear fa-fw"></i> 全局变量</a> </li>
-                <li> <a href="#"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
+                @endif
+                @if(session('user')->root_manage)
+                <li> <a href="{{url('member/masterPowers')}}"><i class="fa fa-user fa-fw"></i> 权限管理</a> </li>
+                @endif
+                @if(session('user')->global_manage)
+                <li> <a href="{{url('member/masterGlobal')}}"><i class="fa fa-gear fa-fw"></i> 全局变量</a> </li>
+                @endif
+                <li> <a href="{{url('auth/logout')}}"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
             </ul>
         </div>
     </div>
@@ -115,8 +128,8 @@
                             <i class="caret"></i> </a>
                         <ul class="dropdown-menu dropdown-user">
                             <li> <a href="userProfile.php"><i class="fa fa-user fa-fw"></i> 个人资料</a> </li>
-                            <li> <a href="userSetting.php"><i class="fa fa-gear fa-fw"></i> 隐私设置</a> </li>
-                            <li> <a href="login.php"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
+                            {{--<li> <a href="userSetting.php"><i class="fa fa-gear fa-fw"></i> 隐私设置</a> </li>--}}
+                            <li> <a href="{{url('auth/logout')}}"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
                         </ul>
                         <!-- /.dropdown-user -->
                     </li>
@@ -147,10 +160,7 @@
 <script src="{{asset('vendor/datatables-plugins/dataTables.bootstrap.min.js')}}"></script>
 <script src="{{asset('vendor/datatables-responsive/dataTables.responsive.js')}}"></script>
 
-<!-- Morris Charts JavaScript -->
-<script src="{{asset('vendor/raphael/raphael.js')}}"></script>
-<script src="{{asset('vendor/morrisjs/morris.min.js')}}"></script>
-<script src="{{asset('vendor/morrisjs/morris-data.js')}}"></script>
+
 
 <!-- jvectormap JavaScript -->
 <script src="{{asset('vendor/jquery-jvectormap/jquery-jvectormap.js')}}"></script>
@@ -160,7 +170,9 @@
 <script src="{{asset('js/adminnine.js')}}"></script>
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-
+<script src="{{asset('vendor/raphael/raphael.js')}}"></script>
+<script src="{{asset('vendor/morrisjs/morris.min.js')}}"></script>
+<script src="{{asset('vendor/morrisjs/morris-data.js')}}"></script>
 
 </body>
 </html>

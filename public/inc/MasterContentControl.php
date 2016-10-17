@@ -40,8 +40,11 @@
                               <select class="form-control">
                                 <option>优播</option>
                                 <option>游戏</option>
-                                <option>-守望先锋</option>
-                                <option>-英雄联盟</option>
+                                <option>--大型网游</option>
+                                <option>----守望先锋</option>
+                                <option>----英雄联盟</option>
+                                <option>--单机游戏</option>                   
+                                <option>----超级玛丽</option>
                                 <option>视频</option>
                                 <option>图集</option>
                               </select>

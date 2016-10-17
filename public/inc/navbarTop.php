@@ -11,8 +11,8 @@
             </div>
             <i class="caret"></i> </a>
             <ul class="dropdown-menu dropdown-user">
-              <li> <a href="userProfile.php"><i class="fa fa-user fa-fw"></i> 个人资料</a> </li>
-              <li> <a href="userSetting.php"><i class="fa fa-gear fa-fw"></i> 隐私设置</a> </li>
+              <li> <a href="userProfile.php"><i class="fa fa-gear fa-fw"></i> 个人资料</a> </li>
+              <li> <a href="userSetting.php"><i class="fa fa-user fa-fw"></i> 隐私设置</a> </li>
               <li> <a href="login.php"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
             </ul>
             <!-- /.dropdown-user --> 
