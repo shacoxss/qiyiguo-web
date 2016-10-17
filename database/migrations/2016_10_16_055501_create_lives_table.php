@@ -17,7 +17,6 @@ class CreateLivesTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('url')->unique();
-            $table->string('namespace')->unique();
         });
     }
 

@@ -16,7 +16,8 @@ class CreateLiveHistoriessTable extends Migration
         Schema::create('anchor_histories', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('anchor_id')->references('id')->on('anchors');
-            $table->unsignedInteger('live_category_id')->references('id')->on('live_categories');
+            $table->string('live_category_id', 20)->references('id')->on('live_categories');
+            $table->unsignedInteger('live_id')->references('id')->on('lives');
             $table->string('room_name');
             $table->unsignedInteger('online');
             $table->dateTime('time');

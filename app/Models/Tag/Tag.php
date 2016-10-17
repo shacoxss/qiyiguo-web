@@ -4,6 +4,7 @@ namespace App\Models\Tag;
 
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Overtrue\Pinyin\Pinyin;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
@@ -170,4 +171,16 @@ class Tag extends Model
                 throw new \Exception('Invalid Tag Type: '.$alias);
             });
     }
+
+    /**
+     *
+     * 标签属性多对多
+     * @return HasMany;
+     *
+     */
+
+     public function attributes()
+     {
+         return $this->hasMany('App\Models\Tag\TagAttribute');
+     }
 }
