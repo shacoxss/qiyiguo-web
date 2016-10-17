@@ -16,12 +16,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-<<<<<<< HEAD
+
 Route::post('uploadHeadImg','uploadController@uploadHeadImg');
 Route::post('uploadWebLogo','uploadController@uploadWebLogo');
 
-=======
->>>>>>> 5f8c64f7f15fef6b100cfa1492220dc950dc3b27
+
 Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
     Route::any('/','loginController@login');
     Route::any('loginMobile','loginController@loginMobile');
@@ -75,7 +74,7 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::get('masterGlobal','masterGlobalController@index');
     Route::post('masterGlobal','masterGlobalController@index');
 });
-<<<<<<< HEAD
+
 
 Route::get('noAuth',function(){
    return view('member.noAuth');
@@ -92,5 +91,3 @@ Route::bind('tag_name', function ($name) {
         ->firstOrFail();
 });
 
-=======
->>>>>>> 5f8c64f7f15fef6b100cfa1492220dc950dc3b27

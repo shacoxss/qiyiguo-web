@@ -1,3 +1,4 @@
+
 @extends('member.masterCommon')
 @section('content')
 
@@ -236,3 +237,4 @@
   <!-- Morris Charts JavaScript -->
 
 @endsection
+
