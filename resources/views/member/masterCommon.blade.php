@@ -30,7 +30,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
+
 
 </head>
 
@@ -127,7 +127,7 @@
                             </div>
                             <i class="caret"></i> </a>
                         <ul class="dropdown-menu dropdown-user">
-                            <li> <a href="userProfile.php"><i class="fa fa-user fa-fw"></i> 个人资料</a> </li>
+                            <li> <a href="{{url('member/userProfile')}}"><i class="fa fa-user fa-fw"></i> 个人资料</a> </li>
                             {{--<li> <a href="userSetting.php"><i class="fa fa-gear fa-fw"></i> 隐私设置</a> </li>--}}
                             <li> <a href="{{url('auth/logout')}}"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
                         </ul>
@@ -155,6 +155,8 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="{{asset('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
 
+
+
 <!-- DataTables JavaScript -->
 <script src="{{asset('vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{asset('vendor/datatables-plugins/dataTables.bootstrap.min.js')}}"></script>
@@ -169,10 +171,10 @@
 <!-- Custom Theme JavaScript -->
 <script src="{{asset('js/adminnine.js')}}"></script>
 
+@yield('script')
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <script src="{{asset('vendor/raphael/raphael.js')}}"></script>
 <script src="{{asset('vendor/morrisjs/morris.min.js')}}"></script>
 <script src="{{asset('vendor/morrisjs/morris-data.js')}}"></script>
-
 </body>
 </html>

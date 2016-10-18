@@ -19,6 +19,10 @@ Route::get('/', function () {
 Route::post('uploadHeadImg','uploadController@uploadHeadImg');
 Route::post('uploadWebLogo','uploadController@uploadWebLogo');
 
+Route::post('uploadHeadImg','uploadController@uploadHeadImg');
+Route::post('uploadWebLogo','uploadController@uploadWebLogo');
+
+
 Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
     Route::any('/','loginController@login');
     Route::any('loginMobile','loginController@loginMobile');
@@ -72,7 +76,3 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::get('masterGlobal','masterGlobalController@index');
     Route::post('masterGlobal','masterGlobalController@index');
 });
-Route::get('noAuth',function(){
-   return view('member.noAuth');
-});
-

@@ -1,5 +1,6 @@
 @extends('member.masterCommon')
 @section('content')
+
     <!-- /.row -->
     <ol class="breadcrumb">
       <li><a href="{{url('member/masterIndex')}}">奇异果管理</a></li>
@@ -144,11 +145,6 @@
     <!-- /.row -->
 
 <!-- /.row -->
-<link href="{{asset('pulgin/uploadAvatar/cropper/cropper.min.css')}}" rel="stylesheet">
-<link href="{{asset('pulgin/uploadAvatar/sitelogo/sitelogo.css')}}" rel="stylesheet">
-<script src="{{asset('pulgin/uploadAvatar/cropper/cropper.min.js')}}"></script>
-<script src="{{asset('pulgin/uploadAvatar/sitelogo/sitelogo.js')}}"></script>
-
 <!-- upload acatar -->
 <div class="modal fade" id="avatar-modal" aria-hidden="true" aria-labelledby="avatar-modal-label" role="dialog" tabindex="-1">
 	<div class="modal-dialog modal-lg">
@@ -195,8 +191,8 @@
 		</div>
 	</div>
 </div>
+@section('script')
 <div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
-
 <script src="{{asset('pulgin/layer/layer.js?v=2.4')}}"></script>
 <link rel="stylesheet" href="{{asset('pulgin/layer/skin/layer.css')}}" media="all">
 <script type="text/javascript">
@@ -219,4 +215,10 @@
 		});
 	});
 </script>
+
+<link href="{{asset('pulgin/uploadAvatar/cropper/cropper.min.css')}}" rel="stylesheet">
+<link href="{{asset('pulgin/uploadAvatar/sitelogo/sitelogo.css')}}" rel="stylesheet">
+<script src="{{asset('pulgin/uploadAvatar/cropper/cropper.min.js')}}"></script>
+<script src="{{asset('pulgin/uploadAvatar/sitelogo/sitelogo.js')}}"></script>
+@endsection
 @endsection
