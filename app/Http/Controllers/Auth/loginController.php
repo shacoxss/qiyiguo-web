@@ -59,6 +59,9 @@ class loginController extends Controller
                 if( empty($user) || $input['password'] != Crypt::decrypt($user->password)){
                     return response()->json('用户名或密码错误！');
                 }else{
+                    //更新最后登录时间，存入session
+                    $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
+                    Users::where('id',$user->id)->update($data);
                     session(['user'=>$user]);
                     //记住密码
                     if($input['remember']){

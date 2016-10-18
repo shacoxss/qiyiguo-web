@@ -4,6 +4,7 @@ namespace App\Models\Tag;
 
 use GuzzleHttp\Client;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Overtrue\Pinyin\Pinyin;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
@@ -15,6 +16,7 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  * @property string  pinyin
  * @property string  primary_id
  * @property $this  primary_tag
+ * @property int status
  */
 class Tag extends Model
 {
@@ -24,7 +26,7 @@ class Tag extends Model
     const TAG_URL = '/tag/';
     const AUTO_SUFFIX_LIMIT = 1;
     //
-    protected $fillable = ['name', 'url', 'pinyin'];
+    protected $guarded = [];
 
     /**
      * Save a new model and return the instance.
@@ -144,7 +146,7 @@ class Tag extends Model
      * @param bool $create_it
      * @return \Illuminate\Support\Collection
      */
-    public static function wrapToIds(array $tags, $create_it = false)
+    public static function wrapToIds($tags, $create_it = false)
     {
         return collect($tags)
             ->map(function ($alias) use($create_it) {
@@ -170,4 +172,24 @@ class Tag extends Model
                 throw new \Exception('Invalid Tag Type: '.$alias);
             });
     }
+
+    /**
+     *
+     * 标签属性多对多
+     * @return HasMany;
+     *
+     */
+
+     public function attributes()
+     {
+         return $this->hasMany('App\Models\Tag\TagAttribute');
+     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function archives()
+     {
+         return $this->belongsToMany('App\Models\Archive\Archive');
+     }
 }

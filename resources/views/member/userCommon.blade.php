@@ -29,12 +29,17 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
+
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{asset('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
 
 </head>
 
 <body>
 <!-- loader-->
-<div class="loader"><h1 class="loadingtext">奇异果<span>聚合</span></h1><p>QiYIGUO.COM 看点有意思的...</p><br><img src="{{asset('img/loader2.gif')}}" alt=""></div>
+
 <!-- /.navbar-static-side -->
 
 <!-- loader ends -->
@@ -52,9 +57,9 @@
                 <div class="userpic">
                     <img src="{{asset('img/100100.png')}}" alt="" class="userpicimg">
                     <!-- 判断是否有后台权限，有后台权限显示此按钮后可互相切换 -->
-                    {{--@if(session('user')->master)--}}
-                        {{--<a href="{{url('member/masterIndex')}}" title="切换至后台用户" class="btn btn-primary settingbtn"><i class="fa fa-random"></i></a>--}}
-                    {{--@endif--}}
+                    @if(session('user')->master)
+                        <a href="{{url('member/masterIndex')}}" title="切换至后台用户" class="btn btn-primary settingbtn"><i class="fa fa-random"></i></a>
+                    @endif
                     <!-- 判断是否有后台权限，有后台权限显示此按钮后可互相切换 -->
                 </div>
                 <h3 class="username">登录帐号</h3>
@@ -76,8 +81,8 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
-                <li> <a href="userProfile.php"><i class="fa fa-gear fa-fw"></i> 个人设置</a> </li>
-                <li> <a href="#"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
+                <li> <a href="{{url('member/userProfile')}}"><i class="fa fa-user fa-fw"></i> 个人设置</a> </li>
+                <li> <a href="{{url('auth/logout')}}"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
             </ul>
         </div>
     </div>
@@ -96,9 +101,9 @@
                             </div>
                             <i class="caret"></i> </a>
                         <ul class="dropdown-menu dropdown-user">
-                            <li> <a href="userProfile.php"><i class="fa fa-user fa-fw"></i> 个人资料</a> </li>
-                            <li> <a href="userSetting.php"><i class="fa fa-gear fa-fw"></i> 隐私设置</a> </li>
-                            <li> <a href="login.php"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
+                            <li> <a href="{{url('member/userProfile')}}"><i class="fa fa-user fa-fw"></i> 个人资料</a> </li>
+                            {{--<li> <a href="userSetting.php"><i class="fa fa-gear fa-fw"></i> 隐私设置</a> </li>--}}
+                            <li> <a href="{{url('auth/logout')}}"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
                         </ul>
                         <!-- /.dropdown-user -->
                     </li>
@@ -116,10 +121,6 @@
 <!-- /#wrapper -->
 
 <!-- jQuery -->
-<script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="{{asset('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
 
 <!-- Custom Theme JavaScript -->
 <script src="{{asset('js/adminnine.js')}}"></script>

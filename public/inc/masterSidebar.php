@@ -46,13 +46,13 @@
         </li>
         <li> <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-file"></i> 栏目管理 <span class="fa arrow"></span></a>
             <ul class="nav nav-second-level">
-        <li><a href="#">新建栏目</a></li>
-        <li><a href="#">栏目列表</a></li>
+        <li><a href="masterCategoryAdd.php">新建栏目</a></li>
+        <li><a href="masterCategoryList.php">栏目列表</a></li>
       </ul>
           <!-- /.nav-second-level --> 
         </li>
-        <li> <a href="index.php"><i class="fa fa-user fa-fw"></i> 权限管理</a> </li>
-        <li> <a href="#"><i class="fa fa-gear fa-fw"></i> 全局变量</a> </li>   
+        <li> <a href="masterPowers.php"><i class="fa fa-user fa-fw"></i> 权限管理</a> </li>
+        <li> <a href="masterGlobal.php"><i class="fa fa-gear fa-fw"></i> 全局变量</a> </li>   
         <li> <a href="#"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>    
       </ul>
     </div>

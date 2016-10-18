@@ -3646,3 +3646,18 @@ footer p {
 	transform:scale(1);
 	-webkit-transform:scale(1)
 }
+.CategoryRight {
+	float: right;
+}
+.CategoryTable {
+	margin: 0;
+}
+.CategoryNoSon {
+	padding-left: 20px;
+	width: 45px;
+	float: left;
+	height: 40px;
+}
+.CategoryTableInput {
+	margin-left: 30px;
+}

@@ -1,6 +1,10 @@
+
 @extends('member.masterCommon')
 @section('content')
-    <div class="row">
+
+  <div class="loader"><h1 class="loadingtext">奇异果<span>聚合</span></h1><p>QiYIGUO.COM 看点有意思的...</p><br><img src="{{asset('img/loader2.gif')}}" alt=""></div>
+
+  <div class="row">
       <div class="col-md-12  header-wrapper" >
         <h1 class="page-header">控制中心</h1>
         <p class="page-subtitle">奇异果监控中心，集合百度统计、阿里云服务器实时数据监控以及奇异果聚合核心数据统计。</p>
@@ -175,6 +179,7 @@
         
     </div>
     <!-- /.row -->
+
     <script>
       $(document).ready(function(){
         $('#dataTables-userlist').DataTable({
@@ -229,4 +234,7 @@
 
       });
     </script>
+  <!-- Morris Charts JavaScript -->
+
 @endsection
+

@@ -1,6 +1,7 @@
 @extends('member.userCommon')
 @section('content')
 
+  <div class="loader"><h1 class="loadingtext">奇异果<span>聚合</span></h1><p>QiYIGUO.COM 看点有意思的...</p><br><img src="{{asset('img/loader2.gif')}}" alt=""></div>
     <!--content-->
     <div class="row">
       <div class="col-md-12  header-wrapper" >
@@ -96,5 +97,6 @@
       </div>
     </div>
     <!-- /.row -->
+
 @endsection
 

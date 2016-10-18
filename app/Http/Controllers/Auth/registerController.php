@@ -17,9 +17,8 @@ class RegisterController extends Controller
                 session(['code'=>null]);
                 $data['password'] = Crypt::encrypt($input['password']);
                 $data['phone'] = $input['phone'];
-                if(count($data['phone'])!=11){
-                    return response()->json('请输入正确电话号码！');
-                }else if(count($data['password'])<6||count($data['password'])>16){
+                $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
+                if(strlen($input['password'])<6||strlen($input['password'])>16){
                     return response()->json('密码长度在6~16位！');
                 }else{
                     if($user = Users::create($data)){

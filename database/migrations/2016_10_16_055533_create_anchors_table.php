@@ -23,7 +23,7 @@ class CreateAnchorsTable extends Migration
             $table->string('cover');
             $table->string('avatar');
             $table->unsignedInteger('online');
-            $table->unsignedInteger('live_category_id')->references('id')->on('live_categories');
+            $table->string('live_category_id', 20)->references('id')->on('live_categories');
             $table->tinyInteger('status');
         });
     }

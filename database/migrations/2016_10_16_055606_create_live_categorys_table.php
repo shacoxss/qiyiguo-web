@@ -14,10 +14,9 @@ class CreateLiveCategorysTable extends Migration
     public function up()
     {
         Schema::create('live_categories', function (Blueprint $table) {
-            $table->increments('id');
+            $table->string('id', 20)->primary();
             $table->string('name');
             $table->unsignedInteger('live_id')->references('id')->on('lives');
-            $table->string('live_category_id')->unique();
             $table->string('url');
         });
     }

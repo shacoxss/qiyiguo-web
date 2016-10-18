@@ -14,7 +14,7 @@
         "fukuball/jieba-php": "dev-master",
         "overtrue/pinyin": "^3.0",
         "barryvdh/laravel-debugbar": "^2.3",
-        "guzzle/guzzle": "~3.9"
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

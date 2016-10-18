@@ -266,6 +266,7 @@
       if ($.isPlainObject(data)) {
         if (data.result) {
           this.url = data.result;
+          $("#img").val(data.result);
           if (this.support.datauri || this.uploaded) {
             this.uploaded = false;
             this.cropDone();
