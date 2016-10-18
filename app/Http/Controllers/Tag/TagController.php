@@ -89,7 +89,6 @@ class TagController extends Controller
             $tag->updateAliases($input['aliases'], true);
         }
 
-        $tag->detachSimilars($tag->getSimilars()->pluck('id'));
         if (isset($input['similars']) && is_array($input['similars'])) {
             $tag->updateSimilars($input['similars'], true);
         }

@@ -32,9 +32,9 @@
                         <div class="tab-content">
                             <div class="tab-pane fade padding in active" id="normal">
                                 <!--Tab start-->
-                                <form id="archive" action="{{route('archives.update', [$archive->id])}}" method="POST">
+                                <form id="archive" action="{{isset($archive) ? route('archives.update', [$archive->id]) : route('archives.store')}}" method="POST">
                                     {{ csrf_field() }}
-                                    {{ method_field('PUT') }}
+                                    {{ method_field(isset($archive) ? 'PUT' : 'POST') }}
                                     <input name="id" type="hidden" />
                                     <div class="row">
                                         <div class="col-lg-9">
@@ -56,40 +56,23 @@
                                             <!-- 管理员属性编辑开始 -->
                                             <div class="row">
                                                 <!-- 单属性控制 -->
+                                                @foreach($patterns as $p)
                                                 <div class="form-group col-md-3">
                                                     <div class="list-group-item withswitch">
-                                                        <h5 class="list-group-item-heading">首页</h5>
-                                                        <p class="list-group-item-text">{index}</p>
+                                                        <h5 class="list-group-item-heading">{{$p->display_name}}</h5>
+                                                        <p class="list-group-item-text">{{'{'.$p->name.'}'}}</p>
                                                         <div class="switch">
-                                                            <input id="cmn-toggle-1" class="cmn-toggle cmn-toggle-round" type="checkbox" name="index">
-                                                            <label for="cmn-toggle-1" style="border:none;"></label>
+                                                            <input id="cmn-toggle-{{$p->name}}" class="cmn-toggle 
+                                                                cmn-toggle-round" type="checkbox" name="{{$p->name}}"
+                                                                @if(isset($archive) && ($archive->mode & $p->pattern) == $p->pattern)
+                                                                    checked="checked"
+                                                                @endif
+                                                            >
+                                                            <label for="cmn-toggle-{{$p->name}}" style="border:none;"></label>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- 单属性控制 -->
-                                                <!-- 单属性控制 -->
-                                                <div class="form-group col-md-3">
-                                                    <div class="list-group-item withswitch">
-                                                        <h5 class="list-group-item-heading">推荐</h5>
-                                                        <p class="list-group-item-text">{recommend}</p>
-                                                        <div class="switch">
-                                                            <input id="cmn-toggle-2" class="cmn-toggle cmn-toggle-round" type="checkbox" name="recommend">
-                                                            <label for="cmn-toggle-2" style="border:none;"></label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- 单属性控制 -->
-                                                <!-- 单属性控制 -->
-                                                <div class="form-group col-md-3">
-                                                    <div class="list-group-item withswitch">
-                                                        <h5 class="list-group-item-heading">热点</h5>
-                                                        <p class="list-group-item-text">{hot}</p>
-                                                        <div class="switch">
-                                                            <input id="cmn-toggle-3" class="cmn-toggle cmn-toggle-round" type="checkbox" name="hot">
-                                                            <label for="cmn-toggle-3" style="border:none;"></label>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                @endforeach
                                                 <!-- 单属性控制 -->
                                                 <div class="form-group col-md-12">
                                                     <label>关联系统栏目</label>
@@ -163,13 +146,12 @@
 
 @section('scripts')
     <script>
-        $archive_update_url = '{{route('archives.update', [$archive->id])}}';
+        $archive_update_url = '{{isset($archive) ? route('archives.update', [$archive->id]) : route('archives.store')}}';
         $_token = '{{ csrf_token() }}';
         $uploadImgUrl = '{{route('archives.upload')}}';
         $extract_tags_url = '{{route('tag.extract')}}';
         $('#archive').on('submit', function () {
             var data =  new FormData($('#archive')[0]);
-            console.log(data)
             data.append('_token', $_token);
             var html = editor.$txt.html().replace(/\s\s/g, '');
             data.append('content', html);
@@ -191,12 +173,20 @@
         })
 
         $editor_change = function () {
-            var lock = false
+            var lock_count, lock_time, lock_response
+            lock_count = lock_time = lock_response = false
             return function () {
                 var text = editor.$txt.text().replace(/\s\s/g, '');
-                if (lock || (text.length - $content_length < 10)) return ;
+                
+                lock_count = Math.abs(text.length - $content_length) < 10
+                    ? true : false
 
-                lock = true
+                
+
+                if (lock_count || lock_time || lock_response) return ;
+
+                lock_time = lock_response = true
+                setTimeout(function () {lock_time = false}, 5000)
                 $content_length = text.length
                 $.ajax({
                     url : $extract_tags_url,
@@ -207,8 +197,10 @@
                     }
                 }).done(function (response) {
                     console.log(response)
+                    lock_response = false
                 })
             }
+
         }
     </script>
     <!--wangEditor js-->
