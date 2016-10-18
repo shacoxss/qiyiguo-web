@@ -14,6 +14,7 @@
     }
     .input-file {
         margin-top: 12px;
+        text-align: center;
     }
     .input-file input {
         position: relative;
@@ -52,8 +53,9 @@
                             </ul>
 
                             <!-- Tab panes -->
-                            <form action="{{route('tag.update',[$tag->name])}}" method="POST">
+                            <form enctype="multipart/form-data" v-on:submit.prevent="submit" id="tag-edit">
                                 {{ csrf_field() }}
+                                <input type="hidden" name="id" v-bind:value="id">
                                 <div class="tab-content">
                                     <div class="tab-pane fade padding in active" id="normal">
                                         <!--Tab start-->
@@ -147,7 +149,7 @@
                                                     <p class="cur">交叉以后以ID最小的配置为准</p>
                                                     <span v-for="(alias,i) in aliases">
                                                         <a href="javascript:void(0);" class="btn btn-primary btn-xss">
-                                                            @{{alias.name}} <i @click="aliases.splice(i, 1)" class="fa fa-times"></i>
+                                                            @{{alias.name}} <i @click="tag_delete('alias', i)" class="fa fa-times"></i>
                                                         </a>
                                                         <input type="hidden" name="aliases[]" :value="alias.id">
                                                     </span>
@@ -163,7 +165,7 @@
                                                     <p class="cur">相关内容关联</p>
                                                     <span v-for="similar,i in similars">
                                                         <a href="javascript:void(0);" class="btn btn-primary btn-xss">
-                                                            @{{similar.name}} <i @click="similars.splice(i, 1)" class="fa fa-times"></i>
+                                                            @{{similar.name}} <i @click="tag_delete('no', i)" class="fa fa-times"></i>
                                                         </a>
                                                         <input type="hidden" name="similars[]" v-bind:value="similar.id">
                                                     </span>
@@ -218,7 +220,7 @@
                                                             <i class="fa fa-search"></i>
                                                         </a>
                                                     </label>
-                                                    <input class="form-control " placeholder="主播" name="anchor" v-bind:value="anchor_name"><br>
+                                                    <input class="form-control " placeholder="主播" name="anchor_name" v-bind:value="anchor_name"><br>
                                                     {{--<a href="javascript:void(0);" class="btn btn-primary btn-xss">ID:210 | luka  <i class="fa fa-times"></i></a>--}}
                                                 </div>
                                                 <div class="form-group col-md-4" v-if="anchor">
@@ -245,12 +247,14 @@
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                         <div class="col-lg-3 input-file">
+                                            <img v-if="logo" v-bind:src="logo" height="100" />
                                             <a href="javascript:void(0);" class="btn btn-primary btn-xss input-file-a-style" v-on:click="file_upload">
                                                 <i class="fa fa-plus"></i> <span>点击上传LOGO</span>
                                                 <input type="file" class="input-file-style" name="logo"  v-on:change="file_change">
                                             </a>
                                         </div>
                                         <div class="col-lg-3 input-file">
+                                            <img v-if="background_image" v-bind:src="background_image" height="100" />
                                             <a href="javascript:void(0)" class="btn btn-primary btn-xss input-file-a-style"  v-on:click="file_upload">
                                                 <i class="fa fa-plus"></i> <span>点击上传背景</span>
                                                 <input type="file" class="input-file-style" name="background_image" v-on:change="file_change">
@@ -258,6 +262,10 @@
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                         <!--Tab End-->
+                                        <div class="form-group col-md-12">
+                                            <button type="submit" class="btn btn-primary">提 交</button>
+                                            <button type="reset" class="btn btn-default">重 置</button>
+                                        </div>
                                     </div>
                                     <div class="tab-pane fade padding" id="customSet">
                                         <button type="button" class="btn btn-primary" v-on:click="attr_add"><i class="fa fa-plus"></i> 增加一个属性</button>
@@ -292,7 +300,7 @@
                                                     <td>
                                                         <a href="javascript:void(0);" class="btn btn-primary btn-xss input-file-a-style" v-on:click="file_upload">
                                                             <i class="fa fa-plus"></i> <span>@{{attr.icon_name}}</span>
-                                                            <input type="file" class="input-file-style" name="icon" v-on:change="attr_file_change(attr, $event)">
+                                                            <input type="file" class="input-file-style" v-on:change="attr_file_change(attr, $event)">
                                                         </a>
                                                     </td>
                                                     <td><input class="form-control " placeholder="名称" v-model="attr.name"></td>
@@ -325,6 +333,10 @@
                                             <label>标签描述：</label>
                                             <textarea class="form-control" rows="3" name="description">@{{description}}</textarea>
                                         </div>
+                                        <div class="form-group col-md-12">
+                                            <button type="submit" class="btn btn-primary">提 交</button>
+                                            <button type="reset" class="btn btn-default">重 置</button>
+                                        </div>
                                     </div>
                                     <div class="tab-pane fade padding" id="content">
                                         <!--编辑器开始-->
@@ -340,13 +352,13 @@
                                             </div>
                                         </div>
                                         <!--编辑器结束-->
+                                        <div class="form-group col-md-12">
+                                            <button type="submit" class="btn btn-primary">提 交</button>
+                                            <button type="reset" class="btn btn-default">重 置</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- Tab panes -->
-                                <div class="form-group col-md-12">
-                                    <button type="submit" class="btn btn-primary">提 交</button>
-                                    <button type="reset" class="btn btn-default">重 置</button>
-                                </div>
                             </form>
                         </div>
                         <!-- /.panel-body -->
@@ -366,6 +378,7 @@
         $attr_upload_url = "{{route('tag.attribute.update',[$tag->name])}}"
         $attr_delete_url = "{{route('tag.attribute.delete',[''])}}"
         $csrf_token = "{{csrf_token()}}"
+        $tag_update_url="{{route('tag.update',[$tag->name])}}"
         !function init() {
             $data.attributes.forEach(function (v) {
                 v.is_edit = false
@@ -398,6 +411,17 @@
 
                         event.target.value = '';
                     }
+                },
+
+                tag_delete : function (target, i) {
+                    target = target == 'alias' ? this.aliases : this.similars
+                    layer.confirm('确认删除？', {
+                        //btn: ['确认','取消'] //按钮
+                    }, function(){
+                        layer.msg("删除成功", {icon: 1})
+                        target.splice(i, 1)
+                    }, function(){
+                    });
                 },
 
                 file_upload : function (event) {
@@ -434,7 +458,7 @@
 
                 attr_submit : function (attr) {
                     var data = new FormData();
-                    for(key in attr) {
+                    for(var key in attr) {
                         data.append(key, attr[key])
                     }
                     data.append('_token', $csrf_token)
@@ -465,7 +489,26 @@
                             return v.id == attr.id
                         })
                     }).fail(function (error) {
-                        layer.msg("失败", {icon: 4})
+                        layer.msg("失败", {icon: 2})
+                    })
+                },
+
+                submit : function (event) {
+                    var formData = new FormData($('#tag-edit')[0])
+                    $
+                    .ajax({
+                        url: $tag_update_url,
+                        type: 'POST',
+                        cache: false,
+                        data: formData,
+                        processData: false,
+                        contentType: false
+                    })
+                    .done(function (response) {
+                        layer.msg(response.msg, {icon: 1})
+                    })
+                    .fail(function (response) {
+                        layer.msg("失败", {icon: 2})
                     })
                 }
             }

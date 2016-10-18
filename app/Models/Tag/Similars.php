@@ -35,7 +35,7 @@ trait Similars
     public function attachSimilars(array $tags, $create_it = false)
     {
         $tags = self
-            ::convertToPrimarys(self::wrapToIds($tags, $create_it))
+            ::convertToPrimaries(self::wrapToIds($tags, $create_it))
             //防止重复添加
             ->diff($this->getSimilars($only_id = true)->push($this->primary_id))
             ->all();
@@ -50,6 +50,35 @@ trait Similars
         );
 
         return $this;
+    }
+
+    /**
+     * 解除关联
+     *
+     * @param $tags
+     * @return int
+     */
+    public function detachSimilars($tags)
+    {
+        $ids = self
+            ::convertToPrimaries(self::wrapToIds($tags))
+        ;
+        return Relation
+            ::similar()
+            ->allHas($this->primary_id)
+            ->allIn($ids)
+            ->delete()
+        ;
+    }
+
+    public function updateSimilars($tags, $create_it = false)
+    {
+        Relation
+            ::similar()
+            ->allHas($this->primary_id)
+            ->delete()
+        ;
+        return $this->attachSimilars($tags, $create_it);
     }
 
     /**

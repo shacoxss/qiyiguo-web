@@ -16,12 +16,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-<<<<<<< HEAD
 Route::post('uploadHeadImg','uploadController@uploadHeadImg');
 Route::post('uploadWebLogo','uploadController@uploadWebLogo');
 
-=======
->>>>>>> 5f8c64f7f15fef6b100cfa1492220dc950dc3b27
 Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
     Route::any('/','loginController@login');
     Route::any('loginMobile','loginController@loginMobile');
@@ -75,22 +72,7 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::get('masterGlobal','masterGlobalController@index');
     Route::post('masterGlobal','masterGlobalController@index');
 });
-<<<<<<< HEAD
-
 Route::get('noAuth',function(){
    return view('member.noAuth');
 });
 
-
-Route::get('/test', 'TestController@index');
-
-Route::get('/tag/{tag_name}', 'TestController@tag')->name('tag.show');
-
-Route::bind('tag_name', function ($name) {
-    return \App\Models\Tag::where('pinyin', $name)
-        ->orWhere('name', $name)
-        ->firstOrFail();
-});
-
-=======
->>>>>>> 5f8c64f7f15fef6b100cfa1492220dc950dc3b27
