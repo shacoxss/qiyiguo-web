@@ -1,6 +1,10 @@
 @extends('member.userCommon')
 @section('content')
-
+<style>
+    a.btn-xss {
+        margin-bottom: 6px;
+    }
+</style>
     <div class="row">
     <div class="col-md-12  header-wrapper" >
         <h1 class="page-header">编辑文档</h1>
@@ -44,15 +48,15 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
-                                                <input class="form-control" placeholder="标签">
+                                                <input class="form-control" placeholder="标签" name="tags" value="{{$tags or ''}}">
                                                 <br>
                                                 <p>
                                                     推荐标签：
-                                                    <a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> FPS</a>
-                                                    <a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> 射击游戏</a>
-                                                    <a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> NGA战队</a>
+                                                    <span id="extract">
+                                                    </span>
                                                 </p>
                                             </div>
+                                            @if(session('user')->master)
                                             <!-- 管理员属性编辑开始 -->
                                             <div class="row">
                                                 <!-- 单属性控制 -->
@@ -76,17 +80,20 @@
                                                 <!-- 单属性控制 -->
                                                 <div class="form-group col-md-12">
                                                     <label>关联系统栏目</label>
-                                                    <select class="form-control">
-                                                        <option>优播</option>
-                                                        <option>游戏</option>
-                                                        <option>-守望先锋</option>
-                                                        <option>-英雄联盟</option>
-                                                        <option>视频</option>
-                                                        <option>图集</option>
+                                                    <select class="form-control" name="category_id">
+                                                        @foreach($cate as $c)
+                                                            <option @if(isset($archive) && $archive->category_id == $c->cate_id)
+                                                                    selected
+                                                                    @endif
+                                                                value="{{$c->cate_id}}">
+                                                                {{str_repeat('--', $c->lev)}} {{$c->cate_name}}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div>
                                             <!-- 管理员属性编辑开始 -->
+                                            @endif
                                             <!--编辑器开始-->
                                             <div class="form-group">
                                                 <label style="margin-top:15px; margin-bottom:15px;">正文</label>
@@ -117,8 +124,11 @@
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                         <div class="col-lg-3">
+                                            <img style="max-width:250px;" src="{{$archive->cover}}" />
                                             <h3>封面上传</h3>
-                                            <input type="file">
+                                            @if($archive->cover)
+                                            @endif
+                                            <input type="file" name="cover">
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                     </div>
@@ -150,6 +160,15 @@
         $_token = '{{ csrf_token() }}';
         $uploadImgUrl = '{{route('archives.upload')}}';
         $extract_tags_url = '{{route('tag.extract')}}';
+
+        var gen_add_tag = function () {
+            $('#extract a.btn-xss').on('click', function () {
+                var input = $(this).parents('div.form-group').find('input')
+                input.val(input.val() + (input.val() ? ',' : '') + $(this).text())
+                $(this).remove()
+            })
+        }
+
         $('#archive').on('submit', function () {
             var data =  new FormData($('#archive')[0]);
             data.append('_token', $_token);
@@ -180,7 +199,7 @@
             return function () {
                 var text = editor.$txt.text().replace(/\s\s/g, '');
                 
-                lock_count = Math.abs(text.length - $content_length) < 10
+                lock_count = Math.abs(text.length - $content_length) < 20
                     ? true : false
 
                 
@@ -202,10 +221,17 @@
                     for (var tag in response) {
                         sort.push({tag:tag, weight: response[tag]})
                     }
-                    console.log(sort.sort(function down(x, y) {
+                    sort = sort.sort(function down(x, y) {
                         return (x.weight < y.weight) ? 1 : -1
 
-                    }));
+                    });
+                    var $extract = $('#extract');
+                    $extract.html('')
+                    for (var i = 0; i < sort.length; i++) {
+                        $extract.append('<a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> '+sort[i].tag+'</a>')
+                        gen_add_tag()
+                        if(i>7) break;
+                    }
                     lock_response = false
                 })
             }

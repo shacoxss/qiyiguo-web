@@ -5,6 +5,12 @@
 Route::get('/test', 'TestController@index');
 Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
 
+    Route::get('/userAddIndex', function () {
+        return view('archive.userAddIndex');
+    })->name('userAddIndex');
+
+    Route::get('/userArchivesList','Archive\ArchiveController@userArchivesList' )->name('userArchivesList');
+
     Route::get('/tag/index', 'Tag\TagController@index')->name('tag.index');
 
     Route::get('/tag/{tag_name}/edit', 'Tag\TagController@edit')->name('tag.edit');
@@ -28,7 +34,7 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
 
     Route::resource('archives', 'Archive\ArchiveController');
     Route::post('archives/upload', 'Archive\ArchiveController@upload')->name('archives.upload');
-    Route::get('archives/create/{archive_type}', 'Archive\ArchiveController@create');
+    Route::get('archives/create/{archive_type}', 'Archive\ArchiveController@create')->name('archives.create');
     Route::post('archives/{archive_type}', 'Archive\ArchiveController@store')->name('archives.store');
     Route::get('archives/{archive}/toggle/{name}', 'Archive\ArchiveController@toggle')->name('archives.toggle');
 

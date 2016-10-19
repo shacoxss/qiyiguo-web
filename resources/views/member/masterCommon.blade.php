@@ -76,8 +76,8 @@
                 <li>
                     <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-save"></i> 内容管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="masterArchivesReviewList.php">待审核内容</a></li>
-                        <li><a href="masterArchivesList.php">所有内容</a></li>
+                        <li><a href="{{route('archives.index', ['mode'=>'review'])}}">待审核内容</a></li>
+                        <li><a href="{{route('archives.index')}}">所有内容</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>

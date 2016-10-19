@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Archive;
 
+use App\Model\Category;
 use App\Models\Archive\Archive;
 use App\Models\Archive\ArchiveType;
 use App\Models\Archive\Article;
+use App\Models\Tag\Tag;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -17,11 +19,8 @@ class ArchiveController extends Controller
     public function index()
     {
         $user = session('user');
-        if ($user->master) {
-            $archives = Archive::all();
-        } else {
-            $archives = Archive::where('user_id', $user->id)->get();
-        }
+        if (!$user->master) abort(403);
+        $archives = Archive::all();
         $counter = [
             'article' => Archive::where('archive_type_id', 1)->count()
         ];
@@ -32,31 +31,53 @@ class ArchiveController extends Controller
 
     public function create(ArchiveType $type)
     {
+        $cate = Category::sort(Category::all());
         $patterns = \DB::table('patterns')
         ->where('type', 1)->get();
 
         return view($type->t_edit)
             ->with('patterns', $patterns)
+            ->with('cate', $cate)
         ;
     }
     public function edit(Request $request, Archive $archive)
     {
+        $cate = Category::sort(Category::all());
         $patterns = \DB::table('patterns')
         ->where('type', 1)->get();
         
         return view($archive->type->t_edit)
             ->with('archive', $archive)
             ->with('patterns', $patterns)
+            ->with('cate', $cate)
+            ->with('tags', implode(',', $archive->tags()->get()->pluck('name')->all()));
         ;
     }
 
     public function store(Request $request,ArchiveType $type)
     {
-        $new = $request->only(['title', 'cover', 'abstract']);
+        $new = $request->only(['title', 'cover', 'abstract', 'category_id']);
         $new['archive_type_id'] = $type->id;
         $new['mode'] = $this->calcMode($request);
-        $new['user_id'] = ($user = session('user')) ? 1 : 0;
+        $new['user_id'] = session('user')->id;
+
+
+        if ($request->hasFile('cover')) {
+            $file = $request->file('cover');
+            $url = '/upload/archive/'.$file->hashName();
+            $file_name = public_path($url);
+            $img = Image::make($file->getRealPath());
+            $img->save($file_name);
+            $new['cover'] = $url;
+        }
+
         $archive = Archive::create($new);
+
+        $tags = explode(',', $request->tags);
+        $tags = array_slice($tags, 0, 3);
+        $tags = Tag::wrapToIds($tags, true);
+        $tags = Tag::convertToPrimaries($tags);
+        $archive->tags()->attach($tags->all());
 
         $detail = $request->only(explode(',', $type->fields));
         $detail['archive_id'] = $archive->id;
@@ -69,18 +90,36 @@ class ArchiveController extends Controller
         $archive->detachPattern(7);
         $archive->mode = $this->calcMode($request, $archive->mode);
 
-        $input = $request->only(['title', 'cover', 'abstract']);
-        $input['user_id'] = ($user = session('user')) ? 1 : 0;
+        $input = $request->only(['title', 'cover', 'abstract', 'category_id']);
+        $input['user_id'] = session('user')->id;
         foreach ($input as $key => $i) {
             $archive->{$key} = $i;
         }
-        $archive->save();
+        if ($request->hasFile('cover')) {
+            $file = $request->file('cover');
+            $url = '/upload/archive/'.$file->hashName();
+            $file_name = public_path($url);
+            $img = Image::make($file->getRealPath());
+            $img->save($file_name);
+            $archive->cover = $url;
+        }
 
+        $archive->save();
         $detail = $request->only(explode(',', $archive->type->fields));
         foreach ($detail as $key => $i) {
             $archive->detail->{$key} = $i;
         }
         $archive->detail->save();
+        $tags = $archive->tags()->get()->pluck('id')->all();
+        if(!empty($tags)) {
+            $archive->tags()->detach($tags);
+        }
+
+        $tags = explode(',', $request->tags);
+        $tags = array_slice($tags, 0, 3);
+        $tags = Tag::wrapToIds($tags, true);
+        $tags = Tag::convertToPrimaries($tags);
+        $archive->tags()->attach($tags->all());
 
         return response()->json(['msg' => '修改成功！']);
     }
@@ -120,5 +159,17 @@ class ArchiveController extends Controller
     {
         $archive->togglePattern($name);
         return response()->json(['msg' => '操作成功！']);
+    }
+
+    public function userArchivesList()
+    {
+        $user = session('user');
+        $archives = Archive::where('user_id', $user->id)->get();
+        $counter = [
+            'article' => Archive::where('archive_type_id', 1)->where('user_id', $user->id)->count()
+        ];
+        return view('archive.archive-user-index')
+            ->with('archives', $archives)
+            ->with('counter', $counter);
     }
 }

@@ -60,9 +60,9 @@
                         <a href="{{route('tag.edit', [$tag->name])}}" class="btn btn-circle btn-primary ">编辑</a>
                         <a href="{{route('tag.edit', [$tag->name])}}" class="btn btn-circle btn-success ">预览</a>
                         @if($tag->status == 2)
-                            <a data-href="{{route('tag.status', [$tag->pinyin, 4])}}" class="ajax-request btn btn-circle btn-danger ">停用</a>
+                            <a data-href="{{route('tag.status', [$tag->pinyin, 4])}}" data-pinyin="{{$tag->pinyin}}" class="ajax-request btn btn-circle btn-danger ">停用</a>
                         @else
-                            <a data-href="{{route('tag.status', [$tag->pinyin, 2])}}" class="ajax-request btn btn-circle btn-success">启用</a>
+                            <a data-href="{{route('tag.status', [$tag->pinyin, 2])}}" data-pinyin="{{$tag->pinyin}}" class="ajax-request btn btn-circle btn-success">启用</a>
                         @endif
                     </td>
                 </tr>
@@ -85,11 +85,11 @@
     <script src={{asset("js/adminnine.js")}}></script>
     <script>
         var $status_4 = [
-            'btn-danger', 'btn-success', '停用', '{{route('tag.status', [$tag->pinyin, 4])}}',
+            'btn-danger', 'btn-success', '停用',  4,
             '<span class="status active">开放浏览</span>'
         ];
         var $status_2 = [
-            'btn-success', 'btn-danger', '启用', '{{route('tag.status', [$tag->pinyin, 2])}}',
+            'btn-success', 'btn-danger', '启用', 2,
             '<span class="status inactive">已停用</span>'
         ];
         $(document).ready(function() {
@@ -111,7 +111,7 @@
                 var $this = $(this)
                 $.getJSON($this.data('href'), function (response) {
                     var node = $this.hasClass('btn-success') ? $status_4 : $status_2
-                    $this[0].dataset.href = node[3]
+                    $this[0].dataset.href = "/member/tag/"+$this[0].dataset.pinyin+"/status/" + node[3]
                     $this
                         .addClass(node[0])
                         .removeClass(node[1])

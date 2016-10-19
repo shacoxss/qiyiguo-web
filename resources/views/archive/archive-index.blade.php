@@ -1,4 +1,4 @@
-@extends('member.userCommon')
+@extends('member.masterCommon')
 @section('content')
 
     <div class="row">
@@ -27,50 +27,50 @@
                         </div>
                     </div>
                 </div>
-                <a href="articleAdd.php">
+                <a href="#">
                     <div class="panel-footer"> <span class="pull-left"><i class="fa fa-search"></i> 仅显示文章</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
                 </a>
             </div>
         </div>
-        <div class="col-lg-4 col-sm-6">
-            <div class="panel panel-green">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3"> <i class="fa fa-file-image-o fa-2x"></i> </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">1562</div>
-                            <div>图集</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="galleryAdd.php">
-                    <div class="panel-footer"> <span class="pull-left"><i class="fa fa-search"></i> 仅显示图集</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-            <div class="panel panel-yellow">
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-xs-3"> <i class="fa fa-file-video-o fa-2x"></i> </div>
-                        <div class="col-xs-9 text-right">
-                            <div class="huge">1562</div>
-                            <div>视频</div>
-                        </div>
-                    </div>
-                </div>
-                <a href="vedioAdd.php">
-                    <div class="panel-footer"> <span class="pull-left"><i class="fa fa-search"></i> 仅显示视频</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                        <div class="clearfix"></div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
+        {{--<div class="col-lg-4 col-sm-6">--}}
+            {{--<div class="panel panel-green">--}}
+                {{--<div class="panel-heading">--}}
+                    {{--<div class="row">--}}
+                        {{--<div class="col-xs-3"> <i class="fa fa-file-image-o fa-2x"></i> </div>--}}
+                        {{--<div class="col-xs-9 text-right">--}}
+                            {{--<div class="huge">1562</div>--}}
+                            {{--<div>图集</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<a href="galleryAdd.php">--}}
+                    {{--<div class="panel-footer"> <span class="pull-left"><i class="fa fa-search"></i> 仅显示图集</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>--}}
+                        {{--<div class="clearfix"></div>--}}
+                    {{--</div>--}}
+                {{--</a>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+        {{--<div class="col-lg-4 col-sm-6">--}}
+            {{--<div class="panel panel-yellow">--}}
+                {{--<div class="panel-heading">--}}
+                    {{--<div class="row">--}}
+                        {{--<div class="col-xs-3"> <i class="fa fa-file-video-o fa-2x"></i> </div>--}}
+                        {{--<div class="col-xs-9 text-right">--}}
+                            {{--<div class="huge">1562</div>--}}
+                            {{--<div>视频</div>--}}
+                        {{--</div>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<a href="vedioAdd.php">--}}
+                    {{--<div class="panel-footer"> <span class="pull-left"><i class="fa fa-search"></i> 仅显示视频</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>--}}
+                        {{--<div class="clearfix"></div>--}}
+                    {{--</div>--}}
+                {{--</a>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
     <!-- /.row -->
     <div class="row">
         <div class="col-md-12">
@@ -109,7 +109,7 @@
                             @endforeach
                         </td>
                         <td>{{$a->created_at}}</td>
-                        <td>$a->user->name</td>
+                        <td>{{$a->user->nickname}}</td>
                         <td class="center">{{$a->type->display_name}}</td>
                         <td class="center">
                             @foreach($a->tags() as $tag)
@@ -128,10 +128,12 @@
                             <a href="{{route('archives.edit', [$a->id])}}" class="btn btn-circle btn-primary ">编辑</a>
                             {{--<a href="{{route('archives.edit', [$a->id])}}" class="btn btn-circle btn-success ">预览</a>--}}
                             <a href="" class="btn btn-circle btn-danger ">删除</a>
-                            @if($a->hasPattern('review'))
-                                <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" class="ajax-request btn btn-circle btn-danger ajax-request">停用</a>
-                            @else
-                                <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" class="ajax-request btn btn-circle btn-success ajax-request">启用</a>
+                            @if(session('user')->master)
+                                @if($a->hasPattern('review'))
+                                    <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" data-id="{{$a->id}}" class="ajax-request btn btn-circle btn-danger ajax-request">停用</a>
+                                @else
+                                    <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" data-id="{{$a->id}}" class="ajax-request btn btn-circle btn-success ajax-request">启用</a>
+                                @endif
                             @endif
                         </td>
                     </tr>
@@ -152,14 +154,30 @@
 <!-- Custom Theme JavaScript -->
 <script src={{asset("js/adminnine.js")}}></script>
 <script>
-    var $status_4 = [
-        'btn-danger', 'btn-success', '停用', '{{route('archives.toggle', [$a->id, 'review'])}}',
-        '<span class="status active">开放浏览</span>'
-    ];
-    var $status_2 = [
-        'btn-success', 'btn-danger', '启用', '{{route('archives.toggle', [$a->id, 'review'])}}',
-        '<span class="status inactive">待审核</span>'
-    ];
+    @if(session('user')->master)
+        var $status_4 = [
+            'btn-danger', 'btn-success', '停用', '',
+            '<span class="status active">开放浏览</span>'
+        ];
+        var $status_2 = [
+            'btn-success', 'btn-danger', '启用', '',
+            '<span class="status inactive">待审核</span>'
+        ];
+
+        $('.ajax-request').on('click', function () {
+            var $this = $(this)
+            $.getJSON($this.data('href'), function (response) {
+                var node = $this.hasClass('btn-success') ? $status_4 : $status_2
+                $this
+                        .addClass(node[0])
+                        .removeClass(node[1])
+                        .text(node[2]).parents('tr')
+                        .find('.tag-status')
+                        .html(node[4])
+                layer.msg(response.msg, {icon: 1})
+            })
+        })
+    @endif
     $(document).ready(function() {
         $('#dataTables-userlist').DataTable({
             responsive: true,
@@ -174,22 +192,8 @@
                 }
             }
         });
-
-        $('.ajax-request').on('click', function () {
-            var $this = $(this)
-            $.getJSON($this.data('href'), function (response) {
-                var node = $this.hasClass('btn-success') ? $status_4 : $status_2
-                $this[0].dataset.href = node[3]
-                $this
-                        .addClass(node[0])
-                        .removeClass(node[1])
-                        .text(node[2]).parents('tr')
-                        .find('.tag-status')
-                        .html(node[4])
-                layer.msg(response.msg, {icon: 1})
-            })
-        })
     });
+
 </script>
 
 <!--wangEditor js-->

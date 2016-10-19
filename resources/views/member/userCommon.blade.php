@@ -76,8 +76,8 @@
                 <li>
                     <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-save"></i> 内容管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="userAddIndex.php">发布</a></li>
-                        <li><a href="userArchivesList.php">列表</a></li>
+                        <li><a href="{{route('userAddIndex')}}">发布</a></li>
+                        <li><a href="{{route('userArchivesList')}}">列表</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
