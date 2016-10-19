@@ -55,14 +55,18 @@
             <!-- user profile pic -->
             <div class="userprofile text-center">
                 <div class="userpic">
-                    <img src="{{asset('img/100100.png')}}" alt="" class="userpicimg">
+                    <img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'" alt="" class="userpicimg">
                     <!-- 判断是否有后台权限，有后台权限显示此按钮后可互相切换 -->
                     @if(session('user')->master)
                         <a href="{{url('member/masterIndex')}}" title="切换至后台用户" class="btn btn-primary settingbtn"><i class="fa fa-random"></i></a>
                     @endif
                     <!-- 判断是否有后台权限，有后台权限显示此按钮后可互相切换 -->
                 </div>
-                <h3 class="username">登录帐号</h3>
+                @if(session('user')->phone)
+                    <h3 class="username">{{session('user')->phone}}</h3>
+                @else
+                    <h3 class="username">{{session('user')->nickname}}</h3>
+                @endif
                 <p>用户组</p>
             </div>
             <div class="clearfix"></div>
@@ -93,9 +97,13 @@
                 <button class="menubtn pull-left btn "><i class="glyphicon  glyphicon-th"></i> 隐藏/显示导航栏</button>
                 <ul class="nav navbar-top-links navbar-right">
                     <li class="dropdown"> <a class="dropdown-toggle userdd" data-toggle="dropdown" href="javascript:void(0)">
-                            <div class="userprofile small "> <span class="userpic"> <img src="{{asset('img/100100.png')}}" alt="" class="userpicimg"> </span>
+                            <div class="userprofile small "> <span class="userpic"> <img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'" alt="" class="userpicimg"> </span>
                                 <div class="textcontainer">
-                                    <h3 class="username">登录帐号</h3>
+                                    @if(session('user')->phone)
+                                    <h3 class="username">{{session('user')->phone}}</h3>
+                                    @else
+                                    <h3 class="username">{{session('user')->nickname}}</h3>
+                                    @endif
                                     <p>用户组</p>
                                 </div>
                             </div>

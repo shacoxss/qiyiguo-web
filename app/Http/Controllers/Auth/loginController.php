@@ -127,6 +127,7 @@ class loginController extends Controller
         $data['binding_weixin'] = 1;
         $data['wx_open_id'] = $oauthUser->getId();
         $data['nickname'] = $oauthUser->getNickname();
+        $data['head_img'] = $oauthUser->avatar();
         $user = User::where('wx_open_id',$oauthUser->getId())->first();
 
         if($user){
@@ -155,10 +156,10 @@ class loginController extends Controller
     {
         $oauthUser = \Socialite::with('qq')->user();
         //登陆成功处理
-        dd($oauthUser);
         $data['binding_qq'] = 1;
         $data['qq_open_id'] = $oauthUser->getId();
         $data['nickname'] = $oauthUser->getNickname();
+        $data['head_img'] = $oauthUser->avatar();
         $user = User::where('qq_open_id',$oauthUser->getId())->first();
 
         if($user){
@@ -189,6 +190,7 @@ class loginController extends Controller
         $data['binding_weibo'] = 1;
         $data['wb_open_id'] = $oauthUser->getId();
         $data['nickname'] = $oauthUser->getNickname();
+        $data['head_img'] = $oauthUser->avatar();
         $user = User::where('wb_open_id',$oauthUser->getId())->first();
 
         if($user){
