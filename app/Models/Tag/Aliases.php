@@ -42,7 +42,7 @@ trait Aliases
      */
     public function attachAliases(
         array $aliases,             bool $create_it = false,
-        callable $on_error = null,  $check_cross = true
+        $on_error = null,  $check_cross = true
     )
     {
         $tags = self
