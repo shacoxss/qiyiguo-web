@@ -41,7 +41,7 @@ trait Aliases
      * @throws \Exception
      */
     public function attachAliases(
-        array $aliases,             bool $create_it = false,
+        array $aliases,             $create_it = false,
         $on_error = null,  $check_cross = true
     )
     {
@@ -86,19 +86,18 @@ trait Aliases
      */
     private function hasCross($tags)
     {
-        return (
-            $cross = Relation
-                ::alias()
-                ->leftIn($tags)
-                ->orWhere(function ($query) use($tags) {
-                    return $query
-                        ->rightIn($tags)
-                        ->where(Relation::LEFT, '!=', $this->primary_id);
-                })
-                //->groupBy(Relation::LEFT)
-                ->onlyId()
-        )
-            ->isEmpty()
+        $cross = Relation
+            ::alias()
+            ->leftIn($tags)
+            ->orWhere(function ($query) use($tags) {
+                return $query
+                    ->rightIn($tags)
+                    ->where(Relation::LEFT, '!=', $this->primary_id);
+            })
+            //->groupBy(Relation::LEFT)
+            ->onlyId();
+
+        return $cross->isEmpty()
             ? false
             : $cross
         ;
