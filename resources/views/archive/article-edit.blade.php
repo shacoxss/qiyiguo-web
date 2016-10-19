@@ -125,7 +125,7 @@
                                         <!-- /.col-lg-6 (nested) -->
                                         <div class="col-lg-3">
                                             @if(isset($archive) && $archive->cover)
-                                                <img style="max-width:250px;" src="{{$archive->cover}}" />
+                                                <img style="max-width:250px;" src="{{route('image', [$archive->cover, '250'])}}" />
                                             @endif
                                             <h3>封面上传</h3>
                                             <input type="file" name="cover">

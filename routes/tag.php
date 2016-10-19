@@ -48,3 +48,11 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
         }
     });
 });
+
+Route::get('/image/{uri}/{size}', function ($uri, $size) {
+    $img = Image::make(asset($uri));
+    $size = explode('x', $size);
+    if(!isset($size[1])) $size[1] = $size[0];
+    $img->fit($size[0], $size[1]);
+    return $img->response('png');
+})->name('image')->where(['uri' => '.+']);
