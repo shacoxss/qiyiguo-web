@@ -123,8 +123,10 @@ class loginController extends Controller
     {
         $oauthUser = \Socialite::with('weixinweb')->user();
         //登陆成功处理
-        var_dump($oauthUser->getId());
-        var_dump($oauthUser->getNickname());
+        $data['binding_weixin'] = 1;
+        $data['wx_open_id'] = $oauthUser->getId();
+        $data['nickname'] = $oauthUser->getNickname();
+
         var_dump($oauthUser->getName());
         var_dump($oauthUser->getEmail());
         var_dump($oauthUser->getAvatar());
@@ -139,8 +141,9 @@ class loginController extends Controller
     {
         $oauthUser = \Socialite::with('qq')->user();
         //登陆成功处理
-        var_dump($oauthUser->getId());
-        var_dump($oauthUser->getNickname());
+        $data['binding_qq'] = 1;
+        $data['qq_open_id'] = $oauthUser->getId();
+        $data['nickname'] = $oauthUser->getNickname();
         var_dump($oauthUser->getName());
         var_dump($oauthUser->getEmail());
         var_dump($oauthUser->getAvatar());

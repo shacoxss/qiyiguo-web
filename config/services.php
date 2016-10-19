@@ -37,16 +37,16 @@ return [
     'weixinweb' => [
         'client_id' => env('WEIXINWEB_KEY'),
         'client_secret' => env('WEIXINWEB_SECRET'),
-        'redirect' => env('WEIXINWEB_REDIRECT_URI'),
+        'redirect' => urlencode(env('WEIXINWEB_REDIRECT_URI')),
     ],
     'qq' => [
         'client_id' => env('QQ_KEY'),
         'client_secret' => env('QQ_SECRET'),
-        'redirect' => env('QQ_REDIRECT_URI'),
+        'redirect' => urlencode(env('QQ_REDIRECT_URI')),
     ],
     'weibo' => [
         'client_id' => env('WEIBO_KEY'),
         'client_secret' => env('WEIBO_SECRET'),
-        'redirect' => env('WEIBO_REDIRECT_URI'),
+        'redirect' => urlencode(env('WEIBO_REDIRECT_URI')),
     ],
 ];
