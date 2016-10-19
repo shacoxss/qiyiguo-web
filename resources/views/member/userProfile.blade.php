@@ -39,6 +39,15 @@
             <!-- Tab panes -->
             <div class="tab-content">
               	<div class="tab-pane fade padding in active" id="avatar">
+					@if(count('errors')>0)
+						@if(is_string($errors))
+							<div class="alert alert-danger">{{$errors}}</div>
+						@else
+							@foreach($errors->all() as $error)
+								<div class="alert alert-danger">{{$error}}</div>
+							@endforeach
+						@endif
+					@endif
 					@if(session('msg'))
 						<div class="alert alert-success">{{session('msg')}}</div>
 					@endif
@@ -64,19 +73,6 @@
 	                </form>
               	</div>
               	<div class="tab-pane fade padding" id="password">
-					@if(count('errors')>0)
-						@if(is_string($errors))
-							<div class="alert alert-danger">{{$errors}}</div>
-							@else
-							@foreach($errors->all() as $error)
-								<div class="alert alert-danger">{{$error}}</div>
-							@endforeach
-							@endif
-					@endif
-              		@if(session('reset_msg'))
-							<div class="alert alert-success">{{session('reset_msg')}}</div>
-					@endif
-
 	              	<form role="form" class="col-md-4" action="{{url('member/resetPassword')}}" method="post">
 						{{csrf_field()}}
 		                <div class="form-group">
@@ -97,18 +93,7 @@
 	                </form>
               	</div>
               	<div class="tab-pane fade padding" id="nickname">
-					@if(count('errors')>0)
-						@if(is_string($errors))
-							<div class="alert alert-danger">{{$errors}}</div>
-						@else
-							@foreach($errors->all() as $error)
-								<div class="alert alert-danger">{{$error}}</div>
-							@endforeach
-						@endif
-					@endif
-					@if(session('reset_nick_msg'))
-						<div class="alert alert-success">{{session('reset_nick_msg')}}</div>
-					@endif
+
 	              	<form role="form" class="col-md-4" action="{{url('member/resetNickname')}}" method="post">
 						{{csrf_field()}}
 		                <div class="form-group">
@@ -123,18 +108,7 @@
               	</div>
 				@if(empty(session('user')->phone))
               	<div class="tab-pane fade padding" id="cellphone">
-					@if(count('errors')>0)
-						@if(is_string($errors))
-							<div class="alert alert-danger">{{$errors}}</div>
-						@else
-							@foreach($errors->all() as $error)
-								<div class="alert alert-danger">{{$error}}</div>
-							@endforeach
-						@endif
-					@endif
-					@if(session('reset_phone_msg'))
-						<div class="alert alert-success">{{session('reset_nick_msg')}}</div>
-					@endif
+
               		<div class="alert alert-danger" id="bindingPhone_error">错误提示信息样式</div>
               		<div class="alert alert-success" id="bindingPhone_success">成功提示信息</div>
 	              	<form role="form" class="col-md-4" action="{{url('member/bindingPhone')}}" method="post">
@@ -160,18 +134,7 @@
               	</div>
 				@else
               	<div class="tab-pane fade padding" id="cellphoneEdit">
-					@if(count('errors')>0)
-						@if(is_string($errors))
-							<div class="alert alert-danger">{{$errors}}</div>
-						@else
-							@foreach($errors->all() as $error)
-								<div class="alert alert-danger">{{$error}}</div>
-							@endforeach
-						@endif
-					@endif
-					@if(session('reset_phone_msg'))
-						<div class="alert alert-success">{{session('reset_nick_msg')}}</div>
-					@endif
+
               		<div class="alert alert-danger" id="resetphone_success">错误提示信息样式</div>
               		<div class="alert alert-success" id="resetphone_error">成功提示信息</div>
 	              	<form role="form" class="col-md-4" method="post" action="{{url('member/resetPhone')}}">
