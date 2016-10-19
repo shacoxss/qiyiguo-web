@@ -116,7 +116,7 @@ class ArchiveController extends Controller
         $archive->save();
         $detail = $request->only(explode(',', $archive->type->fields));
         foreach ($detail as $key => $i) {
-            $archive->detail->{$key} = $i;
+            $archive->detail->$key = $i;
         }
         $archive->detail->save();
         $tags = $archive->tags()->get()->pluck('id')->all();
