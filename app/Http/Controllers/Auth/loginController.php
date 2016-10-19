@@ -137,6 +137,7 @@ class loginController extends Controller
             $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
             if($user = Users::create($data)){
                 session(['user'=>$user]);
+                return redirect('auth/success');
             }
         }
     }
@@ -163,6 +164,7 @@ class loginController extends Controller
             $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
             if($user = Users::create($data)){
                 session(['user'=>$user]);
+                return redirect('auth/success');
             }
         }
     }
@@ -189,6 +191,7 @@ class loginController extends Controller
             $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
             if($user = Users::create($data)){
                 session(['user'=>$user]);
+                return redirect('auth/success');
             }
         }
     }
