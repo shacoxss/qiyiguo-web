@@ -99,7 +99,7 @@ trait Aliases
 
         return $cross->isEmpty()
             ? false
-            : $cross
+            : $cross 
         ;
     }
 
