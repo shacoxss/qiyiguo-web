@@ -130,9 +130,9 @@
                             <a href="" class="btn btn-circle btn-danger ">删除</a>
                             @if(session('user')->master)
                                 @if($a->hasPattern('review'))
-                                    <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" data-id="{{$a->id}}" class="ajax-request btn btn-circle btn-danger ajax-request">停用</a>
+                                    <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" data-id="{{$a->id}}" class="ajax-request btn btn-circle btn-danger ajax-request">不准看</a>
                                 @else
-                                    <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" data-id="{{$a->id}}" class="ajax-request btn btn-circle btn-success ajax-request">启用</a>
+                                    <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" data-id="{{$a->id}}" class="ajax-request btn btn-circle btn-success ajax-request">审核</a>
                                 @endif
                             @endif
                         </td>
@@ -156,11 +156,11 @@
 <script>
     @if(session('user')->master)
         var $status_4 = [
-            'btn-danger', 'btn-success', '停用', '',
+            'btn-danger', 'btn-success', '不准看', '',
             '<span class="status active">开放浏览</span>'
         ];
         var $status_2 = [
-            'btn-success', 'btn-danger', '启用', '',
+            'btn-success', 'btn-danger', '审核', '',
             '<span class="status inactive">待审核</span>'
         ];
 
