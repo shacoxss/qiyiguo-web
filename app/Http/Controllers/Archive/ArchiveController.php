@@ -115,10 +115,11 @@ class ArchiveController extends Controller
 
         $archive->save();
         $detail = $request->only(explode(',', $archive->type->fields));
+        $model = $archive->detail()->first();
         foreach ($detail as $key => $i) {
-            $archive->detail->$key = $i;
+            $model->$key = $i;
         }
-        $archive->detail->save();
+        $model->save();
         $tags = $archive->tags()->get()->pluck('id')->all();
         if (!empty($tags)) {
             $archive->tags()->detach($tags);
