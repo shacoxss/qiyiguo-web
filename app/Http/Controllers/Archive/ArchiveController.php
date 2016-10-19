@@ -81,7 +81,8 @@ class ArchiveController extends Controller
 
         $detail = $request->only(explode(',', $type->fields));
         $detail['archive_id'] = $archive->id;
-        ((string)$type->model)::create($detail);
+//        ((string)$type->model)::create($detail);
+        (new $type->model($detail))->save();
         return response()->json(['msg' => '保存成功！']);
     }
 

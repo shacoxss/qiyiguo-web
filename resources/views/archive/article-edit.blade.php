@@ -124,10 +124,10 @@
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                         <div class="col-lg-3">
-                                            <img style="max-width:250px;" src="{{$archive->cover}}" />
-                                            <h3>封面上传</h3>
-                                            @if($archive->cover)
+                                            @if(isset($archive) && $archive->cover)
+                                                <img style="max-width:250px;" src="{{$archive->cover}}" />
                                             @endif
+                                            <h3>封面上传</h3>
                                             <input type="file" name="cover">
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
