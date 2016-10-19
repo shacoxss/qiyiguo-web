@@ -102,7 +102,7 @@
                         <td><input type="checkbox" /></td>
                         <td>{{$a->id}}</td>
                         <td>
-                            <img src="{{route('image', [$a->cover, '30x30'])}}" onerror="this.src='{{asset('img/100100.png')}}'" alt="" class="gridpic">
+                            <img src="{{route('image', [$a->cover, '30x30'])}}" onerror="$(this).remove()" alt="" class="gridpic">
                             {{$a->title}}<br>
                             @foreach($a->patterns(1) as $p)
                                 <i class="btn {{$p->description}} btn-xss">{{$p->display_name}}</i>
