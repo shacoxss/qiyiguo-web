@@ -115,7 +115,7 @@
             data:{_token:token,id:id},
             success:function(data){
               layer.alert(data, {icon: 6});
-              setTimeout('reload()',3000);
+              setTimeout('reload()',1000);
             }
           });
         }
