@@ -61,7 +61,7 @@ class userProfileController extends Controller
                     if($result){
                         $user = Users::where('phone',session('user')->phone)->first();
                         session(['user'=>$user]);
-                        return back()->with('reset_msg','密码修改成功！');
+                        return back()->with('msg','密码修改成功！');
                     }else{
                         return back()->with('errors','密码修改失败！');
                     }
@@ -92,7 +92,7 @@ class userProfileController extends Controller
                     if($result){
                         $user = Users::where('id',$user->id)->first();
                         session(['user'=>$user]);
-                        return back()->with('reset_nick_msg','昵称修改成功！');
+                        return back()->with('msg','昵称修改成功！');
                     }else{
                         return back()->with('errors','昵称修改失败！');
                     }
@@ -132,7 +132,7 @@ class userProfileController extends Controller
                     if($result){
                         $user = Users::where('id',$user->id)->first();
                         session(['user'=>$user]);
-                        return back()->with('reset_phone_msg','电话号码修改成功！');
+                        return back()->with('msg','电话号码修改成功！');
                     }else{
                         return back()->with('errors','电话号码修改失败！');
                     }
@@ -170,7 +170,7 @@ class userProfileController extends Controller
                     if($result){
                         $user = Users::where('id',$user->id)->first();
                         session(['user'=>$user]);
-                        return back()->with('reset_phone_msg','电话号码绑定成功！');
+                        return back()->with('msg','电话号码绑定成功！');
                     }else{
                         return back()->with('errors','电话号码绑定失败！');
                     }
