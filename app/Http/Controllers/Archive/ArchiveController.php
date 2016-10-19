@@ -75,9 +75,11 @@ class ArchiveController extends Controller
 
         $tags = explode(',', $request->tags);
         $tags = array_slice($tags, 0, 3);
-        $tags = Tag::wrapToIds($tags, true);
-        $tags = Tag::convertToPrimaries($tags);
-        $archive->tags()->attach($tags->all());
+        if (!empty($tags[0])) {
+            $tags = Tag::wrapToIds($tags, true);
+            $tags = Tag::convertToPrimaries($tags);
+            $archive->tags()->attach($tags->all());
+        }
 
         $detail = $request->only(explode(',', $type->fields));
         $detail['archive_id'] = $archive->id;
@@ -112,15 +114,17 @@ class ArchiveController extends Controller
         }
         $archive->detail->save();
         $tags = $archive->tags()->get()->pluck('id')->all();
-        if(!empty($tags)) {
+        if (!empty($tags)) {
             $archive->tags()->detach($tags);
         }
 
         $tags = explode(',', $request->tags);
-        $tags = array_slice($tags, 0, 3);
-        $tags = Tag::wrapToIds($tags, true);
-        $tags = Tag::convertToPrimaries($tags);
-        $archive->tags()->attach($tags->all());
+        if (!empty($tags[0])) {
+            $tags = array_slice($tags, 0, 3);
+            $tags = Tag::wrapToIds($tags, true);
+            $tags = Tag::convertToPrimaries($tags);
+            $archive->tags()->attach($tags->all());
+        }
 
         return response()->json(['msg' => '修改成功！']);
     }

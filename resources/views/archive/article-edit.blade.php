@@ -160,6 +160,7 @@
         $_token = '{{ csrf_token() }}';
         $uploadImgUrl = '{{route('archives.upload')}}';
         $extract_tags_url = '{{route('tag.extract')}}';
+        $archive_list_url = '{{route('userArchivesList')}}'
 
         var gen_add_tag = function () {
             $('#extract a.btn-xss').on('click', function () {
@@ -186,6 +187,7 @@
             })
             .done(function (response) {
                 layer.msg(response.msg, {icon: 1})
+                window.location.href = $archive_list_url
             })
             .fail(function (response) {
                 layer.msg("失败", {icon: 2})
