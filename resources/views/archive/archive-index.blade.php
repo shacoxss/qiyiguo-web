@@ -164,6 +164,9 @@
             '<span class="status inactive">待审核</span>'
         ];
 
+
+    @endif
+    $(document).ready(function() {
         $('.ajax-request').on('click', function () {
             var $this = $(this)
             $.getJSON($this.data('href'), function (response) {
@@ -177,8 +180,6 @@
                 layer.msg(response.msg, {icon: 1})
             })
         })
-    @endif
-    $(document).ready(function() {
         $('#dataTables-userlist').DataTable({
             responsive: true,
             pageLength:10,
