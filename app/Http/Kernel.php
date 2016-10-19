@@ -55,6 +55,8 @@ class Kernel extends HttpKernel
         'masterAuth'=>\App\Http\Middleware\MasterAuth::class,
         'userManageAuth'=>\App\Http\Middleware\UserManageAuth::class,
         'powersAuth'=>\App\Http\Middleware\PowersAuth::class,
+        'globalAuth'=>\App\Http\Middleware\globalAuth::class,
+        'catAuth'=>\App\Http\Middleware\catAuth::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];
 }

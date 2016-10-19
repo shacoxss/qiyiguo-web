@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Route::post('uploadHeadImg','uploadController@uploadHeadImg');
 Route::post('uploadWebLogo','uploadController@uploadWebLogo');
+Route::post('uploadBackground','uploadController@uploadBackground');
 
 
 Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
@@ -56,8 +57,12 @@ Route::group(['prefix'=>'forget','namespace'=>'Auth'],function(){
 });
 Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'],function(){
     Route::get('index','indexController@userIndex');
+    Route::post('sign','indexController@sign');
     Route::get('masterIndex','indexController@masterIndex')->middleware('masterAuth');
     Route::get('userProfile','userProfileController@index');
+    Route::get('userFollow','userFollowController@index');
+    Route::get('userFans','userFansController@index');
+    Route::get('userCollect','userCollectController@index');
     Route::post('saveHeadImg','userProfileController@saveHeadImg');
     Route::post('resetPassword','userProfileController@resetPassword');
     Route::post('resetNickname','userProfileController@resetNickname');
@@ -71,23 +76,18 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::post('addMaster','powersController@addMaster')->middleware('powersAuth');
     Route::post('masterPowerEdit','powersController@masterPowerEdit')->middleware('powersAuth');
     Route::post('delMaster','powersController@delMaster')->middleware('powersAuth');
-    Route::get('masterGlobal','masterGlobalController@index');
-    Route::post('masterGlobal','masterGlobalController@index');
+    Route::get('masterGlobal','masterGlobalController@index')->middleware('globalAuth');
+    Route::post('masterGlobal','masterGlobalController@index')->middleware('globalAuth');
+    Route::get('masterCategory','categoryController@index')->middleware('catAuth');
+    Route::post('masterCategory','categoryController@store')->middleware('catAuth');
+    Route::get('masterCategoryAdd','categoryController@create')->middleware('catAuth');
+    Route::get('masterCategoryDel/{id}','categoryController@delete')->middleware('catAuth');
+    Route::get('masterCategory/{id}','categoryController@edit')->middleware('catAuth');
+    Route::post('masterCategory/{id}','categoryController@update')->middleware('catAuth');
 });
 
 
 Route::get('noAuth',function(){
    return view('member.noAuth');
-});
-
-
-Route::get('/test', 'TestController@index');
-
-Route::get('/tag/{tag_name}', 'TestController@tag')->name('tag.show');
-
-Route::bind('tag_name', function ($name) {
-    return \App\Models\Tag::where('pinyin', $name)
-        ->orWhere('name', $name)
-        ->firstOrFail();
 });
 

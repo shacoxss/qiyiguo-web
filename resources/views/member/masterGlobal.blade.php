@@ -1,6 +1,12 @@
 @extends('member.masterCommon')
 @section('content')
-
+	<div class="row">
+		<div class="col-md-12  header-wrapper" >
+			<h1 class="page-header">全局设置</h1>
+			<p class="page-subtitle">系统参数控制</p>
+		</div>
+		<!-- /.col-lg-12 -->
+	</div>
     <!-- /.row -->
     <ol class="breadcrumb">
       <li><a href="{{url('member/masterIndex')}}">奇异果管理</a></li>

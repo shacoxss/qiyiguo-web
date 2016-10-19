@@ -7,8 +7,11 @@
       <div class="col-md-12  header-wrapper" >
         <h1 class="page-header">用户中心</h1>
         <p class="page-subtitle">奇异果用户中心，在这里您可以管理自己的文章、图片、视频。
-        <a href="javascript:;" class="sign btn btn-primary btn-xs" ><i class="fa fa-pencil"></i> 签到</a>
-        <a class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> 今天已签到，明天再来吧</a>
+          @if($is_sign)
+            <a class=" btn btn-success btn-xs"><i class="fa fa-pencil"></i> 今天已签到，明天再来吧</a>
+          @else
+            <a href="javascript:;" class="sign btn btn-primary btn-xs" ><i class="fa fa-pencil"></i> 签到</a>
+          @endif
         </p>
       </div>
       <!-- /.col-lg-12 --> 
@@ -83,7 +86,7 @@
             <div class="row">
               <div class="col-xs-3"> <i class="fa fa-key fa-2x"></i> </div>
               <div class="col-xs-9 text-right">
-                <div class="huge">1562</div>
+                <div class="huge">{{$user->points}}</div>
                 <div>积分</div>
               </div>
             </div>
@@ -97,6 +100,30 @@
       </div>
     </div>
     <!-- /.row -->
-
+  <script type="text/javascript">
+    $(function(){
+      $('.sign').click(function(){
+        var token = "{{csrf_token()}}";
+        var id = "{{session('user')->id}}";
+        if(id.length==0){
+          layer.alert('登陆超时，请重新登陆！', {icon: 6});
+          return false;
+        }else{
+          $.ajax({
+            url:"{{url('member/sign')}}",
+            type:"post",
+            data:{_token:token,id:id},
+            success:function(data){
+              layer.alert(data, {icon: 6});
+              setTimeout('reload()',3000);
+            }
+          });
+        }
+      });
+    });
+    function reload(){
+      location.reload();
+    }
+  </script>
 @endsection
 

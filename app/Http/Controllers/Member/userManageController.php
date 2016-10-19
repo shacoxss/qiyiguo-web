@@ -14,7 +14,7 @@ class userManageController extends Controller
 {
     public function index()
     {
-        $users = Users::orderBy('id','desc')->paginate(20);
+        $users = Users::orderBy('id','desc')->get();
         $count = Users::count();
         return view('member.masterUserList',compact('users','count'));
     }

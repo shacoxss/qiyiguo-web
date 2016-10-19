@@ -13,7 +13,7 @@ class powersController extends Controller
 {
     public function index()
     {
-        $users = Users::where('master',1)->orderBy('id','desc')->paginate(20);
+        $users = Users::where('master',1)->orderBy('id','desc')->get();
         $count = Users::where('master',1)->count();
         return view('member.masterPowers',compact('users','count'));
     }

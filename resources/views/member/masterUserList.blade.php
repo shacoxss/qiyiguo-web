@@ -19,7 +19,7 @@
             <button type="button" class="btn btn-danger btn-xs" id="del-by-ids"><i class="fa fa-times"></i> 删除</button>
         </p>
     </div>
-    <div class="row" >
+{{--    <div class="row" >
         <div class="col-sm-6">
             <div class="dataTables_length form-inline" id="dataTables-userlist_length">
                 <label>每页
@@ -37,7 +37,7 @@
                 <label>搜索:<input class="form-control input-sm" placeholder="" aria-controls="dataTables-userlist" type="search"></label>
             </div>
         </div>
-    </div>
+    </div>--}}
     <div class="row">
 
         <div class="col-md-12">
@@ -112,7 +112,7 @@
             </table>
         </div>
     </div>
-    <div class="row">
+{{--    <div class="row">
         <div class="col-sm-6">
             <div class="dataTables_info" id="dataTables-userlist_info" role="status" aria-live="polite">一共{{$count}}数据</div>
         </div>
@@ -121,10 +121,29 @@
                 {{$users->links()}}
             </div>
         </div>
-    </div>
+    </div>--}}
     <!-- /.row -->
     <script src="{{asset('pulgin/layer/layer.js?v=2.4')}}"></script>
     <link rel="stylesheet" href="{{asset('pulgin/layer/skin/layer.css')}}" media="all">
+    <script>
+        $(document).ready(function() {
+
+            $('#dataTables-userlist').DataTable({
+                responsive: true,
+                pageLength:10,
+                sPaginationType: "full_numbers",
+                oLanguage: {
+                    oPaginate: {
+                        sFirst: "<<",
+                        sPrevious: "<",
+                        sNext: ">",
+                        sLast: ">>"
+                    }
+                }
+            });
+
+        });
+    </script>
     <script>
 $(function(){
     //全选，全不选

@@ -70,9 +70,9 @@
 
             <ul class="nav" id="side-menu">
                 <li> <a href="{{url('member/index')}}"><i class="fa fa-dashboard fa-fw"></i> 用户中心</a> </li>
-                <li> <a href="userFansList.php"><i class="fa fa-users fa-fw"></i> 我的粉丝</a> </li>
-                <li> <a href="userFollowList.php"><i class="fa fa-heart fa-fw"></i> 我的关注</a></li>
-                <li> <a href="userCollectList.php"><i class="fa fa-star fa-fw"></i> 我的收藏</a></li>
+                <li> <a href="{{url('member/userFans')}}"><i class="fa fa-users fa-fw"></i> 我的粉丝</a> </li>
+                <li> <a href="{{url('member/userFollow')}}"><i class="fa fa-heart fa-fw"></i> 我的关注</a></li>
+                <li> <a href="{{url('member/userCollect')}}"><i class="fa fa-star fa-fw"></i> 我的收藏</a></li>
                 <li>
                     <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-save"></i> 内容管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -128,14 +128,6 @@
 <!-- layer.js -->
 <script src="{{asset('pulgin/layer/layer.js?v=2.4')}}"></script>
 <link rel="stylesheet" href="{{asset('pulgin/layer/skin/layer.css')}}" media="all">
-
-<script type="text/javascript">
-    $(function(){
-        $('.sign').click(function(){
-            layer.alert('签到成功，得到了1-100个随机积分！', {icon: 6});
-        });
-    })
-</script>
 @yield('scripts')
 </body>
 </html>

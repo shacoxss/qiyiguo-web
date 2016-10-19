@@ -95,8 +95,8 @@
                 @if(session('user')->cat_manage)
                 <li> <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-file"></i> 栏目管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="#">新建栏目</a></li>
-                        <li><a href="#">栏目列表</a></li>
+                        <li><a href="{{url('member/masterCategoryAdd')}}">新建栏目</a></li>
+                        <li><a href="{{url('member/masterCategory')}}">栏目列表</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>

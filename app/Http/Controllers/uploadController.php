@@ -19,8 +19,6 @@ class uploadController extends Controller
             if(!is_dir($dir)){
                 mkdir($dir);
             }
-            $dir_middle = base_path().'/public/upload/head_img/'.date('Ymd',time());
-            $dir_small = base_path().'/public/upload/head_img/'.date('Ymd',time());
 
             $string = 'ABCDEFGHIJKLMNPQRST1234567890';
             $fileNewName = substr(str_shuffle($string),0,6).'.'.$extension;
@@ -42,6 +40,7 @@ class uploadController extends Controller
         $resize = new \ResizeImage($oldImg, $width, $height, $cut,$thumbPath,$quality);
     }
 
+
     public function uploadWebLogo()
     {
         $file = Input::file('avatar_file');
@@ -59,4 +58,5 @@ class uploadController extends Controller
         }
 
     }
+
 }
