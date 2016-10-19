@@ -66,11 +66,6 @@
         area: ['830px' , '400px'],
         content: '{{url('auth/qq')}}'
       });
-      if($('body').val()=='success'){
-        parent.layer.close(index);
-        window.location.href = "{{url('autn/auccess')}}";
-      }
-
     });
 
     $('#weixin').click(function(){

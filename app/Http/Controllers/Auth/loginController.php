@@ -133,12 +133,14 @@ class loginController extends Controller
             $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
             Users::where('id',$user->id)->update($data);
             session(['user'=>$user]);
-            return 'success';
+            $url = url('auth/success');
+            echo "<script>window.parent.location.href = '".$url."';</script>";
         }else{
             $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
             if($user = Users::create($data)){
                 session(['user'=>$user]);
-                return 'success';
+                $url = url('auth/success');
+                echo "<script>window.parent.location.href = '".$url."';</script>";
             }
         }
     }
@@ -146,6 +148,7 @@ class loginController extends Controller
     public function qq()
     {
         return \Socialite::with('qq')->redirect();
+
     }
 
     public function qqCallback()
@@ -161,12 +164,14 @@ class loginController extends Controller
             $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
             Users::where('id',$user->id)->update($data);
             session(['user'=>$user]);
-            return 'success';
+            $url = url('auth/success');
+            echo "<script>window.parent.location.href = '".$url."';</script>";
         }else{
             $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
             if($user = Users::create($data)){
                 session(['user'=>$user]);
-                return 'success';
+                $url = url('auth/success');
+                echo "<script>window.parent.location.href = '".$url."';</script>";
             }
         }
     }
@@ -189,12 +194,14 @@ class loginController extends Controller
             $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
             Users::where('id',$user->id)->update($data);
             session(['user'=>$user]);
-            return 'success';
+            $url = url('auth/success');
+            echo "<script>window.parent.location.href = '".$url."';</script>";
         }else{
             $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
             if($user = Users::create($data)){
                 session(['user'=>$user]);
-                return 'success';
+                $url = url('auth/success');
+                echo "<script>window.parent.location.href = '".$url."';</script>";
             }
         }
     }
