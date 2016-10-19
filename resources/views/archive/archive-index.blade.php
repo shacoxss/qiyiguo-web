@@ -102,7 +102,7 @@
                         <td><input type="checkbox" /></td>
                         <td>{{$a->id}}</td>
                         <td>
-                            <img src="{{route('image', [$a->cover, '30x30'])}}" alt="" class="gridpic">
+                            <img src="{{route('image', [$a->cover, '30x30'])}}" onerror="this.src='{{asset('img/100100.png')}}'" alt="" class="gridpic">
                             {{$a->title}}<br>
                             @foreach($a->patterns(1) as $p)
                                 <i class="btn {{$p->description}} btn-xss">{{$p->display_name}}</i>
@@ -164,9 +164,6 @@
             '<span class="status inactive">待审核</span>'
         ];
 
-
-    @endif
-    $(document).ready(function() {
         $('.ajax-request').on('click', function () {
             var $this = $(this)
             $.getJSON($this.data('href'), function (response) {
@@ -180,6 +177,9 @@
                 layer.msg(response.msg, {icon: 1})
             })
         })
+    @endif
+
+    $(document).ready(function() {
         $('#dataTables-userlist').DataTable({
             responsive: true,
             pageLength:10,

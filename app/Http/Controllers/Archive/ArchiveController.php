@@ -61,7 +61,7 @@ class ArchiveController extends Controller
 
     public function store(Request $request,ArchiveType $type)
     {
-        $new = $request->only(['title', 'cover', 'abstract', 'category_id']);
+        $new = $request->only(['title', 'abstract', 'category_id']);
         $new['archive_type_id'] = $type->id;
         $new['mode'] = $this->calcMode($request);
         $new['user_id'] = session('user')->id;
@@ -98,11 +98,12 @@ class ArchiveController extends Controller
         $archive->detachPattern(7);
         $archive->mode = $this->calcMode($request, $archive->mode);
 
-        $input = $request->only(['title', 'cover', 'abstract', 'category_id']);
+        $input = $request->only(['title', 'abstract', 'category_id']);
         $input['user_id'] = session('user')->id;
         foreach ($input as $key => $i) {
-            $archive->{$key} = $i;
+            $archive->$key = $i;
         }
+
         if ($request->hasFile('cover')) {
             $file = $request->file('cover');
             $url = '/upload/archive/'.$file->hashName();
@@ -181,5 +182,13 @@ class ArchiveController extends Controller
         return view('archive.archive-user-index')
             ->with('archives', $archives)
             ->with('counter', $counter);
+    }
+
+    public function destroy($id)
+    {
+        if(session('user')->master) {
+            Archive::destroy($id);
+            echo 'success';
+        }
     }
 }

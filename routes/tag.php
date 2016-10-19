@@ -37,6 +37,7 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
     Route::get('archives/create/{archive_type}', 'Archive\ArchiveController@create')->name('archives.create');
     Route::post('archives/{archive_type}', 'Archive\ArchiveController@store')->name('archives.store');
     Route::get('archives/{archive}/toggle/{name}', 'Archive\ArchiveController@toggle')->name('archives.toggle');
+    Route::get('archives/destroy/{id}', 'Archive\ArchiveController@destroy')->name('archives.destroy');
 
     Route::bind('archive_type', function ($type_name) {
         if ($type_name) {

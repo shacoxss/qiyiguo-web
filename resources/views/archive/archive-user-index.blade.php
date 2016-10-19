@@ -102,7 +102,7 @@
                 <td><input type="checkbox" /></td>
                 <td>{{$a->id}}</td>
                 <td>
-                    <img src="{{route('image', [$a->cover, '30x30'])}}" alt="" class="gridpic">
+                    <img src="{{route('image', [$a->cover, '30x30'])}}" onerror="this.src='{{asset('img/100100.png')}}'"  alt="" class="gridpic">
                     {{$a->title}}<br>
                     @foreach($a->patterns(1) as $p)
                     <i class="btn {{$p->description}} btn-xss">{{$p->display_name}}</i>
@@ -127,7 +127,7 @@
                 <td class="center">
                     <a href="{{route('archives.edit', [$a->id])}}" class="btn btn-circle btn-primary ">编辑</a>
                     {{--<a href="{{route('archives.edit', [$a->id])}}" class="btn btn-circle btn-success ">预览</a>--}}
-                    <a href="" class="btn btn-circle btn-danger ">删除</a>
+                    <a href="javascript:void(0)" class="btn btn-circle btn-danger delete-archives" data-id="{{$a->id}}">删除</a>
                 </td>
             </tr>
             @endforeach
@@ -147,6 +147,30 @@
 <!-- Custom Theme JavaScript -->
 <script src={{asset("js/adminnine.js")}}></script>
 <script>
+    $destory_url = '{{url('member/archives/destroy')}}'
+    $('.delete-archives').click(function(){
+        var id = $(this).data('id');
+        var token = "{{csrf_token()}}";
+        layer.confirm('确认删除文章?', {
+            title: '删除确认',
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            $.ajax({
+                url:$destory_url + '/' + id,
+                data:{id:id,_token:token},
+                type:'get',
+                success:function(data){
+                    if(data=='success'){
+                        layer.msg('删除成功!', {icon: 1});
+                        location.reload();
+                    }else{
+                        layer.msg('删除失败!', {icon: 2});
+                    }
+                }
+            });
+
+        });
+    });
 
     $(document).ready(function() {
         $('#dataTables-userlist').DataTable({
