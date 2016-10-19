@@ -18,16 +18,13 @@ class CreateArchviesTable extends Migration
             $table->string('title');
             $table->unsignedInteger('user_id');
             $table->string('cover')->nullable();
-            $table->unsignedTinyInteger('mode');
+            $table->unsignedInteger('mode')->default(0);
             $table->string('origin')->nullable();
             $table->string('link')->nullable();
             $table->string('abstract')->nullable();
-            $table->unsignedInteger('category_id');
+            $table->unsignedInteger('category_id')->nullable();
             $table->unsignedInteger('visit_count')->default(0);
-            $table->integer('type');
-            $table->string('detail_model')->default('App\Models\Archive\Article');
-            $table->string('t_show')->nullable();
-            $table->string('t_edit')->nullable();
+            $table->integer('archive_type_id');
             $table->timestamps();
         });
     }

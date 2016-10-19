@@ -15,7 +15,7 @@ class TagFinder
         Jieba::init();
         Finalseg::init();
         JiebaAnalyse::init();
-        //Jieba::loadUserDict('../storage/app/user_dict.txt');
+        Jieba::loadUserDict('../storage/app/user_dict.txt');
         return JiebaAnalyse::extractTags($content, $top_k);
     }
 

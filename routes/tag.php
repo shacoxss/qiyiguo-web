@@ -27,3 +27,16 @@ Route::bind('attr_id', function ($id) {
 
 Route::resource('archives', 'Archive\ArchiveController');
 Route::post('archives/upload', 'Archive\ArchiveController@upload')->name('archives.upload');
+Route::get('archives/create/{archive_type}', 'Archive\ArchiveController@create');
+Route::post('archives/{archive_type}', 'Archive\ArchiveController@store')->name('archives.store');
+Route::get('archives/{archive}/toggle/{name}', 'Archive\ArchiveController@toggle')->name('archives.toggle');
+
+Route::bind('archive_type', function ($type_name) {
+    if ($type_name) {
+        return App\Models\Archive\ArchiveType
+            ::where("name", $type_name)
+            ->firstOrFail();
+    } else {
+        return App\Models\Archive\ArchiveType::find(1);
+    }
+});

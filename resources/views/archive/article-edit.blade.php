@@ -32,7 +32,7 @@
                         <div class="tab-content">
                             <div class="tab-pane fade padding in active" id="normal">
                                 <!--Tab start-->
-                                <form id="archive" action="{{isset($archive) ? route('archives.update', [$archive->id]) : route('archives.store')}}" method="POST">
+                                <form id="archive" method="POST">
                                     {{ csrf_field() }}
                                     {{ method_field(isset($archive) ? 'PUT' : 'POST') }}
                                     <input name="id" type="hidden" />
@@ -146,7 +146,7 @@
 
 @section('scripts')
     <script>
-        $archive_update_url = '{{isset($archive) ? route('archives.update', [$archive->id]) : route('archives.store')}}';
+        $archive_update_url = '{{isset($archive) ? route('archives.update', [$archive->id]) : route('archives.store', ['article'])}}';
         $_token = '{{ csrf_token() }}';
         $uploadImgUrl = '{{route('archives.upload')}}';
         $extract_tags_url = '{{route('tag.extract')}}';
@@ -154,7 +154,9 @@
             var data =  new FormData($('#archive')[0]);
             data.append('_token', $_token);
             var html = editor.$txt.html().replace(/\s\s/g, '');
+            var text = editor.$txt.text().replace(/\s\s/g, '').substr(0, 120);
             data.append('content', html);
+            data.append('abstract', text);
             $.ajax({
                 url: $archive_update_url,
                 type: 'POST',
@@ -196,7 +198,14 @@
                         '_token' : $_token
                     }
                 }).done(function (response) {
-                    console.log(response)
+                    var sort = [];
+                    for (var tag in response) {
+                        sort.push({tag:tag, weight: response[tag]})
+                    }
+                    console.log(sort.sort(function down(x, y) {
+                        return (x.weight < y.weight) ? 1 : -1
+
+                    }));
                     lock_response = false
                 })
             }
