@@ -97,7 +97,7 @@
 	              	<form role="form" class="col-md-4" action="{{url('member/resetNickname')}}" method="post">
 						{{csrf_field()}}
 		                <div class="form-group">
-			                <label>当前用户名(可重复)：{{$user->nickname}}</label>
+			                <label>当前用户名：{{$user->nickname}}</label>
 		                </div>	
 		                <div class="form-group">
 			                <label>新用户名</label>
@@ -265,14 +265,17 @@
 
 	<script src="http://static.geetest.com/static/tools/gt.js"></script>
 	<script>
-		$('.headerror').hide();
-		$('.headsuccess').hide();
-		$('#resetphone_success').hide();
-		$('#resetphone_error').hide();
-		$('#binding_error').hide();
-		$('#binding_success').hide();
-		$('#bindingPhone_error').hide();
-		$('#bindingPhone_success').hide();
+		$(function(){
+			$('.headerror').hide();
+			$('.headsuccess').hide();
+			$('#resetphone_success').hide();
+			$('#resetphone_error').hide();
+			$('#binding_error').hide();
+			$('#binding_success').hide();
+			$('#bindingPhone_error').hide();
+			$('#bindingPhone_success').hide();
+		});
+
 
 		var handlerPopup = function (captchaObj) {
 			var tel = "{{$user->phone}}";
