@@ -16,10 +16,7 @@ class ArchiveController extends Controller
     //
     public function index()
     {
-        $user = new \stdClass;
-        $user->master = 1;
-        $user->id = 1;
-
+        $user = session('user');
         if ($user->master) {
             $archives = Archive::all();
         } else {
@@ -35,10 +32,6 @@ class ArchiveController extends Controller
 
     public function create(ArchiveType $type)
     {
-        $user = new \stdClass;
-        $user->master = 1;
-        session(['user' => $user]);
-
         $patterns = \DB::table('patterns')
         ->where('type', 1)->get();
 
@@ -48,11 +41,6 @@ class ArchiveController extends Controller
     }
     public function edit(Request $request, Archive $archive)
     {
-        //dd($archive->type()->get());
-        $user = new \stdClass;
-        $user->master = 1;
-        session(['user' => $user]);
-
         $patterns = \DB::table('patterns')
         ->where('type', 1)->get();
         
