@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Model\Users;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
@@ -126,10 +127,18 @@ class loginController extends Controller
         $data['binding_weixin'] = 1;
         $data['wx_open_id'] = $oauthUser->getId();
         $data['nickname'] = $oauthUser->getNickname();
+        $user = User::where('wx_open_id',$oauthUser->getId())->first();
 
-        var_dump($oauthUser->getName());
-        var_dump($oauthUser->getEmail());
-        var_dump($oauthUser->getAvatar());
+        if($user){
+            $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
+            Users::where('id',$user->id)->update($data);
+            session(['user'=>$user]);
+        }else{
+            $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
+            if($user = Users::create($data)){
+                session(['user'=>$user]);
+            }
+        }
     }
     //QQ登陆
     public function qq()
@@ -144,9 +153,18 @@ class loginController extends Controller
         $data['binding_qq'] = 1;
         $data['qq_open_id'] = $oauthUser->getId();
         $data['nickname'] = $oauthUser->getNickname();
-        var_dump($oauthUser->getName());
-        var_dump($oauthUser->getEmail());
-        var_dump($oauthUser->getAvatar());
+        $user = User::where('qq_open_id',$oauthUser->getId())->first();
+
+        if($user){
+            $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
+            Users::where('id',$user->id)->update($data);
+            session(['user'=>$user]);
+        }else{
+            $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
+            if($user = Users::create($data)){
+                session(['user'=>$user]);
+            }
+        }
     }
     //微博登陆
     public function weibo()
@@ -158,11 +176,21 @@ class loginController extends Controller
     {
         $oauthUser = \Socialite::with('weibo')->user();
         //登陆成功处理
-        var_dump($oauthUser->getId());
-        var_dump($oauthUser->getNickname());
-        var_dump($oauthUser->getName());
-        var_dump($oauthUser->getEmail());
-        var_dump($oauthUser->getAvatar());
+        $data['binding_weibo'] = 1;
+        $data['wb_open_id'] = $oauthUser->getId();
+        $data['nickname'] = $oauthUser->getNickname();
+        $user = User::where('wb_open_id',$oauthUser->getId())->first();
+
+        if($user){
+            $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
+            Users::where('id',$user->id)->update($data);
+            session(['user'=>$user]);
+        }else{
+            $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
+            if($user = Users::create($data)){
+                session(['user'=>$user]);
+            }
+        }
     }
     public function loginSuccess()
     {
