@@ -68,7 +68,7 @@
       });
       if($('body').val()=='success'){
         parent.layer.close(index);
-        window.location.href = "{{url('autn/auccess')}}";
+        window.location.href = "{{url('auth/success')}}";
       }
 
     });
