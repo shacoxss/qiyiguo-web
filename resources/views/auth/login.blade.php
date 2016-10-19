@@ -54,6 +54,7 @@
 <link rel="stylesheet" href="{{asset('pulgin/layer/skin/layer.css')}}" media="all">
 <script type="text/javascript">
   $(function(){
+    var index = parent.layer.getFrameIndex(window.name);
     //第三方登陆
     $('#qq').click(function(){
       layer.open({
@@ -64,7 +65,12 @@
         closeBtn: true,
         area: ['830px' , '400px'],
         content: '{{url('auth/qq')}}'
-      })
+      });
+      if($('body').val()=='success'){
+        parent.layer.close(index);
+        window.location.href = "{{url('autn/auccess')}}";
+      }
+
     });
 
     $('#weixin').click(function(){
@@ -76,7 +82,8 @@
         closeBtn: true,
         area: ['830px' , '400px'],
         content: '{{url('auth/weixinWeb')}}'
-      })
+      });
+      parent.layer.close(index);
     });
 
     $('#weibo').click(function(){
@@ -88,7 +95,8 @@
         closeBtn: true,
         area: ['830px' , '400px'],
         content: '{{url('auth/weibo')}}'
-      })
+      });
+      parent.layer.close(index);
     });
 //第三方登陆结束
     $('.alert-danger').hide();
