@@ -16,11 +16,16 @@ use Intervention\Image\Facades\Image;
 class ArchiveController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
         $user = session('user');
         if (!$user->master) abort(403);
         $archives = Archive::all();
+        if($request->has('mode')) {
+            $archives = $archives->filter(function ($a) use($request) {
+                return !$a->hasPattern($request->mode);
+            });
+        }
         $counter = [
             'article' => Archive::where('archive_type_id', 1)->count()
         ];
