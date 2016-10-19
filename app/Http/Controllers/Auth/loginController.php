@@ -159,7 +159,7 @@ class loginController extends Controller
         $data['binding_qq'] = 1;
         $data['qq_open_id'] = $oauthUser->getId();
         $data['nickname'] = $oauthUser->getNickname();
-        $data['head_img'] = $oauthUser->avatar();
+        $data['head_img'] = $oauthUser->getAvatar();
         $user = User::where('qq_open_id',$oauthUser->getId())->first();
 
         if($user){
@@ -190,7 +190,7 @@ class loginController extends Controller
         $data['binding_weibo'] = 1;
         $data['wb_open_id'] = $oauthUser->getId();
         $data['nickname'] = $oauthUser->getNickname();
-        $data['head_img'] = $oauthUser->avatar();
+        $data['head_img'] = $oauthUser->getAvatar();
         $user = User::where('wb_open_id',$oauthUser->getId())->first();
 
         if($user){
