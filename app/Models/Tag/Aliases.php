@@ -41,8 +41,8 @@ trait Aliases
      * @throws \Exception
      */
     public function attachAliases(
-        array $aliases,             callable $on_error = null,
-        bool $create_it = false,    $check_cross = true
+        array $aliases,             bool $create_it = false,
+        callable $on_error = null,  $check_cross = true
     )
     {
         $tags = self
@@ -81,7 +81,6 @@ trait Aliases
      * 找出所有已经被设置成别名的标签，防止在添加别名时出现交叉关联
      * 即A是B的别名同时是C的别名的情况
      * @param $tags
-     * @param $on_error
      * @return bool
      * @throws \Exception
      */
@@ -106,9 +105,31 @@ trait Aliases
     }
 
     /**
+     * 接触别名关系
+     * @param $aliases
+     * @return int
+     */
+    public function detachAliases($aliases)
+    {
+        $ids = self::wrapToIds($aliases);
+
+        return $this->aliases()->detach($ids->all());
+    }
+
+    public function updateAliases($ids, $create_id = false)
+    {
+        Relation
+            ::alias()
+            ->leftIn([$this->primary_id])
+            ->delete()
+        ;
+
+        return $this->attachAliases($ids, $create_id);
+    }
+
+    /**
      * 获取出去他自己以外的别名标签
-     *
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAliases()
     {
@@ -169,7 +190,7 @@ trait Aliases
      * @param Collection $ids
      * @return Collection
      */
-    public static function convertToPrimarys($ids)
+    public static function convertToPrimaries($ids)
     {
         $aliases = Relation
             ::rightIn($ids)

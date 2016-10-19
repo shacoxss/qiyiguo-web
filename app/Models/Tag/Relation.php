@@ -18,6 +18,47 @@ class Relation extends Model
     protected $table        = self::TABLE;
     public $timestamps      = false;
 
+    /**
+     * 直接操作数据库来进行关系的转移
+     * 为了维持系统的一致性，转移后仅删除重复的项目，应该在调用后自己维持业务逻辑的需要
+     *
+     * @param Collection|array $transfer
+     * @param int $receiver
+     * @param bool $with_alias
+     * @return int
+     */
+    public static function relationTransfer($transfer, $receiver, $with_alias = false)
+    {
+        return
+            + self
+                ::leftIn($transfer)
+                ->update([self::LEFT => $receiver])
+
+            + self
+                ::similar()
+                ->rightIn($transfer)
+                ->update([self::RIGHT => $receiver])
+
+            + self
+                ::where(self::LEFT, \DB::raw('`'.self::RIGHT.'`'))
+                ->delete()
+
+            + $with_alias and
+
+            + self
+                ::alias()
+                ->rightIn($transfer)
+                ->update([self::LEFT => $receiver])
+
+            + self
+                ::alias()
+                ->where(self::RIGHT, $receiver)
+                ->delete()
+
+            ;
+    }
+
+    // 一下是sql操作的别名
     public function scopeAlias($query)
     {
         return $query->where(self::RELATION, self::RELATION_ALIAS);
@@ -60,46 +101,6 @@ class Relation extends Model
                 self::LEFT,
                 self::RIGHT
             ]);
-    }
-
-    /**
-     * 直接操作数据库来进行关系的转移
-     * 为了维持系统的一致性，转移后仅删除重复的项目，应该在调用后自己维持业务逻辑的需要
-     *
-     * @param Collection|array $transfer
-     * @param int $receiver
-     * @param bool $with_alias
-     * @return int
-     */
-    public static function relationTransfer($transfer, $receiver, $with_alias = false)
-    {
-        return
-            + self
-                ::leftIn($transfer)
-                ->update([self::LEFT => $receiver])
-
-            + self
-                ::similar()
-                ->rightIn($transfer)
-                ->update([self::RIGHT => $receiver])
-
-            + self
-                ::where(self::LEFT, \DB::raw('`'.self::RIGHT.'`'))
-                ->delete()
-
-            + $with_alias and
-
-            + self
-                ::alias()
-                ->rightIn($transfer)
-                ->update([self::LEFT => $receiver])
-
-            + self
-                ::alias()
-                ->where(self::RIGHT, $receiver)
-                ->delete()
-
-            ;
     }
 
 }

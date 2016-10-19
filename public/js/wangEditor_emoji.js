@@ -4,15 +4,15 @@
                                         var editor = new wangEditor('editor-trigger');
 
                                         // 上传图片
-                                        editor.config.uploadImgUrl = '/upload';
+                                        editor.config.uploadImgUrl = $uploadImgUrl;
                                         editor.config.uploadParams = {
-                                            // token1: 'abcde',
+                                            _token: $_token,
                                             // token2: '12345'
                                         };
                                         editor.config.uploadHeaders = {
                                             // 'Accept' : 'text/x-json'
                                         }
-                                        // editor.config.uploadImgFileName = 'myFileName';
+                                        editor.config.uploadImgFileName = 'files';
 
                                         // 隐藏网络图片
                                         // editor.config.hideLinkImg = true;
@@ -22,7 +22,7 @@
                                         editor.config.emotions = {
                                             'default': {
                                                 title: '默认',
-                                                data: "emotions.data"
+                                                data: '/pulgin/wangEditor/dist/emotions.data'
                                             },
                                             'weibo': {
                                                 title: '什么值得买',
@@ -288,7 +288,7 @@
                                         // editor.config.customUpload = true;
 
                                         // 普通菜单配置
-                                        editor.config.menus = [                                        
+                                        editor.config.menus = [
                                             'bold',
                                             'underline',
                                             'italic',
@@ -333,7 +333,7 @@
                                         // };
 
                                         // 取消过滤js
-                                        // editor.config.jsFilter = false;
+                                        editor.config.jsFilter = true;
 
                                         // 取消粘贴过来
                                         // editor.config.pasteFilter = false;
@@ -353,4 +353,8 @@
                                         //     normal: '<button style="font-size:20px; margin-top:5px;">I</button>',
                                         //     selected: '<button style="font-size:20px; margin-top:5px;"><i>I</i></button>'
                                         // };
+                                        editor.onchange = $editor_change()
+
                                         editor.create();
+
+                                        $content_length = editor.$txt.text().replace(/\s\s/g, '').length

@@ -16,6 +16,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('uploadHeadImg','uploadController@uploadHeadImg');
+Route::post('uploadWebLogo','uploadController@uploadWebLogo');
 
 Route::post('uploadHeadImg','uploadController@uploadHeadImg');
 Route::post('uploadWebLogo','uploadController@uploadWebLogo');
@@ -85,9 +87,6 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::get('masterCategory/{id}','categoryController@edit')->middleware('catAuth');
     Route::post('masterCategory/{id}','categoryController@update')->middleware('catAuth');
 });
-
-
 Route::get('noAuth',function(){
    return view('member.noAuth');
 });
-
