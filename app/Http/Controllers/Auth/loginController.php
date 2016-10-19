@@ -133,6 +133,7 @@ class loginController extends Controller
             $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
             Users::where('id',$user->id)->update($data);
             session(['user'=>$user]);
+            return redirect('auth/success');
         }else{
             $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
             if($user = Users::create($data)){
@@ -160,6 +161,7 @@ class loginController extends Controller
             $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
             Users::where('id',$user->id)->update($data);
             session(['user'=>$user]);
+            return redirect('auth/success');
         }else{
             $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
             if($user = Users::create($data)){
@@ -187,6 +189,7 @@ class loginController extends Controller
             $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
             Users::where('id',$user->id)->update($data);
             session(['user'=>$user]);
+            return redirect('auth/success');
         }else{
             $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
             if($user = Users::create($data)){
