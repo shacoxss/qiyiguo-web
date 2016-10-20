@@ -104,7 +104,9 @@
                         <a href="{{url('member/userManage/'.$v->id.'/edit')}}" class="btn btn-circle btn-warning ">编辑</a>
                         <a href="#" class="btn btn-circle btn-primary ">私信</a>
                         <a href="#" class="btn btn-circle btn-success ">看他</a>
+                        @if(!$v->admin)
                         <a href="javascript:void(0)" class="btn btn-circle btn-danger del" data-id="{{$v->id}}">删除</a>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
