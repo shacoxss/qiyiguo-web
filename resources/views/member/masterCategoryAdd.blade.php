@@ -191,7 +191,6 @@
 </div>
 <!--wangEditor js-->
 <script type="text/javascript" src="{{asset('pulgin/wangEditor/dist/js/wangEditor.js')}}"></script>
-<!--<script type="text/javascript" src="pulgin/wangEditor/dist/js/wangEditor.min.js"></script>-->
 <script type="text/javascript" src="{{asset('js/wangEditor_emoji.js')}}"></script>
 @section('script')
 	<div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
