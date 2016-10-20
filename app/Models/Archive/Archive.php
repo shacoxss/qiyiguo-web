@@ -75,4 +75,18 @@ class Archive extends Model
 
         return $this->save();
     }
+
+
+    public function generateTagUrl()
+    {
+        $model = $this->detail()->first();
+        $content = $model->content;
+        foreach ($this->tags()->get() as $tag) {
+            $name = trim($tag->name);
+            $content = str_replace($name, "<a href='$tag->url'>$tag->name</a>",$content);
+        }
+        $model->content = $content;
+        $model->save();
+    }
+
 }

@@ -136,6 +136,9 @@
 <!-- layer.js -->
 <script src="{{asset('pulgin/layer/layer.js?v=2.4')}}"></script>
 <link rel="stylesheet" href="{{asset('pulgin/layer/skin/layer.css')}}" media="all">
+<script>
+    $uploadImgUrl = '{{route('archives.upload')}}';
+</script>
 @yield('scripts')
 </body>
 </html>

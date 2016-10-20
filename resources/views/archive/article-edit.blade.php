@@ -1,4 +1,4 @@
-@extends('member.userCommon')
+@extends('member.'.$left)
 @section('content')
 <style>
     a.btn-xss {
@@ -50,7 +50,7 @@
                                                 <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
                                                 <input class="form-control" placeholder="标签" name="tags" value="{{$tags or ''}}">
                                                 <br>
-                                                <p>
+                                                <p style="display: none;">
                                                     推荐标签：
                                                     <span id="extract">
                                                     </span>
@@ -160,12 +160,12 @@
         $_token = '{{ csrf_token() }}';
         $uploadImgUrl = '{{route('archives.upload')}}';
         $extract_tags_url = '{{route('tag.extract')}}';
-        $archive_list_url = '{{route('userArchivesList')}}'
 
         var gen_add_tag = function () {
             $('#extract a.btn-xss').on('click', function () {
                 var input = $(this).parents('div.form-group').find('input')
                 input.val(input.val() + (input.val() ? ',' : '') + $(this).text())
+                if ($('#extract a.btn-xss').length == 1) $(this).parents('p').css('display', 'none')
                 $(this).remove()
             })
         }
@@ -186,8 +186,14 @@
                 contentType: false
             })
             .done(function (response) {
-                layer.msg(response.msg, {icon: 1})
-                window.location.href = $archive_list_url
+                layer.confirm('编辑成功', {
+                    title: '信息',
+                    btn: ['返回','继续修改'] //按钮
+                }, function () {
+                    history.go(-1)
+                }, function () {
+                    window.location.reload()
+                })
             })
             .fail(function (response) {
                 layer.msg("失败", {icon: 2})
@@ -231,9 +237,10 @@
                     $extract.html('')
                     for (var i = 0; i < sort.length; i++) {
                         $extract.append('<a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> '+sort[i].tag+'</a>')
-                        gen_add_tag()
                         if(i>7) break;
                     }
+                    gen_add_tag()
+                    $extract.parents('p').css('display', 'block')
                     lock_response = false
                 })
             }

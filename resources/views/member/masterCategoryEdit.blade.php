@@ -196,9 +196,8 @@
 	</div>
 </div>
 <!--wangEditor js-->
-<script type="text/javascript" src="{{asset('pulgin/wangEditor/dist/js/wangEditor.js')}}"></script>
-<!--<script type="text/javascript" src="pulgin/wangEditor/dist/js/wangEditor.min.js"></script>-->
-<script type="text/javascript" src="{{asset('js/wangEditor_emoji.js')}}"></script>
+
+@endsection
 @section('script')
 	<div class="loading" aria-label="Loading" role="img" tabindex="-1"></div>
 	<script src="{{asset('pulgin/layer/layer.js?v=2.4')}}"></script>
@@ -217,9 +216,11 @@
 		});
 	</script>
 
+	<script type="text/javascript" src="{{asset('pulgin/wangEditor/dist/js/wangEditor.js')}}"></script>
+	<!--<script type="text/javascript" src="pulgin/wangEditor/dist/js/wangEditor.min.js"></script>-->
+	<script type="text/javascript" src="{{asset('js/wangEditor_emoji.js')}}"></script>
 	<link href="{{asset('pulgin/uploadAvatar/cropper/cropper.min.css')}}" rel="stylesheet">
 	<link href="{{asset('pulgin/uploadAvatar/sitelogo/sitelogo.css')}}" rel="stylesheet">
 	<script src="{{asset('pulgin/uploadAvatar/cropper/cropper.min.js')}}"></script>
 	<script src="{{asset('pulgin/uploadAvatar/sitelogo/sitelogo.js')}}"></script>
-@endsection
 @endsection

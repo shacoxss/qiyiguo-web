@@ -125,9 +125,9 @@
                             @endif
                         </td>
                         <td class="center">
-                            <a href="{{route('archives.edit', [$a->id])}}" class="btn btn-circle btn-primary ">编辑</a>
+                            <a href="{{route('archives.edit', [$a->id, 'master'])}}" class="btn btn-circle btn-primary ">编辑</a>
                             {{--<a href="{{route('archives.edit', [$a->id])}}" class="btn btn-circle btn-success ">预览</a>--}}
-                            <a href="" class="btn btn-circle btn-danger ">删除</a>
+                            <a href="javascript:void(0)" class="btn btn-circle btn-danger delete-archives" data-id="{{$a->id}}">删除</a>
                             @if(session('user')->master)
                                 @if($a->hasPattern('review'))
                                     <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" data-id="{{$a->id}}" class="ajax-request btn btn-circle btn-danger ajax-request">不准看</a>
@@ -154,6 +154,31 @@
 <!-- Custom Theme JavaScript -->
 <script src={{asset("js/adminnine.js")}}></script>
 <script>
+    $destory_url = '{{url('member/archives/destroy')}}'
+    $('.delete-archives').click(function(){
+        var $this = $(this);
+        var id = $(this).data('id');
+        var token = "{{csrf_token()}}";
+        layer.confirm('确认删除文章?', {
+            title: '删除确认',
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            $.ajax({
+                url:$destory_url + '/' + id,
+                data:{id:id,_token:token},
+                type:'get',
+                success:function(data){
+                    if(data=='success'){
+                        layer.msg('删除成功!', {icon: 1});
+                        $this.parents('tr').remove();
+                    }else{
+                        layer.msg('删除失败!', {icon: 2});
+                    }
+                }
+            });
+
+        });
+    });
     @if(session('user')->master)
         var $status_4 = [
             'btn-danger', 'btn-success', '不准看', '',
@@ -196,9 +221,4 @@
     });
 
 </script>
-
-<!--wangEditor js-->
-<script type="text/javascript" src={{asset("pulgin/wangEditor/dist/js/wangEditor.js")}}></script>
-<!--<script type="text/javascript" src="pulgin/wangEditor/dist/js/wangEditor.min.js"></script>-->
-<script type="text/javascript" src={{asset("js/wangEditor_emoji.js")}}></script>
 @endsection

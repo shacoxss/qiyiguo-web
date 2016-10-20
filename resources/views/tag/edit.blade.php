@@ -1,4 +1,4 @@
-@extends('member.userCommon')
+@extends('member.masterCommon')
 @section('content')
 
 <style type="text/css">
@@ -74,7 +74,7 @@
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>URL自定义</label>
-                                                    <input class="form-control " placeholder="URL自定义" name="url" v-model="url">
+                                                    <input class="form-control " placeholder="URL自定义" name="current_url" v-model="current_url">
                                                     <p class="cur">默认全拼或英文，指定需检测是否重复</p>
                                                 </div>
                                                 <div class="form-group col-md-4">

@@ -125,7 +125,7 @@
                     @endif
                 </td>
                 <td class="center">
-                    <a href="{{route('archives.edit', [$a->id])}}" class="btn btn-circle btn-primary ">编辑</a>
+                    <a href="{{route('archives.edit', [$a->id, 'user'])}}" class="btn btn-circle btn-primary ">编辑</a>
                     {{--<a href="{{route('archives.edit', [$a->id])}}" class="btn btn-circle btn-success ">预览</a>--}}
                     <a href="javascript:void(0)" class="btn btn-circle btn-danger delete-archives" data-id="{{$a->id}}">删除</a>
                 </td>
@@ -149,6 +149,7 @@
 <script>
     $destory_url = '{{url('member/archives/destroy')}}'
     $('.delete-archives').click(function(){
+        var $this = $(this);
         var id = $(this).data('id');
         var token = "{{csrf_token()}}";
         layer.confirm('确认删除文章?', {
@@ -162,7 +163,7 @@
                 success:function(data){
                     if(data=='success'){
                         layer.msg('删除成功!', {icon: 1});
-                        location.reload();
+                        $this.parents('tr').remove();
                     }else{
                         layer.msg('删除失败!', {icon: 2});
                     }
@@ -189,9 +190,4 @@
     });
 
 </script>
-
-<!--wangEditor js-->
-<script type="text/javascript" src={{asset("pulgin/wangEditor/dist/js/wangEditor.js")}}></script>
-<!--<script type="text/javascript" src="pulgin/wangEditor/dist/js/wangEditor.min.js"></script>-->
-<script type="text/javascript" src={{asset("js/wangEditor_emoji.js")}}></script>
 @endsection

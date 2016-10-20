@@ -43,10 +43,20 @@ class ArchiveController extends Controller
         return view($type->t_edit)
             ->with('patterns', $patterns)
             ->with('cate', $cate)
+            ->with('left', 'userCommon')
         ;
     }
-    public function edit(Request $request, Archive $archive)
+    public function edit(Request $request, Archive $archive, $user_type)
     {
+        $user = session('user');
+        if ($user_type == 'master' && $user->master) {
+            $left = 'masterCommon';
+        } elseif ($archive->user_id == $user->id) {
+            $left = 'userCommon';
+        } else {
+            return abort(403, '禁止访问');
+        }
+
         $cate = Category::sort(Category::all());
         $patterns = \DB::table('patterns')
         ->where('type', 1)->get();
@@ -55,7 +65,8 @@ class ArchiveController extends Controller
             ->with('archive', $archive)
             ->with('patterns', $patterns)
             ->with('cate', $cate)
-            ->with('tags', implode(',', $archive->tags()->get()->pluck('name')->all()));
+            ->with('tags', implode(',', $archive->tags()->get()->pluck('name')->all()))
+            ->with('left', $left)
         ;
     }
 
@@ -81,7 +92,7 @@ class ArchiveController extends Controller
         $tags = explode(',', $request->tags);
         $tags = array_slice($tags, 0, 3);
         if (!empty($tags[0])) {
-            $tags = Tag::wrapToIds($tags, true);
+            $tags = Tag::wrapToIds($tags, true, true);
             $tags = Tag::convertToPrimaries($tags);
             $archive->tags()->attach($tags->all());
         }
@@ -90,18 +101,24 @@ class ArchiveController extends Controller
         $detail['archive_id'] = $archive->id;
 //        ((string)$type->model)::create($detail);
         (new $type->model($detail))->save();
+
+        $archive->generateTagUrl();
+
         return response()->json(['msg' => '保存成功！']);
     }
 
     public function update(Request $request, Archive $archive)
     {
+        $user = session('user');
+        ($archive->user_id == $user->id) || $this->checkMaster();
+
         $archive->detachPattern(7);
         $archive->mode = $this->calcMode($request, $archive->mode);
 
         $input = $request->only(['title', 'abstract', 'category_id']);
-        $input['user_id'] = session('user')->id;
+        //$input['user_id'] = session('user')->id;
         foreach ($input as $key => $i) {
-            $archive->$key = $i;
+            $archive->{$key} = $i;
         }
 
         if ($request->hasFile('cover')) {
@@ -117,9 +134,11 @@ class ArchiveController extends Controller
         $detail = $request->only(explode(',', $archive->type->fields));
         $model = $archive->detail()->first();
         foreach ($detail as $key => $i) {
-            $model->$key = $i;
+            $model->{$key} = $i;
         }
         $model->save();
+
+
         $tags = $archive->tags()->get()->pluck('id')->all();
         if (!empty($tags)) {
             $archive->tags()->detach($tags);
@@ -128,10 +147,12 @@ class ArchiveController extends Controller
         $tags = explode(',', $request->tags);
         if (!empty($tags[0])) {
             $tags = array_slice($tags, 0, 3);
-            $tags = Tag::wrapToIds($tags, true);
+            $tags = Tag::wrapToIds($tags, true, true);
             $tags = Tag::convertToPrimaries($tags);
             $archive->tags()->attach($tags->all());
         }
+
+        $archive->generateTagUrl();
 
         return response()->json(['msg' => '修改成功！']);
     }
@@ -169,6 +190,7 @@ class ArchiveController extends Controller
 
     public function toggle(Archive $archive, $name)
     {
+        $this->checkMaster();
         $archive->togglePattern($name);
         return response()->json(['msg' => '操作成功！']);
     }
@@ -191,5 +213,13 @@ class ArchiveController extends Controller
             Archive::destroy($id);
             echo 'success';
         }
+    }
+
+    private function checkMaster()
+    {
+        if (!session('user')->master) {
+            abort(403, '禁止访问');
+        }
+        return true;
     }
 }
