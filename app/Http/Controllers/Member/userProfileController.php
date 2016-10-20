@@ -151,14 +151,13 @@ class userProfileController extends Controller
         if($input = Input::except('_token')){
 
             $rules = [
-                'phone'=>'required|numeric|unique:users,phone',
+                'phone'=>'required|numeric',
                 'code'=>'required',
             ];
             $message = [
                 'code.required'=>'请填写验证码！',
                 'phone.required' => '新手机号不能为空！',
                 'phone.numeric' => '请填写正确的手机号！',
-                'phone.unique' => '电话号码已存在！',
             ];
             $validator = Validator::make($input,$rules,$message);
             if($validator->passes()){
@@ -166,14 +165,19 @@ class userProfileController extends Controller
                     return back()->with('errors','验证码错误！');
                 }else{
                     $data['phone'] = $input['phone'];
-                    $result = Users::where('id',$user->id)->update($data);
-                    if($result){
-                        $user = Users::where('id',$user->id)->first();
-                        session(['user'=>$user]);
-                        return back()->with('msg','电话号码绑定成功！');
-                    }else{
-                        return back()->with('errors','电话号码绑定失败！');
+                    //删除原有用户信息，合并
+                    if(Users::whwere('phone',$input['phone'])->first()){
+                        Users::whwere('phone',$input['phone'])->delete();
                     }
+                        $result = Users::where('id',$user->id)->update($data);
+                        if($result){
+                            $user = Users::where('id',$user->id)->first();
+                            session(['user'=>$user]);
+                            return back()->with('msg','电话号码绑定成功！');
+                        }else{
+                            return back()->with('errors','电话号码绑定失败！');
+                        }
+
                 }
             }else{
                 return back()->withErrors($validator);
