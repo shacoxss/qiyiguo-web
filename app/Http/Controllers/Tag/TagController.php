@@ -55,7 +55,7 @@ class TagController extends Controller
             $new['notice'] = $input['platform_notice'];
         }
 
-        $same = ['background_color', 'template', 'url', 'name', 'keywords', 'description'];
+        $same = ['background_color', 'template', 'current_url', 'name', 'keywords', 'description'];
 
         foreach ($same as $key) {
             $new[$key] = $input[$key];

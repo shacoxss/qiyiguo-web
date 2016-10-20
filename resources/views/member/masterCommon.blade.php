@@ -182,7 +182,7 @@
 <script>
     $uploadImgUrl = '{{route('archives.upload')}}';
     $_token = '{{ csrf_token() }}';
-    $editor_change = function (){};
+    $editor_change = function () {};
 </script>
 @yield('script')
 @yield('scripts')
