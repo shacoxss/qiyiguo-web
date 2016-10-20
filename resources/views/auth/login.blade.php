@@ -54,6 +54,7 @@
 <link rel="stylesheet" href="{{asset('pulgin/layer/skin/layer.css')}}" media="all">
 <script type="text/javascript">
   $(function(){
+    $('.alert-danger').hide();
     var index = parent.layer.getFrameIndex(window.name);
     //第三方登陆
     $('#qq').click(function(){
@@ -94,13 +95,12 @@
       parent.layer.close(index);
     });
 //第三方登陆结束
-    $('.alert-danger').hide();
+
     // 代码详细说明
     var handlerPopup = function (captchaObj) {
       // 注册提交按钮事件，比如在登陆页面的登陆按钮
       $("#popup-submit").click(function () {
         // 此处省略在登陆界面中，获取登陆数据的一些步骤
-
         // 先校验是否点击了验证码
         var validate = captchaObj.getValidate();
         if($('#remember').is(':checked')){
