@@ -33,6 +33,7 @@ class CreateTagsTable extends Migration
             $table->string('background_image')->nullable();
             $table->string('baidu_index')->nullable();
             $table->unsignedTinyInteger('status')->default(1);
+            $table->text('content')->nullable();
             $table->timestamps();
         });
     }

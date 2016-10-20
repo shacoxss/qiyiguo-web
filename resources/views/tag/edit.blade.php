@@ -345,7 +345,7 @@
                                             <link rel="stylesheet" type="text/css" href="{{asset('pulgin/wangEditor/dist/css/wangEditor.min.css')}}">
                                             
                                             <div id="editor-container" class="container">
-                                                <div id="editor-trigger"><p>请输入内容</p></div>
+                                                <div id="editor-trigger"><p>@{{ content }}</p></div>
                                                 <!-- <textarea id="editor-trigger" style="display:none;">
                                                     <p>请输入内容...</p>
                                                 </textarea> -->
@@ -495,6 +495,7 @@
 
                 submit : function (event) {
                     var formData = new FormData($('#tag-edit')[0])
+                    formData.append('content', editor.$txt.html())
                     $
                     .ajax({
                         url: $tag_update_url,
@@ -520,7 +521,6 @@
     <script src={{asset("vendor/datatables-responsive/dataTables.responsive.js")}}></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src={{asset("js/adminnine.js")}}></script>
     <script>
         $(document).ready(function() {
             $('#dataTables-userlist').DataTable({

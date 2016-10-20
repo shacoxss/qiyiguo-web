@@ -126,6 +126,7 @@ class Tag extends Model
                 }
 
                 if ($from_name || is_string($alias)) {
+                    $alias = trim($alias);
                     if ($tag = self::where('name', $alias)->value('id')) {
                         return $tag;
                     }

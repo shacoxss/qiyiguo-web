@@ -82,7 +82,6 @@
     <script src={{asset("vendor/datatables-responsive/dataTables.responsive.js")}}></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src={{asset("js/adminnine.js")}}></script>
     <script>
         var $status_4 = [
             'btn-danger', 'btn-success', '停用',  4,

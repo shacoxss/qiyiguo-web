@@ -102,7 +102,9 @@
                 <td><input type="checkbox" /></td>
                 <td>{{$a->id}}</td>
                 <td>
-                    <img src="{{route('image', [$a->cover, '30x30'])}}"  onerror="$(this).remove()" alt="" class="gridpic">
+                    @if($a->cover)
+                        <img src="{{route('image', [$a->cover, '30x30'])}}" onerror="$(this).remove()" alt="" class="gridpic">
+                    @endif
                     {{$a->title}}<br>
                     @foreach($a->patterns(1) as $p)
                     <i class="btn {{$p->description}} btn-xss">{{$p->display_name}}</i>
@@ -145,7 +147,6 @@
 <script src={{asset("vendor/datatables-responsive/dataTables.responsive.js")}}></script>
 
 <!-- Custom Theme JavaScript -->
-<script src={{asset("js/adminnine.js")}}></script>
 <script>
     $destory_url = '{{url('member/archives/destroy')}}'
     $('.delete-archives').click(function(){

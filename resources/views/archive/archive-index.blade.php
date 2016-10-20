@@ -154,7 +154,6 @@
 <script src={{asset("vendor/datatables-responsive/dataTables.responsive.js")}}></script>
 
 <!-- Custom Theme JavaScript -->
-<script src={{asset("js/adminnine.js")}}></script>
 <script>
     $destory_url = '{{url('member/archives/destroy')}}'
     $('.delete-archives').click(function(){

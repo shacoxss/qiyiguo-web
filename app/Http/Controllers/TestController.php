@@ -23,7 +23,7 @@ class TestController extends Controller
         //Relation::relationTransfer([4], 3, true);
         //Tag::test();
         //(Tag::find(9)->getRelatedTags(1, true));
-        dd(Tag::find($request->id)->url);
+        echo(Tag::find(2)->content);
     //    (Tag::create([
     //        'name' => $request->name
     //    ]));

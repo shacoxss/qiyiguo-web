@@ -55,7 +55,7 @@ class TagController extends Controller
             $new['notice'] = $input['platform_notice'];
         }
 
-        $same = ['background_color', 'template', 'current_url', 'name', 'keywords', 'description'];
+        $same = ['background_color', 'template', 'current_url', 'name', 'keywords', 'description', 'content'];
 
         foreach ($same as $key) {
             $new[$key] = $input[$key];
@@ -98,8 +98,7 @@ class TagController extends Controller
 
     public function status(Tag $tag, $code)
     {
-        $tag->status = $code;
-        $tag->save();
+        Tag::where('id', $tag->id)->update(['status' => $code]);
         return response()->json(['msg' => '操作成功！']);
     }
 
