@@ -45,13 +45,17 @@ class powersController extends Controller
     {
         if($input = Input::except('_token')){
             if($input['id']){
-            $data['user_manage'] = isset($input['user_manage'])?1:0;
-            $data['content_manage'] = isset($input['content_manage'])?1:0;
-            $data['tag_manage'] = isset($input['tag_manage'])?1:0;
-            $data['cat_manage'] = isset($input['cat_manage'])?1:0;
-            $data['user_manage'] = isset($input['user_manage'])?1:0;
-            $data['root_manage'] = isset($input['root_manage'])?1:0;
-            $data['global_manage'] = isset($input['global_manage'])?1:0;
+                $data['master'] = 1;
+                $data['user_manage'] = isset($input['user_manage'])?1:0;
+                $data['content_manage'] = isset($input['content_manage'])?1:0;
+                $data['tag_manage'] = isset($input['tag_manage'])?1:0;
+                $data['cat_manage'] = isset($input['cat_manage'])?1:0;
+                $data['user_manage'] = isset($input['user_manage'])?1:0;
+                $data['root_manage'] = isset($input['root_manage'])?1:0;
+                $data['global_manage'] = isset($input['global_manage'])?1:0;
+                if($data['user_manage']&&$data['content_manage']&&$data['tag_manage']&&$data['cat_manage']&&$data['user_manage']&&$data['root_manage']&&$data['global_manage']){
+                    $data['admin'] = 1;
+                }
             if(Users::where('id',$input['id'])->first()){
                 if(Users::where('id',$input['id'])->update($data)){
                     return back()->with('edit_msg','权限修改成功！');

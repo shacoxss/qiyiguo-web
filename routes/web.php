@@ -70,6 +70,12 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::post('resetNickname','userProfileController@resetNickname');
     Route::post('resetPhone','userProfileController@resetPhone');
     Route::post('bindingPhone','userProfileController@bindingPhone');
+    Route::get('weixinWeb', 'userProfileController@weixinWeb');
+    Route::get('weixinWebCallback', 'userProfileController@weixinWebCallback');
+    Route::get('qq', 'userProfileController@qq');
+    Route::get('qqCallback', 'userProfileController@qqCallback');
+    Route::get('weibo', 'userProfileController@weibo');
+    Route::get('weiboCallback', 'userProfileController@weiboCallback');
     Route::resource('userManage','userManageController');
     Route::post('saveNickname','userManageController@saveNickname')->middleware('userManageAuth');
     Route::post('savePhonePassword','userManageController@savePhonePassword')->middleware('userManageAuth');

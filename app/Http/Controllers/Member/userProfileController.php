@@ -151,14 +151,13 @@ class userProfileController extends Controller
         if($input = Input::except('_token')){
 
             $rules = [
-                'phone'=>'required|numeric|unique:users,phone',
+                'phone'=>'required|numeric',
                 'code'=>'required',
             ];
             $message = [
                 'code.required'=>'请填写验证码！',
                 'phone.required' => '新手机号不能为空！',
                 'phone.numeric' => '请填写正确的手机号！',
-                'phone.unique' => '电话号码已存在！',
             ];
             $validator = Validator::make($input,$rules,$message);
             if($validator->passes()){
@@ -166,20 +165,116 @@ class userProfileController extends Controller
                     return back()->with('errors','验证码错误！');
                 }else{
                     $data['phone'] = $input['phone'];
-                    $result = Users::where('id',$user->id)->update($data);
-                    if($result){
-                        $user = Users::where('id',$user->id)->first();
-                        session(['user'=>$user]);
-                        return back()->with('msg','电话号码绑定成功！');
-                    }else{
-                        return back()->with('errors','电话号码绑定失败！');
+                    //删除原有用户信息，合并
+                    if(Users::whwere('phone',$input['phone'])->first()){
+                        Users::whwere('phone',$input['phone'])->delete();
                     }
+                        $result = Users::where('id',$user->id)->update($data);
+                        if($result){
+                            $user = Users::where('id',$user->id)->first();
+                            session(['user'=>$user]);
+                            return back()->with('msg','电话号码绑定成功！');
+                        }else{
+                            return back()->with('errors','电话号码绑定失败！');
+                        }
+
                 }
             }else{
                 return back()->withErrors($validator);
             }
         }else{
             return back()->with('errors','错误！');
+        }
+    }
+    public function weixinWeb()
+    {
+        return \Socialite::with('weixinweb')->redirect();
+    }
+
+    public function weixinWebCallback()
+    {
+        $oauthUser = \Socialite::with('weixinweb')->user();
+        $data['binding_weixin'] = 1;
+        $data['wx_open_id'] = $oauthUser->getId();
+        $data['nickname'] = $oauthUser->getNickname();
+        $data['head_img'] = $oauthUser->avatar();
+        $user = User::where('wx_open_id',$oauthUser->getId())->first();
+        //已绑定
+        if($user){
+            $url = url('member/userProfile');
+            echo "<script>window.parent.location.href = '".$url."';</script>";
+        }else{
+        //未绑定
+            $user = session('user');
+            if(Users::where('id',$user->id)->update($data)){
+                $user = Users::where('id',$user->id)->first();
+                session(['user'=>$user]);
+                $url = url('member/userProfile');
+                echo "<script>window.parent.location.href = '".$url."';</script>";
+            }
+        }
+    }
+    //QQ登陆
+    public function qq()
+    {
+        return \Socialite::with('qq')->redirect();
+
+    }
+
+    public function qqCallback()
+    {
+        $oauthUser = \Socialite::with('qq')->user();
+        //登陆成功处理
+        $data['binding_qq'] = 1;
+        $data['qq_open_id'] = $oauthUser->getId();
+        $data['nickname'] = $oauthUser->getNickname();
+        $data['head_img'] = $oauthUser->getAvatar();
+        $user = User::where('qq_open_id',$oauthUser->getId())->first();
+
+        //已绑定
+        if($user){
+            $url = url('member/userProfile');
+            echo "<script>window.parent.location.href = '".$url."';</script>";
+        }else{
+            //未绑定
+            $user = session('user');
+            if(Users::where('id',$user->id)->update($data)){
+                $user = Users::where('id',$user->id)->first();
+                session(['user'=>$user]);
+                $url = url('member/userProfile');
+                echo "<script>window.parent.location.href = '".$url."';</script>";
+            }
+        }
+    }
+    //微博登陆
+    public function weibo()
+    {
+        return \Socialite::with('weibo')->redirect();
+    }
+
+    public function weiboCallback()
+    {
+        $oauthUser = \Socialite::with('weibo')->user();
+        //登陆成功处理
+        $data['binding_weibo'] = 1;
+        $data['wb_open_id'] = $oauthUser->getId();
+        $data['nickname'] = $oauthUser->getNickname();
+        $data['head_img'] = $oauthUser->getAvatar();
+        $user = User::where('wb_open_id',$oauthUser->getId())->first();
+
+        //已绑定
+        if($user){
+            $url = url('member/userProfile');
+            echo "<script>window.parent.location.href = '".$url."';</script>";
+        }else{
+            //未绑定
+            $user = session('user');
+            if(Users::where('id',$user->id)->update($data)){
+                $user = Users::where('id',$user->id)->first();
+                session(['user'=>$user]);
+                $url = url('member/userProfile');
+                echo "<script>window.parent.location.href = '".$url."';</script>";
+            }
         }
     }
 }
