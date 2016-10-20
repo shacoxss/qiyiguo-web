@@ -17,69 +17,34 @@ use Symfony\Component\Process\Exception\InvalidArgumentException;
  * @property string  primary_id
  * @property $this  primary_tag
  * @property int status
+ * @property string abbr
  */
 class Tag extends Model
 {
     use RelationAble, Aliases, Similars, BaiduIndexAble;
 
-    const PINYIN_BREAK = '-';
+    const PINYIN_BREAK = '';
     const TAG_URL = '/tag/';
     const AUTO_SUFFIX_LIMIT = 1;
     //
     protected $guarded = [];
 
-    /**
-     * Save a new model and return the instance.
-     *
-     * @param  array $attributes
-     * @return static
-     */
-    public static function create(array $attributes = [])
-    {
-        $model = new static($attributes);
-
-        if ($msg = $model->isInvalidName()) {
-            throw new InvalidArgumentException($msg);
-        }
-
-        if (empty($model->pinyin)) {
-            $model->autoComputePinyin();
-        }
-
-        if (empty($model->url)) {
-            $model->autoComputeUrl();
-        }
-
-        $model->save();
-        return $model;
-    }
-
     /**auto compute pinyin
      *
      * @return static
      */
-    private function autoComputePinyin()
+    public function autoComputePinyin()
     {
         $pinyin = new Pinyin();
-        $this->pinyin = $pinyin->permalink($this->name, self::PINYIN_BREAK);
-        return $this;
-    }
-
-    /**auto compute unique url
-     *
-     * @return static
-     */
-    private function autoComputeUrl()
-    {
-        if (empty($this->pinyin)) {
-            $this->autoComputePinyin();
-        }
-
-        $this->url = self::TAG_URL.$this->pinyin;
+        $this->pinyin = strtolower($pinyin->permalink($this->name, self::PINYIN_BREAK));
+        $this->abbr = strtolower($pinyin->abbr($this->name, self::PINYIN_BREAK));
 
         //set the url unique
-        while (self::where('url', $this->url)->first()) {
-            $this->url .= '-'.strtolower(Str::random(self::AUTO_SUFFIX_LIMIT));
+        while (self::where('pinyin', $this->pinyin)->first()) {
+            $this->pinyin .= self::PINYIN_BREAK.strtolower(Str::random(self::AUTO_SUFFIX_LIMIT));
+        }
+        while (self::where('abbr', $this->abbr)->first()) {
+            $this->abbr .= self::PINYIN_BREAK.strtolower(Str::random(self::AUTO_SUFFIX_LIMIT));
         }
 
         return $this;
@@ -90,7 +55,7 @@ class Tag extends Model
      *
      * @return string
      */
-    protected function isInvalidName()
+    public function isInvalidName()
     {
         $error_message = '';
 
@@ -144,22 +109,23 @@ class Tag extends Model
      * @param array $tags
      * 如果标签名不存在，是否创建它
      * @param bool $create_it
+     * @param $from_name
      * @return \Illuminate\Support\Collection
      */
-    public static function wrapToIds($tags, $create_it = false)
+    public static function wrapToIds($tags, $create_it = false , $from_name = false)
     {
         return collect($tags)
-            ->map(function ($alias) use($create_it) {
+            ->map(function ($alias) use($create_it, $from_name) {
                 
                 if ($alias instanceof static) {
                     return $alias->id;
                 }
 
-                if (is_numeric($alias)) {
+                if (is_numeric($alias) && !$from_name) {
                     return $alias;
                 }
 
-                if (is_string($alias)) {
+                if ($from_name || is_string($alias)) {
                     if ($tag = self::where('name', $alias)->value('id')) {
                         return $tag;
                     }
@@ -189,7 +155,15 @@ class Tag extends Model
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function archives()
-     {
+    {
          return $this->belongsToMany('App\Models\Archive\Archive');
-     }
+    }
+
+    public function getUrlAttribute()
+    {
+        if ($this->current_url) return $this->current_url;
+
+        return self::TAG_URL . (mb_strlen($this->pinyin) > 10 ? $this->abbr : $this->pinyin);
+    }
+
 }

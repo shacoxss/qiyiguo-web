@@ -12,8 +12,8 @@ class Article extends Model
     public $primaryKey = 'archive_id';
     public $guarded = [];
 
-    public function saveData(Request $request)
+    public function archive()
     {
-
+        return $this->hasOne('App\Models\Archive\Archive');
     }
 }

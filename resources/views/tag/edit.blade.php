@@ -1,4 +1,4 @@
-@extends('member.userCommon')
+@extends('member.masterCommon')
 @section('content')
 
 <style type="text/css">

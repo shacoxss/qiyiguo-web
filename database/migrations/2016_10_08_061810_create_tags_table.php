@@ -16,8 +16,9 @@ class CreateTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->string('url')->unique();
-            $table->string('pinyin');
+            $table->string('url')->unique()->nullable();
+            $table->string('pinyin')->unique();
+            $table->string('abbr', 20)->unique();
             $table->char('background_color', 8)->nullable();
             $table->string('logo')->nullable();
             $table->char('type', 20)->default('normal');
