@@ -16,7 +16,7 @@ class CreateTagsTable extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->string('url')->unique()->nullable();
+            $table->string('current_url')->unique()->nullable();
             $table->string('pinyin')->unique();
             $table->string('abbr', 20)->unique();
             $table->char('background_color', 8)->nullable();
@@ -32,6 +32,7 @@ class CreateTagsTable extends Migration
             $table->string('description')->nullable();
             $table->string('background_image')->nullable();
             $table->string('baidu_index')->nullable();
+            $table->unsignedTinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

@@ -11,7 +11,7 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
 
     Route::get('/userArchivesList','Archive\ArchiveController@userArchivesList' )->name('userArchivesList');
 
-    Route::get('/tag/index', 'Tag\TagController@index')->name('tag.index');
+    Route::get('/tags', 'Tag\TagController@index')->name('tag.index');
 
     Route::get('/tag/{tag_name}/edit', 'Tag\TagController@edit')->name('tag.edit');
     Route::get('/tag/{tag_name}/status/{code}', 'Tag\TagController@status')->name('tag.status');
@@ -58,3 +58,5 @@ Route::get('/image/{uri}/{size}', function ($uri, $size) {
     $img->fit($size[0], $size[1]);
     return $img->response('png');
 })->name('image')->where(['uri' => '.+']);
+
+Route::get('/tag/{tag}', 'Tag\TagHeadController@index');

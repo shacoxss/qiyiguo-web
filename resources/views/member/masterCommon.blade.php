@@ -181,6 +181,8 @@
 <script src="{{asset('pulgin/layer/layer.js?v=2.4')}}"></script>
 <script>
     $uploadImgUrl = '{{route('archives.upload')}}';
+    $_token = '{{ csrf_token() }}';
+    $editor_change = function (){};
 </script>
 @yield('script')
 @yield('scripts')
