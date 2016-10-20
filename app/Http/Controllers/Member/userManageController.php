@@ -22,14 +22,19 @@ class userManageController extends Controller
     public function destroy($user_id)
     {
         if(is_numeric($user_id)){
-            $result = Users::where('id',$user_id)->delete();
-            if($result){
-                return 'success';
+            $user = Users::where('id',$user_id)->first();
+            if($user->admin){
+                return '超级管理员不允许删除！';
             }else{
-                return 'error';
+                $result = Users::where('id',$user_id)->delete();
+                if($result){
+                    return 'success';
+                }else{
+                    return 'error';
+                }
             }
         }else{
-            $result = Users::destroy(explode(',',$user_id));
+            $result = Users::where('admin',0)->destroy(explode(',',$user_id));
             if($result){
                 return 'success';
             }else{
