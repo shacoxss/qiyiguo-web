@@ -10,7 +10,6 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-require dirname(__FILE__).'/tag.php';
 
 Route::get('/', function () {
     return view('welcome');
@@ -96,3 +95,6 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
 Route::get('noAuth',function(){
    return view('member.noAuth');
 });
+
+
+require dirname(__FILE__).'/tag.php';

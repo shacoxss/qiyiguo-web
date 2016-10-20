@@ -138,6 +138,8 @@
 <link rel="stylesheet" href="{{asset('pulgin/layer/skin/layer.css')}}" media="all">
 <script>
     $uploadImgUrl = '{{route('archives.upload')}}';
+    $_token = '{{ csrf_token() }}';
+    $editor_change = function () {};
 </script>
 @yield('scripts')
 </body>
