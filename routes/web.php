@@ -15,6 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//home
+Route::group(['namespace'=>'Home'],function(){
+    Route::get('contentLists','contentController@lists');
+});
+
+
+
+
 Route::post('uploadHeadImg','uploadController@uploadHeadImg');
 Route::post('uploadWebLogo','uploadController@uploadWebLogo');
 

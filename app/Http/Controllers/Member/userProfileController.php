@@ -27,6 +27,8 @@ class userProfileController extends Controller
             }else{
                 $result = Users::where('id',session('user')->id)->update($data);
                 if($result){
+                    $user = Users::where('id',session('user')->id)->first();
+                    session(['user'=>$user]);
                     return back()->with('msg','头像修改成功！');
                 }else{
                     return back()->with('error','头像修改失败！');
