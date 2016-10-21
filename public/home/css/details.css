@@ -1767,6 +1767,7 @@ padding: 5px 20px;
 .zbd-v-guanzhu p{
 	margin: 0;
 	text-align: center;
+	margin-top: 20px;
 }
 /*tuku*/
 .masonry_brick .title {
@@ -2772,7 +2773,9 @@ margin-left: 20px;
 	margin-bottom: 0;
 }
 
-.author-recommand-img:hover .author-recommand-img-shade {
+.author-recommand-img:hover .author-recommand-img-shade,
+.author-recommand-img:hover .author-recommand-video-shade,
+.author-recommand-img:hover .author-recommand-article-shade {
 	opacity: 0;
 	background-color: transparent;
 	
@@ -2782,7 +2785,9 @@ margin-left: 20px;
  	opacity: 1;
  	
  }
-.author-recommand-img-shade,.author-recommand-img-tab-shade,.tab-block-a-shade{
+.author-recommand-img-shade,.author-recommand-img-tab-shade,.tab-block-a-shade,
+.author-recommand-article-shade,
+.author-recommand-video-shade{
 	-webkit-transition:all .5s ease-in-out;
 	transition:all .5s ease-in-out;
 	-moz-transition:all .5s ease-in-out;
@@ -2790,4 +2795,18 @@ margin-left: 20px;
 .tab-block-a:hover .tab-block-a-shade{
 	opacity: 1;
     box-shadow: 0px 0px 56px 26px rgba(0,0,0,0.5) inset;
+}
+.tab-block-video-shade{
+	background: url(../images/tab/img-shade.png)center no-repeat;
+}
+.news-d-about-author-r-add{
+	display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: url(../images/tab/add.png)center no-repeat;
+    border: none;
+    background-size: 24px 24px;
+    position: absolute;
+    top: 0;
+    left: 81px;
 }

@@ -1,4 +1,4 @@
-@extends('pc_home.common')
+@extends('pc_home.commonOut')
 @section('content')
 		<!--轮播图-->
 		<div class="am-g">

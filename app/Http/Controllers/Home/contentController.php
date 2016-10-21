@@ -14,4 +14,9 @@ class contentController extends Controller
     {
         return view('pc_home.newsList');
     }
+
+    public function detail($id)
+    {
+        return view('pc_home.newsDetail');
+    }
 }
