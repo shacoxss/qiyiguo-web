@@ -171,7 +171,7 @@
 									&nbsp;{{date('n-d G:i', strtotime($archive->updated_at))}}
 								</span>
 								<p>
-									{{ mb_substr($archive->abstract, 0, 80) }}...
+									{{ mb_substr($archive->abstract, 0, 66) }}...
 								</p>
 								<dl class="tab-block-r-ul">
 									@foreach($archive->tags()->get() as $tag)
