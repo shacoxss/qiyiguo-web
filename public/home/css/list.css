@@ -116,7 +116,7 @@ p {
 }
 
 .liulan {
-	padding: 0px 13px 58px;
+	padding: 0px 13px 67px;
 	height: 12px;
 	overflow: hidden;
 	width: 330px;
@@ -471,28 +471,6 @@ img.list-pics {
 	transition: .5s;
 }
 
-.ym {
-	position: absolute;
-	bottom: 36px;
-	left: 33%;
-}
-
-.ym li {
-	float: left;
-	width: 40px;
-	height: 40px;
-	text-align: center;
-	display: inline-block;
-	border: 1px solid #000000;
-	line-height: 38px;
-	margin: 0 5px;
-	font-size: 14px;
-}
-
-.ym li:hover {
-	background-color: #99cc33;
-	color: #FFFFFF;
-}
 
 .pt {
 	margin-top: 50px;

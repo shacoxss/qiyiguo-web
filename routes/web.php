@@ -18,6 +18,7 @@ Route::get('/', function () {
 //home
 Route::group(['namespace'=>'Home'],function(){
     Route::get('contentLists','contentController@lists');
+    Route::get('contentDetail/{id}','contentController@detail');
 });
 
 

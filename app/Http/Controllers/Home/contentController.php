@@ -21,4 +21,9 @@ class contentController extends Controller
             ->with('archives', $archives)
         ;
     }
+
+    public function detail($id)
+    {
+        return view('pc_home.newsDetail');
+    }
 }
