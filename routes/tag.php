@@ -50,7 +50,7 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
     });
 });
 
-Route::get('/image/{uri}/{size}', function ($uri, $size) {
+Route::get('/image/{uri}/{size}.jpeg', function ($uri, $size) {
     $img = Image::make(asset($uri));
     $size = explode('x', $size);
     if(!isset($size[1])) $size[1] = $size[0];
