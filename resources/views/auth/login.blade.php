@@ -96,8 +96,40 @@
     });
 //第三方登陆结束
 
+    document.onkeydown = function(e){
+
+      var ev = document.all ? window.event : e;
+      if(ev.keyCode==13) {
+        if($('#remember').is(':checked')){
+          var remember = 1;
+        }else{
+          var remember = 0;
+        }
+        var phone = $("#phone").val();
+        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+        if(!myreg.test(phone))
+        {
+          $('.alert-danger').show();
+          $('.alert-danger').text('请输入有效的手机号码！');
+          return;
+        }
+        var password = $("#password").val();
+        if(password.length == 0){
+          $('.alert-danger').show();
+          $('.alert-danger').text('密码不能为空！');
+          return;
+        }
+        return geetest.show()
+        // 提交验证码信息，比如登陆页面，你需要提交登陆信息，用户名和密码等登陆数据
+
+      }
+    }
+
+
+
     // 代码详细说明
     var handlerPopup = function (captchaObj) {
+
       // 注册提交按钮事件，比如在登陆页面的登陆按钮
       $("#popup-submit").click(function () {
         // 此处省略在登陆界面中，获取登陆数据的一些步骤
@@ -157,6 +189,7 @@
       });
       captchaObj.bindOn("#popup-submit");
       captchaObj.appendTo(".text-center");
+      geetest = captchaObj;
     };
     $.ajax({
 
