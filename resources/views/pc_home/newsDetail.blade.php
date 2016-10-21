@@ -61,13 +61,17 @@
 						<div class="news-d-author-title">关于作者 <span>About the author</span> </div>
 						<div class="am-u-sm-6 ">
 							<div class="news-d-about-author-l">
-								<img src="{{asset('home/images/tab/tx.jpg')}}" />
+								@if($archive->user->head_img)
+									<img src="{{route('image', [$archive->user->head_img, '161x161'])}}" alt=""/>
+								@else
+									<img src="{{asset('img/200200.png')}}" alt=""/>
+								@endif
 							</div>
 
 						</div>
 						<div class="am-u-sm-6">
 							<div class="news-d-about-author-r">
-								<h3>青桑君</h3>
+								<h3>{{$archive->user->nickname}}</h3>
 								<button class="news-d-about-author-r-add"></button>
 								
 								<p>个人简介：网络就像是监狱，本来是偷了个钱包进来的，等出去的 时候就什么都学会了。</p>
