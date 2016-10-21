@@ -58,6 +58,7 @@
 					<a class="arrow" href="javascript:void(0)" style="display: none;"></a>
 				</div>
 			</div>
+			<script type="text/javascript" src="{{asset('home/js/jquery.SuperSlide.2.1.1.js')}}"></script>
 			<script type="text/javascript">
 				jQuery(".slider .bd li").first().before(jQuery(".slider .bd li").last());
 				jQuery(".slider").hover(function() {

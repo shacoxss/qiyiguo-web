@@ -219,7 +219,7 @@
         var reg_url = "{{url('register')}}";
         var forget_url = "{{url('forget')}}";
         var qq_login = "{{url('auth/qq')}}";
-        var wx_login = "{{url('auth/weixin')}}";
+        var wx_login = "{{url('auth/weixinWeb')}}";
         var login = {
             init: function() {
 
