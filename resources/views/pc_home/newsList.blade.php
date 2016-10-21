@@ -1,4 +1,4 @@
-@extends('pc_home.common')
+@extends('pc_home.commonOut')
 @section('content')
 		<!--轮播图-->
 		<div class="am-g">
@@ -151,152 +151,42 @@
 								</li>
 							</ul>
 						</div>
-						</div>
-						<div class="am-g list-c">
+					</div>
+					@foreach($archives as $archive)
+					<div class="am-g list-c">
 						<div class="am-u-sm-12 am-u-sm-centered list-box">
-							<div class="am-u-sm-4" style="padding: 0;margin-right: 30px;"> 
-								<a href=""><img class="am-thumbnail list-pic" src="{{asset('home/images/banner-3.jpg')}}" alt=""/></a>
+							<div class="am-u-sm-4" style="padding: 0;margin-right: 30px;">
+								<a href="#">
+									@if($archive->cover)
+										<img class="am-thumbnail list-pic" src="{{route('image', [$archive->cover, '264x160'])}}" alt=""/>
+									@else
+										<img class="am-thumbnail list-pic" src="{{asset('img/200200.png')}}" alt=""/>
+									@endif
+								</a>
 							</div>
 							<div class="am-thumbnail-caption content-list">
-                                <a href=""> <h3>守望先锋 能否上场的阻击手</h3></a>
-                                <span><a href="">tkor</a>-1小时前</span>
-							<p>如果非要讲守望先锋里面究竟谁可以拯救世界，我想作为一款FPS游戏，大 概狙击才是最有可能完成这项任务的位置。
-							</p>
-							<dl class="tab-block-r-ul">
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-							</dl>
-							<p style="text-align: right;">
-								<span><img src="{{asset('home/images/pinglun.png')}}">300</span>
-								<span><img src="{{asset('home/images/shoucang.png')}}">300</span>
-							</p>
+								<a href="#"> <h3>{{$archive->title}}</h3></a>
+								<span>
+									<a href="#">{{ $archive->user->nickname }}</a>
+									-1小时前
+								</span>
+								<p>
+									{{ mb_substr($archive->abstract, 0, 80) }}...
+								</p>
+								<dl class="tab-block-r-ul">
+									@foreach($archive->tags()->get() as $tag)
+									<dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
+									@endforeach
+								</dl>
+								<p style="text-align: right;">
+									<span><img src="{{asset('home/images/pinglun.png')}}">300</span>
+									<span><img src="{{asset('home/images/shoucang.png')}}">{{$archive->like}}</span>
+								</p>
+							</div>
 						</div>
 					</div>
-				</div>
-
-				<div class="am-g list-c">
-					<div class="am-u-sm-12 am-u-sm-centered list-box">
-						<div class="am-u-sm-4" style="padding: 0;margin-right: 30px;">
-							<a href=""><img class="am-thumbnail list-pic" src="{{asset('home/images/banner-3.jpg')}}" alt="" /></a>
-						</div>
-						<div class="am-thumbnail-caption content-list">
-							<a href="">
-								<h3>守望先锋 能否上场的阻击手</h3></a>
-							<span><a href="">tkor</a>-1小时前</span>
-							<p>如果非要讲守望先锋里面究竟谁可以拯救世界，我想作为一款FPS游戏，大 概狙击才是最有可能完成这项任务的位置。
-							</p>
-							<dl class="tab-block-r-ul">
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-							</dl>
-							<p style="text-align: right;">
-								<span><img src="{{asset('home/images/pinglun.png')}}">300</span>
-								<span><img src="{{asset('home/images/shoucang.png')}}">300</span>
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="am-g list-c">
-					<div class="am-u-sm-12 am-u-sm-centered list-box">
-						<div class="am-u-sm-4" style="padding: 0;margin-right: 30px;">
-							<a href=""><img class="am-thumbnail list-pic" src="{{asset('home/images/banner-3.jpg')}}" alt="" /></a>
-						</div>
-						<div class="am-thumbnail-caption content-list">
-							<a href="">
-								<h3>守望先锋 能否上场的阻击手</h3></a>
-							<span><a href="">tkor</a>-1小时前</span>
-							<p>如果非要讲守望先锋里面究竟谁可以拯救世界，我想作为一款FPS游戏，大 概狙击才是最有可能完成这项任务的位置。
-							</p>
-							<dl class="tab-block-r-ul">
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-							</dl>
-							<p style="text-align: right;">
-								<span><img src="{{asset('home/images/pinglun.png')}}">300</span>
-								<span><img src="{{asset('home/images/shoucang.png')}}">300</span>
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="am-g list-c">
-					<div class="am-u-sm-12 am-u-sm-centered list-box">
-						<div class="am-u-sm-4" style="padding: 0;margin-right: 30px;">
-							<a href=""><img class="am-thumbnail list-pic" src="{{asset('home/images/banner-3.jpg')}}" alt="" /></a>
-						</div>
-						<div class="am-thumbnail-caption content-list">
-							<a href="">
-								<h3>守望先锋 能否上场的阻击手</h3></a>
-							<span><a href="">tkor</a>-1小时前</span>
-							<p>如果非要讲守望先锋里面究竟谁可以拯救世界，我想作为一款FPS游戏，大 概狙击才是最有可能完成这项任务的位置。
-							</p>
-							<dl class="tab-block-r-ul">
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-							</dl>
-							<p style="text-align: right;">
-								<span><img src="{{asset('home/images/pinglun.png')}}">300</span>
-								<span><img src="{{asset('home/images/shoucang.png')}}">300</span>
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<div class="am-g list-c">
-					<div class="am-u-sm-12 am-u-sm-centered list-box">
-						<div class="am-u-sm-4" style="padding: 0;margin-right: 30px;">
-							<a href=""><img class="am-thumbnail list-pic" src="{{asset('home/images/banner-3.jpg')}}" alt="" /></a>
-						</div>
-						<div class="am-thumbnail-caption content-list">
-							<a href="">
-								<h3>守望先锋 能否上场的阻击手</h3></a>
-							<span><a href="">tkor</a>-1小时前</span>
-							<p>如果非要讲守望先锋里面究竟谁可以拯救世界，我想作为一款FPS游戏，大 概狙击才是最有可能完成这项任务的位置。
-							</p>
-							<dl class="tab-block-r-ul">
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-							</dl>
-							<p style="text-align: right;">
-								<span><img src="{{asset('home/images/pinglun.png')}}">300</span>
-								<span><img src="{{asset('home/images/shoucang.png')}}">300</span>
-							</p>
-						</div>
-					</div>
-				</div>
-
-				<ul data-am-widget="pagination" class="am-pagination am-pagination-default tab-news-pagination">
-					<li class="am-pagination-btn ">
-						<a href="#" class="tab-news-last-page"><i class="am-icon-angle-left"></i></a>
-					</li>
-
-					<li class="">
-						<a href="#" class="">1</a>
-					</li>
-					<li class="am-active">
-						<a href="#" class="am-active">2</a>
-					</li>
-					<li class="">
-						<a href="#" class="">3</a>
-					</li>
-					<li class="">
-						<a href="#" class="">4</a>
-					</li>
-					<li class="">
-						<a href="#" class="">5</a>
-					</li>
-
-					<li class="am-pagination-btn ">
-						<a href="#" class="tab-news-next-page"><i class="am-icon-angle-right"></i></a>
-					</li>
-
-				</ul>
+					@endforeach
+					{{ $archives->links() }}
 			</div>
 			<div class="am-u-sm-4 " style="width: 370px;padding: 0;">
 				<div class="am-g" style="width: 370px;padding: 0;margin-left: 0;">

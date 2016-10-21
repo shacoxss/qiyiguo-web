@@ -12,7 +12,7 @@ class TagHeadController extends Controller
     //
     public function index(Tag $tag)
     {
-        if ($tag->status != 2) abort(404);
+        //if ($tag->status != 2) abort(404);
         dd($tag->archives()->get());
     }
 }

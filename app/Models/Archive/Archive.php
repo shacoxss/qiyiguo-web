@@ -34,12 +34,15 @@ class Archive extends Model
 
     public function tags()
     {
-        return $this->belongsToMany('App\Models\Tag\Tag');
+        return $this
+            ->belongsToMany('App\Models\Tag\Tag')
+            ->where('status', 2)
+        ;
     }
 
     public function hasPattern($pattern)
     {
-        $mode = DB::table('patterns')->where('name', $pattern)->value('pattern');
+        $mode = \DB::table('patterns')->where('name', $pattern)->value('pattern');
         return ($this->mode & $mode) == $mode;
     }
 
@@ -65,7 +68,7 @@ class Archive extends Model
      */
     public function togglePattern($name)
     {
-        $pattern = DB::table('patterns')->where('name' ,$name)->value('pattern');
+        $pattern = \DB::table('patterns')->where('name' ,$name)->value('pattern');
 
         if($this->hasPattern($name)) {
             $this->detachPattern($pattern);
@@ -87,6 +90,12 @@ class Archive extends Model
         }
         $model->content = $content;
         $model->save();
+    }
+
+    public function scopeOfPattern($query, $pattern)
+    {
+        $pattern = \DB::table('patterns')->where('name' ,$pattern)->value('pattern');
+        return $query->whereRaw("(`mode` & $pattern) = $pattern");
     }
 
 }

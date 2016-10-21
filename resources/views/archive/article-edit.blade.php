@@ -242,6 +242,8 @@
                     gen_add_tag()
                     $extract.parents('p').css('display', 'block')
                     lock_response = false
+                }).fail(function () {
+                    lock_response = false;
                 })
             }
 

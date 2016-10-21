@@ -1,7 +1,6 @@
 <?php
 
 
-
 Route::get('/test', 'TestController@index');
 Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
 
@@ -59,16 +58,15 @@ Route::get('/image/{uri}/{size}', function ($uri, $size) {
     return $img->response('png');
 })->name('image')->where(['uri' => '.+']);
 
-Route::get('/tags/{tag}', 'TagHeadController@index');
+Route::get('/tag/{tag}', 'TagHeadController@index');
 
 Route::bind('tag', function ($name) {
     $tag = App\Models\Tag\Tag::where('pinyin', $name)->first();
-
     return $tag ? $tag : App\Models\Tag\Tag::where('abbr', $name)->firstOrFail();
 });
 
 Route::get('/{defined}', function (\Illuminate\Http\Request $request, $url) {
-    $tag = \App\Models\Tag\Tag::where('current_url', '/'.$request->path())->firstOrFail();
 
+    $tag = \App\Models\Tag\Tag::where('current_url', '/'.$request->path())->firstOrFail();
     return (new \App\Http\Controllers\TagHeadController)->index($tag);
 })->where(['defined' => '.+']);

@@ -105,21 +105,26 @@
                     }
                 }
             });
-
-            $('.ajax-request').on('click', function () {
-                var $this = $(this)
-                $.getJSON($this.data('href'), function (response) {
-                    var node = $this.hasClass('btn-success') ? $status_4 : $status_2
-                    $this[0].dataset.href = "/member/tag/"+$this[0].dataset.pinyin+"/status/" + node[3]
-                    $this
-                        .addClass(node[0])
-                        .removeClass(node[1])
-                        .text(node[2]).parents('tr')
-                        .find('.tag-status')
-                        .html(node[4])
-                    layer.msg(response.msg, {icon: 1})
+            function gen_status () {
+                $('.ajax-request').on('click', function () {
+                    var $this = $(this)
+                    $.getJSON($this.data('href'), function (response) {
+                        var node = $this.hasClass('btn-success') ? $status_4 : $status_2
+                        $this[0].dataset.href = "/member/tag/"+$this[0].dataset.pinyin+"/status/" + node[3]
+                        $this
+                                .addClass(node[0])
+                                .removeClass(node[1])
+                                .text(node[2]).parents('tr')
+                                .find('.tag-status')
+                                .html(node[4])
+                        layer.msg(response.msg, {icon: 1})
+                    })
                 })
-            })
+            }
+
+            gen_status()
+
+            $('.paginate_button').on('click' , gen_status)
         });
     </script>
 

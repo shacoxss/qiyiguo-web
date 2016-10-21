@@ -20,7 +20,7 @@ class ArchiveController extends Controller
     {
         $user = session('user');
         if (!$user->master) abort(403);
-        $archives = Archive::all();
+        $archives = Archive::orderBy('created_at', 'desc')->get();
         if($request->has('mode')) {
             $archives = $archives->filter(function ($a) use($request) {
                 return !$a->hasPattern($request->mode);
@@ -198,7 +198,7 @@ class ArchiveController extends Controller
     public function userArchivesList()
     {
         $user = session('user');
-        $archives = Archive::where('user_id', $user->id)->get();
+        $archives = Archive::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
         $counter = [
             'article' => Archive::where('archive_type_id', 1)->where('user_id', $user->id)->count()
         ];
