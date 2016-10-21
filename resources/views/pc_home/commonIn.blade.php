@@ -134,7 +134,7 @@
     <div class="all-tabs" style=" border-top: 1px solid #666666;" data-hide="1">
         <div class="all-tabs-inside">
             <ul id="all_tag">
-                @foreach(session('tags') as $v)
+                @foreach($allTags as $v)
                 <li>
                     <a href="{{$v->url}}">{{$v->name}}</a>
                 </li>
