@@ -30,6 +30,7 @@ Route::post('uploadWebLogo','uploadController@uploadWebLogo');
 Route::post('uploadHeadImg','uploadController@uploadHeadImg');
 Route::post('uploadWebLogo','uploadController@uploadWebLogo');
 Route::post('uploadBackground','uploadController@uploadBackground');
+Route::post('more','uploadController@more');
 
 
 Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
@@ -49,6 +50,7 @@ Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
 
     Route::get('weibo', 'loginController@weibo');
     Route::get('weiboCallback', 'loginController@weiboCallback');
+    Route::any('bindingPhone','RegisterController@binding');
 });
 Route::group(['prefix'=>'register','namespace'=>'Auth'],function(){
     Route::any('/','RegisterController@reg');
@@ -56,6 +58,7 @@ Route::group(['prefix'=>'register','namespace'=>'Auth'],function(){
     Route::post('verifyLogin','RegisterController@verifyLogin');
     Route::post('checkPhone','RegisterController@checkPhone');
     Route::get('success','RegisterController@regSuccess');
+
 });
 Route::group(['prefix'=>'forget','namespace'=>'Auth'],function(){
     Route::any('/','ForgotPasswordController@forget');

@@ -133,52 +133,15 @@
     </div>
     <div class="all-tabs" style=" border-top: 1px solid #666666;" data-hide="1">
         <div class="all-tabs-inside">
-            <ul>
+            <ul id="all_tag">
+                @foreach(session('tags') as $v)
                 <li>
-                    <a href="">守望先锋</a>
+                    <a href="{{$v->url}}">{{$v->name}}</a>
                 </li>
-                <li>
-                    <a href="">英雄联盟</a>
-                </li>
-
-                <li>
-                    <a href="">娱乐</a>
-
-                </li>
-
-                <li>
-                    <a href="">段子</a>
-                </li>
-                <li>
-                    <a href="">盖伦</a>
-                </li>
-                <li>
-                    <a href="">美女主播</a>
-                </li>
-                <li>
-                    <a href="">cosplay</a>
-                </li>
-                <li>
-                    <a href="">守望先锋</a>
-                </li>
-                <li>
-                    <a href="">英雄联盟</a>
-                </li>
-
-                <li>
-                    <a href="">娱乐</a>
-
-                </li>
-
-                <li>
-                    <a href="">段子</a>
-                </li>
-                <li>
-                    <a href="">盖伦</a>
-                </li>
+                @endforeach
             </ul>
             <div class="am-g tab-inside-icon">
-                <a href=""><i class="am-icon-angle-double-down"></i></a>
+                <a href="javascript:;"><i class="am-icon-angle-double-down" data-row="1"></i></a>
             </div>
         </div>
     </div>
@@ -375,7 +338,7 @@
         login.init();
 
         //全部标签
-        $(".am-dropdown-toggle").click(function(){
+        $(".am-dropdown-toggle").click(function(event){
             if($(".all-tabs").data('hide')){
                 $(".all-tabs").show();
                 $(".all-tabs").data('hide',0);
@@ -383,6 +346,37 @@
                 $(".all-tabs").hide();
                 $(".all-tabs").data('hide',1);
             }
+            event.stopPropagation();
+        })
+        $('.all-tabs').click(function (event) {
+            event.stopPropagation();
+        })
+        //加载更多标签
+        $('.am-icon-angle-double-down').click(function(){
+            var _token = "{{csrf_token()}}";
+            var row =$(this).data('row');
+            $.ajax({
+                url:"{{url('more')}}",
+                type:"post",
+                data:{_token:_token,row:row},
+                success:function(data){
+                    if(data=='null'){
+                        layer.msg('没有更多了');
+                    }else{
+                        row +=1;
+                        $('.am-icon-angle-double-down').data('row',row);
+                        for(var i= 0;i<data.length;i++){
+                            $('#all_tag').append('<li>'+
+                                    '<a href="'+data[i].url+'">'+data[i].name+'</a>'+
+                                    '</li>');
+                        }
+                    }
+                }
+            });
+        });
+        $('body').click(function(event){
+                $(".all-tabs").hide();
+            $(".all-tabs").data('hide',1);
         })
     })
 </script>

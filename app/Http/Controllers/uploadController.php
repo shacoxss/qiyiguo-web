@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Model\Users;
+use App\Models\Tag\Tag;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -44,4 +45,16 @@ class uploadController extends Controller
 
     }
 
+    public function more()
+    {
+
+        $input = Input::except('_token');
+        $row = $input['row'] * 48;
+        $tags = Tag::where('status',2)->orderBy('weight','desc')->orderBy('created_at','desc')->skip($row)->take(48)->get();
+        if(count($tags)){
+            return response()->json($tags);
+        }else{
+            return 'null';
+        }
+    }
 }
