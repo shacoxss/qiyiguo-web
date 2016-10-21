@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 
 class contentController extends Controller
 {
-    public function lists(Request $request)
+    public function contentLists(Request $request)
     {
         $archives = Archive::ofPattern('review')
             ->orderBy('weight', 'desc')
@@ -22,8 +22,12 @@ class contentController extends Controller
         ;
     }
 
-    public function detail($id)
+    public function detail(Archive $archive)
     {
-        return view('pc_home.newsDetail');
+        if (!$archive->hasPattern('review')) return response('没有通过审核', 404);
+
+        return view('pc_home.newsDetail')
+            ->with('archive', $archive)
+        ;
     }
 }
