@@ -26,7 +26,7 @@
     </a>
 </div>
 
-<header class="am-topbar header tab-header">
+<header class="am-topbar header tab-header" style="height: auto;">
     <div class="content">
         <h1 class="am-topbar-brand header-logo-brand">
             <a href="#" class="logo tab-logo"></a>
@@ -77,7 +77,6 @@
                     <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;" style="color: #FFFFFF;">
                         全部标签 <span class="am-icon-caret-down"></span>
                     </a>
-
                 </li>
             </ul>
             <form class="am-topbar-form am-topbar-left am-form-inline tab-search" role="search">
@@ -86,7 +85,7 @@
                     <i class="am-icon-search"></i>
                 </div>
             </form>
-
+@if(empty(session('user')))
             <div class="am-topbar-right am-topbar-right-regist tab-regist">
                 <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm header-btn tab-btn ">注册</button>
             </div>
@@ -94,45 +93,45 @@
             <div class="am-topbar-right  tab-login">
                 <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm header-btn u-login tab-btn">登录</button>
             </div>
-
-            <!--<div class="am-topbar-right already-l" style="margin-top:15px">
+@else
+            <div class="am-topbar-right already-l" style="margin-top:30px">
                 <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
-                    <a href="/member"><span class="l-pic"><img src="http://qzapp.qlogo.cn/qzapp/101317981/3CD76D25A9FB48DEEDFC30A7FE5F43DB/50"></span>
-                        <span class="l-txt">璐祎yi</span><span class="am-icon-caret-down"></span></a>
+                    <a href="{{url('member/index')}}"><span class="l-pic"><img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'"></span>
+                        <span class="l-txt">{{session('user')->nickname}}</span><span class="am-icon-caret-down"></span></a>
 
-                    <!--<button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle">其他 <span class="am-icon-caret-down"></span></button>-->
-            <!--<ul class="am-dropdown-content already-l-ul">
+            <ul class="am-dropdown-content already-l-ul">
                         <li>
 
-                            <a href="" target="_blank"><span class="menu-span menu-span1"></span>会员中心</a>
+                            <a href="{{url('member/index')}}" target="_blank"><span class="menu-span menu-span1"></span>会员中心</a>
 
                         </li>
                         <li>
 
-                            <a href="" target="_blank"><span class="menu-span menu-span2"></span>我的稿件</a>
+                            <a href="{{url('member/userArchivesList')}}" target="_blank"><span class="menu-span menu-span2"></span>我的稿件</a>
 
                         </li>
                         <li>
-                            <a href="" target="_blank"><span class="menu-span menu-span3"></span>我的收藏</a>
-
-                        </li>
-                        <li>
-
-                            <a href="" target="_blank"><span class="menu-span menu-span4"></span>修改资料</a>
+                            <a href="{{url('member/userCollect')}}" target="_blank"><span class="menu-span menu-span3"></span>我的收藏</a>
 
                         </li>
                         <li>
 
-                            <a href="" target="_blank"><span class="menu-span menu-span5"></span>退出 </a>
+                            <a href="{{url('member/userProfile')}}" target="_blank"><span class="menu-span menu-span4"></span>修改资料</a>
+
+                        </li>
+                        <li>
+
+                            <a href="{{url('auth/logout')}}" target="_blank"><span class="menu-span menu-span5"></span>退出 </a>
 
                         </li>
 
                     </ul>
                 </div>
-            </div>-->
+            </div>
+@endif
         </div>
     </div>
-    <div class="all-tabs">
+    <div class="all-tabs" style=" border-top: 1px solid #666666;" data-hide="1">
         <div class="all-tabs-inside">
             <ul>
                 <li>
@@ -176,12 +175,6 @@
                 </li>
                 <li>
                     <a href="">盖伦</a>
-                </li>
-                <li>
-                    <a href="">美女主播</a>
-                </li>
-                <li>
-                    <a href="">cosplay</a>
                 </li>
             </ul>
             <div class="am-g tab-inside-icon">
@@ -269,6 +262,7 @@
 </html>
 <script>
     $(function(){
+        $(".all-tabs").hide();
         var url = "{{url('auth/startCaptcha')}}";
         var login = {
             init: function() {
@@ -303,9 +297,9 @@
                     var handlerPopup = function (captchaObj) {
                         // 注册提交按钮事件，比如在登陆页面的登陆按钮
                         $("#popup-submit").click(function () {
-                            layer.closeAll();
                             // 此处省略在登陆界面中，获取登陆数据的一些步骤
                             // 先校验是否点击了验证码
+
                             var validate = captchaObj.getValidate();
                             var phone = $("#phone").val();
                             var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
@@ -332,7 +326,7 @@
                                     // 用户名和密码等其他数据，自己获取，不做演示
                                     phone:phone,
                                     password:password,
-                                    remember:remember,
+                                    remember:0,
                                     _token:"{{csrf_token()}}",
                                     geetest_challenge: validate.geetest_challenge,
                                     geetest_validate: validate.geetest_validate,
@@ -343,10 +337,12 @@
                                 // 当然，正常情况是返回JSON数据
                                 success: function (result) {
                                     if(result=='success'){
-                                        location.href = "{{url('auth/success')}}";
+                                        location.reload();
                                     }else{
                                         layer.msg(result);
                                     }
+                                },error:function(data){
+                                    console.log(data)
                                 }
                             });
                         });
@@ -377,5 +373,16 @@
             }
         }
         login.init();
+
+        //全部标签
+        $(".am-dropdown-toggle").click(function(){
+            if($(".all-tabs").data('hide')){
+                $(".all-tabs").show();
+                $(".all-tabs").data('hide',0);
+            }else{
+                $(".all-tabs").hide();
+                $(".all-tabs").data('hide',1);
+            }
+        })
     })
 </script>
