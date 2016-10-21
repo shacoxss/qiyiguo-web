@@ -17,8 +17,8 @@ Route::get('/', function () {
 
 //home
 Route::group(['namespace'=>'Home'],function(){
-    Route::get('contentLists','contentController@contentLists')->name('archive.index');
-    Route::get('archive/{archive}','contentController@detail')->name('archive.show');
+    Route::get('contentLists','contentController@lists');
+    Route::get('contentDetail/{id}','contentController@detail');
 });
 
 
@@ -50,7 +50,6 @@ Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
 
     Route::get('weibo', 'loginController@weibo');
     Route::get('weiboCallback', 'loginController@weiboCallback');
-    Route::any('bindingPhone','RegisterController@binding');
 });
 Route::group(['prefix'=>'register','namespace'=>'Auth'],function(){
     Route::any('/','RegisterController@reg');
@@ -58,7 +57,7 @@ Route::group(['prefix'=>'register','namespace'=>'Auth'],function(){
     Route::post('verifyLogin','RegisterController@verifyLogin');
     Route::post('checkPhone','RegisterController@checkPhone');
     Route::get('success','RegisterController@regSuccess');
-
+    Route::any('bindingPhone','RegisterController@binding');
 });
 Route::group(['prefix'=>'forget','namespace'=>'Auth'],function(){
     Route::any('/','ForgotPasswordController@forget');
