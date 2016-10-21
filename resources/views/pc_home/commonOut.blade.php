@@ -79,50 +79,51 @@
                     <a href=""><em>/</em>天梯<em>/</em></a>
                 </li>
             </ul>
-
-            <!--<div class="am-topbar-right am-topbar-right-regist">
+@if(!session('user'))
+            <div class="am-topbar-right am-topbar-right-regist">
             <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm header-btn ">注册</button>
         </div>
 
         <div class="am-topbar-right">
             <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm header-btn u-login">登录</button>
-        </div>-->
-
+        </div>
+@else
             <div class="am-topbar-right already-l">
                 <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
-                    <a href="/member"><span class="l-pic"><img src="http://qzapp.qlogo.cn/qzapp/101317981/3CD76D25A9FB48DEEDFC30A7FE5F43DB/50"></span>
-                        <span class="l-txt">璐祎yi</span><span class="am-icon-caret-down"></span></a>
+                    <a href="{{url('member/index')}}"><span class="l-pic"><img src="{{session('user')->head_img}}"></span>
+                        <span class="l-txt">{{session('user')->name}}</span><span class="am-icon-caret-down"></span></a>
 
                     <!--<button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle">其他 <span class="am-icon-caret-down"></span></button>-->
                     <ul class="am-dropdown-content already-l-ul">
                         <li>
 
-                            <a href="" class="user_icon1" target="_blank"><span class="menu-span menu-span1"></span>会员中心</a>
+                            <a href="{{url('member/index')}}" class="user_icon1" target="_blank"><span class="menu-span menu-span1"></span>会员中心</a>
 
                         </li>
                         <li>
 
-                            <a href="" class="user_icon1" target="_blank"><span class="menu-span menu-span2"></span>我的稿件</a>
+                            <a href="{{url('member/userArchivesList')}}" class="user_icon1" target="_blank"><span class="menu-span menu-span2"></span>我的稿件</a>
 
                         </li>
                         <li>
-                            <a href="" class="user_icon1" target="_blank"><span class="menu-span menu-span3"></span>我的收藏</a>
-
-                        </li>
-                        <li>
-
-                            <a href="" class="user_icon1" target="_blank"><span class="menu-span menu-span4"></span>修改资料</a>
+                            <a href="{{url('member/userCollect')}}" class="user_icon1" target="_blank"><span class="menu-span menu-span3"></span>我的收藏</a>
 
                         </li>
                         <li>
 
-                            <a href="" class="user_icon1" target="_blank"><span class="menu-span menu-span5"></span>退出 </a>
+                            <a href="{{url('member/userProfile')}}" class="user_icon1" target="_blank"><span class="menu-span menu-span4"></span>修改资料</a>
+
+                        </li>
+                        <li>
+
+                            <a href="{{url('auth/logout')}}" class="user_icon1" target="_blank"><span class="menu-span menu-span5"></span>退出 </a>
 
                         </li>
 
                     </ul>
                 </div>
             </div>
+    @endif
         </div>
     </div>
 
