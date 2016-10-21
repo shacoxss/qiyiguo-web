@@ -55,7 +55,7 @@ Route::get('/image/{uri}/{size}', function ($uri, $size) {
     $size = explode('x', $size);
     if(!isset($size[1])) $size[1] = $size[0];
     $img->fit($size[0], $size[1]);
-    return $img->response('png');
+    return $img->response('jpeg');
 })->name('image')->where(['uri' => '.+']);
 
 Route::get('/tag/{tag}', 'TagHeadController@index');
