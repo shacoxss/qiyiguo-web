@@ -11,6 +11,10 @@
     <script type="text/javascript" src="{{asset('home/js/jquery.SuperSlide.2.1.1.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/base.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/list.js')}}"></script>
+    <script type="text/javascript" src="{{asset('home/js/layer.js')}}"></script>
+    <script src="http://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="http://static.geetest.com/static/tools/gt.js"></script>
+
 
     <title></title>
 </head>
@@ -79,50 +83,51 @@
                     <a href=""><em>/</em>天梯<em>/</em></a>
                 </li>
             </ul>
-
-            <!--<div class="am-topbar-right am-topbar-right-regist">
+@if(!session('user'))
+            <div class="am-topbar-right am-topbar-right-regist">
             <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm header-btn ">注册</button>
         </div>
 
         <div class="am-topbar-right">
             <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm header-btn u-login">登录</button>
-        </div>-->
-
+        </div>
+@else
             <div class="am-topbar-right already-l">
                 <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
-                    <a href="/member"><span class="l-pic"><img src="http://qzapp.qlogo.cn/qzapp/101317981/3CD76D25A9FB48DEEDFC30A7FE5F43DB/50"></span>
-                        <span class="l-txt">璐祎yi</span><span class="am-icon-caret-down"></span></a>
+                    <a href="{{url('member/index')}}"><span class="l-pic"><img src="{{session('user')->head_img}}"></span>
+                        <span class="l-txt">{{session('user')->name}}</span><span class="am-icon-caret-down"></span></a>
 
                     <!--<button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle">其他 <span class="am-icon-caret-down"></span></button>-->
                     <ul class="am-dropdown-content already-l-ul">
                         <li>
 
-                            <a href="" class="user_icon1" target="_blank"><span class="menu-span menu-span1"></span>会员中心</a>
+                            <a href="{{url('member/index')}}" class="user_icon1" target="_blank"><span class="menu-span menu-span1"></span>会员中心</a>
 
                         </li>
                         <li>
 
-                            <a href="" class="user_icon1" target="_blank"><span class="menu-span menu-span2"></span>我的稿件</a>
+                            <a href="{{url('member/userArchivesList')}}" class="user_icon1" target="_blank"><span class="menu-span menu-span2"></span>我的稿件</a>
 
                         </li>
                         <li>
-                            <a href="" class="user_icon1" target="_blank"><span class="menu-span menu-span3"></span>我的收藏</a>
-
-                        </li>
-                        <li>
-
-                            <a href="" class="user_icon1" target="_blank"><span class="menu-span menu-span4"></span>修改资料</a>
+                            <a href="{{url('member/userCollect')}}" class="user_icon1" target="_blank"><span class="menu-span menu-span3"></span>我的收藏</a>
 
                         </li>
                         <li>
 
-                            <a href="" class="user_icon1" target="_blank"><span class="menu-span menu-span5"></span>退出 </a>
+                            <a href="{{url('member/userProfile')}}" class="user_icon1" target="_blank"><span class="menu-span menu-span4"></span>修改资料</a>
+
+                        </li>
+                        <li>
+
+                            <a href="{{url('auth/logout')}}" class="user_icon1" target="_blank"><span class="menu-span menu-span5"></span>退出 </a>
 
                         </li>
 
                     </ul>
                 </div>
             </div>
+    @endif
         </div>
     </div>
 
@@ -208,3 +213,120 @@
 </body>
 
 </html>
+<script>
+    $(function(){
+        var url = "{{url('auth/startCaptcha')}}";
+        var reg_url = "{{url('register')}}";
+        var forget_url = "{{url('forget')}}";
+        var login = {
+            init: function() {
+
+                $('.u-login').click(function() {
+
+                    layer.open({
+                        type: 1,
+                        title: false,
+                        closeBtn: 0,
+                        shadeClose: true,
+                        zIndex:899990,
+                        content: '<div class="login-pop"data-point="dlk"><div class="login-pop-close"></div><div class="login-pop-tab"><ul><li><a href="#" class="t-login current">登录</a></li><li><a href="'+reg_url+'" target="_blank">注册</a></li></ul></div><div class="login-pop-cont clearfix"><div class="c-item clearfix popLogin"><form method="post" action=""><input type="hidden" name="name" value="login"><input type="hidden" name="dopost" value="login"><input type="hidden" name="gourl" value=""><p><input class="ipt" type="text" name="userid" id="phone" placeholder="电话号码"></p><p><input class="ipt" type="password" name="pwd" id="password" placeholder="密码"></p><div class="toreg clearfix"><input class="btn-sub"type="button"value="登录" id="popup-submit"><p>没有账号？<a href="'+reg_url+'" title="马上注册" target="_blank">马上注册</a></p></div></form></div><div class="c-oth"><p>用第三方账号直接登录</p><div><a href="" class="btn-qq"target="_blank"title="QQ账号登录"data-point-2="qq"><span class="dy-icon dy-sina"></span><span>QQ账号登录</span></a></div><div><a href="" class="btn-wx"target="_blank"title="微信登录"data-point-2="qq"><span class="dy-icon dy-wx"></span><span>微信登录</span></a></div><p class="forget-pass"><a href="'+forget_url+'" target="_blank">忘记密码？</a></p></div></div></div>'
+                    })
+                    $(".t-login").on("click", function() {
+                        $(".t-login").addClass("current");
+                        $(".t-reg").removeClass("current");
+                        $(".popLogin").removeClass("hide");
+                        $(".popReg").addClass("hide");
+                    })
+                    $(".t-reg").on("click", function() {
+                        $(".t-reg").addClass("current");
+                        $(".t-login").removeClass("current");
+                        $(".popLogin").addClass("hide");
+                        $(".popReg").removeClass("hide");
+                    })
+                    $(".login-pop-close").on("click", function() {
+                        layer.closeAll();
+                    })
+
+                    // 代码详细说明
+                    var handlerPopup = function (captchaObj) {
+                        // 注册提交按钮事件，比如在登陆页面的登陆按钮
+                        $("#popup-submit").click(function () {
+                            // 此处省略在登陆界面中，获取登陆数据的一些步骤
+                            // 先校验是否点击了验证码
+
+                            var validate = captchaObj.getValidate();
+                            var phone = $("#phone").val();
+                            var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+                            if(!myreg.test(phone))
+                            {
+                                layer.msg('请输入有效的手机号码！');
+                                return;
+                            }
+                            var password = $("#password").val();
+                            if(password.length == 0){
+                                layer.msg('密码不能为空！');
+                                return;
+                            }
+                            if (!validate) {
+                                layer.msg('请先完成验证！');
+                                return;
+                            }
+                            // 提交验证码信息，比如登陆页面，你需要提交登陆信息，用户名和密码等登陆数据
+                            $.ajax({
+                                url: "{{url('auth/verifyLogin')}}",
+                                type: "post",
+                                // dataType: "json",
+                                data: {
+                                    // 用户名和密码等其他数据，自己获取，不做演示
+                                    phone:phone,
+                                    password:password,
+                                    remember:0,
+                                    _token:"{{csrf_token()}}",
+                                    geetest_challenge: validate.geetest_challenge,
+                                    geetest_validate: validate.geetest_validate,
+                                    geetest_seccode: validate.geetest_seccode
+                                },
+                                // 这里是正确返回处理结果的处理函数
+                                // 假设你就返回了1，2，3
+                                // 当然，正常情况是返回JSON数据
+                                success: function (result) {
+                                    if(result=='success'){
+                                        location.reload();
+                                    }else{
+                                        layer.msg(result);
+                                    }
+                                },error:function(data){
+                                    console.log(data)
+                                }
+                            });
+                        });
+                        captchaObj.bindOn("#popup-submit");
+                        captchaObj.appendTo(".login-pop");
+                    };
+
+                    $.ajax({
+                        // 获取id，challenge，success（是否启用failback）
+                        url:  url+ "/"+(new Date()).getTime(), // 加随机数防止缓存
+                        type: "get",
+                        dataType: "json",
+                        success: function (data) {
+                            // 使用initGeetest接口
+                            // 参数1：配置参数
+                            // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+                            initGeetest({
+                                gt: data.gt,
+                                challenge: data.challenge,
+                                product: "popup", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+                                offline: !data.success // 表示用户后台检测极验服务器是否宕机，与SDK配合，用户一般不需要关注
+                            }, handlerPopup);
+                        }
+                    });
+
+
+                });
+            }
+        }
+        login.init();
+
+    })
+</script>

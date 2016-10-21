@@ -17,6 +17,8 @@ class Auth
     {
         if(!session('user')){
             return redirect('auth');
+        }elseif( session('user') && empty(session('user')->phone)){
+            return redirect('auth/bindingPhone');
         }
 
         return $next($request);

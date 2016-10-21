@@ -36,6 +36,34 @@ class RegisterController extends Controller
             return view('auth.register');
         }
     }
+
+    public function binding()
+    {
+        if($input = Input::except('_token')){
+            if($input['code'] == session('code')){
+                $user = session('user');
+                $data['phone'] = $input['phone'];
+                $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
+                    if(Users::where('id',$user->id)->update($data)){
+                        $user = Users::where('id',$user->id)->first();
+                        session(['user'=>$user]);
+                        return response()->json('success');
+                    }else{
+                        return response()->json('error');
+                    }
+
+            }else{
+                return response()->json('验证码错误！');
+            }
+
+        }else{
+            if(!session('user')){
+                return view('auth.register');
+            }else {
+                return view('auth.bindingPhone');
+            }
+        }
+    }
     //验证码
     public function startCaptcha()
     {

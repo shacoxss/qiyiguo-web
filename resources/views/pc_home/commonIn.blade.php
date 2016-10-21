@@ -133,52 +133,15 @@
     </div>
     <div class="all-tabs" style=" border-top: 1px solid #666666;" data-hide="1">
         <div class="all-tabs-inside">
-            <ul>
+            <ul id="all_tag">
+                @foreach($allTags as $v)
                 <li>
-                    <a href="">守望先锋</a>
+                    <a href="{{$v->url}}">{{$v->name}}</a>
                 </li>
-                <li>
-                    <a href="">英雄联盟</a>
-                </li>
-
-                <li>
-                    <a href="">娱乐</a>
-
-                </li>
-
-                <li>
-                    <a href="">段子</a>
-                </li>
-                <li>
-                    <a href="">盖伦</a>
-                </li>
-                <li>
-                    <a href="">美女主播</a>
-                </li>
-                <li>
-                    <a href="">cosplay</a>
-                </li>
-                <li>
-                    <a href="">守望先锋</a>
-                </li>
-                <li>
-                    <a href="">英雄联盟</a>
-                </li>
-
-                <li>
-                    <a href="">娱乐</a>
-
-                </li>
-
-                <li>
-                    <a href="">段子</a>
-                </li>
-                <li>
-                    <a href="">盖伦</a>
-                </li>
+                @endforeach
             </ul>
             <div class="am-g tab-inside-icon">
-                <a href=""><i class="am-icon-angle-double-down"></i></a>
+                <a href="javascript:;"><i class="am-icon-angle-double-down" data-row="1"></i></a>
             </div>
         </div>
     </div>
@@ -264,6 +227,8 @@
     $(function(){
         $(".all-tabs").hide();
         var url = "{{url('auth/startCaptcha')}}";
+        var reg_url = "{{url('register')}}";
+        var forget_url = "{{url('forget')}}";
         var login = {
             init: function() {
 
@@ -275,7 +240,7 @@
                         closeBtn: 0,
                         shadeClose: true,
                         zIndex:899990,
-                        content: '<div class="login-pop"data-point="dlk"><div class="login-pop-close"></div><div class="login-pop-tab"><ul><li><a href="#" class="t-login current">登录</a></li><li><a href="" target="_blank">注册</a></li></ul></div><div class="login-pop-cont clearfix"><div class="c-item clearfix popLogin"><form method="post" action=""><input type="hidden" name="name" value="login"><input type="hidden" name="dopost" value="login"><input type="hidden" name="gourl" value=""><p><input class="ipt" type="text" name="userid" id="phone" placeholder="电话号码"></p><p><input class="ipt" type="password" name="pwd" id="password" placeholder="密码"></p><div class="toreg clearfix"><input class="btn-sub"type="button"value="登录" id="popup-submit"><p>没有账号？<a href="" title="马上注册" target="_blank">马上注册</a></p></div></form></div><div class="c-oth"><p>用第三方账号直接登录</p><div><a href="/member/qqlogin.php" class="btn-qq"target="_blank"title="QQ账号登录"data-point-2="qq"><span class="dy-icon dy-sina"></span><span>QQ账号登录</span></a></div><div><a href="/member/wechatLogin.php" class="btn-wx"target="_blank"title="微信登录"data-point-2="qq"><span class="dy-icon dy-wx"></span><span>微信登录</span></a></div><p class="forget-pass"><a href="/member/resetpassword.php" target="_blank">忘记密码？</a></p></div></div></div>'
+                            content: '<div class="login-pop"data-point="dlk"><div class="login-pop-close"></div><div class="login-pop-tab"><ul><li><a href="#" class="t-login current">登录</a></li><li><a href="'+reg_url+'" target="_blank">注册</a></li></ul></div><div class="login-pop-cont clearfix"><div class="c-item clearfix popLogin"><form method="post" action=""><input type="hidden" name="name" value="login"><input type="hidden" name="dopost" value="login"><input type="hidden" name="gourl" value=""><p><input class="ipt" type="text" name="userid" id="phone" placeholder="电话号码"></p><p><input class="ipt" type="password" name="pwd" id="password" placeholder="密码"></p><div class="toreg clearfix"><input class="btn-sub"type="button"value="登录" id="popup-submit"><p>没有账号？<a href="'+reg_url+'" title="马上注册" target="_blank">马上注册</a></p></div></form></div><div class="c-oth"><p>用第三方账号直接登录</p><div><a href="" class="btn-qq"target="_blank"title="QQ账号登录"data-point-2="qq"><span class="dy-icon dy-sina"></span><span>QQ账号登录</span></a></div><div><a href="" class="btn-wx"target="_blank"title="微信登录"data-point-2="qq"><span class="dy-icon dy-wx"></span><span>微信登录</span></a></div><p class="forget-pass"><a href="'+forget_url+'" target="_blank">忘记密码？</a></p></div></div></div>'
                     })
                     $(".t-login").on("click", function() {
                         $(".t-login").addClass("current");
@@ -375,7 +340,7 @@
         login.init();
 
         //全部标签
-        $(".am-dropdown-toggle").click(function(){
+        $(".am-dropdown-toggle").click(function(event){
             if($(".all-tabs").data('hide')){
                 $(".all-tabs").show();
                 $(".all-tabs").data('hide',0);
@@ -383,6 +348,37 @@
                 $(".all-tabs").hide();
                 $(".all-tabs").data('hide',1);
             }
+            event.stopPropagation();
+        })
+        $('.all-tabs').click(function (event) {
+            event.stopPropagation();
+        })
+        //加载更多标签
+        $('.am-icon-angle-double-down').click(function(){
+            var _token = "{{csrf_token()}}";
+            var row =$(this).data('row');
+            $.ajax({
+                url:"{{url('more')}}",
+                type:"post",
+                data:{_token:_token,row:row},
+                success:function(data){
+                    if(data=='null'){
+                        layer.msg('没有更多了');
+                    }else{
+                        row +=1;
+                        $('.am-icon-angle-double-down').data('row',row);
+                        for(var i= 0;i<data.length;i++){
+                            $('#all_tag').append('<li>'+
+                                    '<a href="'+data[i].url+'">'+data[i].name+'</a>'+
+                                    '</li>');
+                        }
+                    }
+                }
+            });
+        });
+        $('body').click(function(event){
+                $(".all-tabs").hide();
+            $(".all-tabs").data('hide',1);
         })
     })
 </script>

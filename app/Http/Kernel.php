@@ -57,6 +57,7 @@ class Kernel extends HttpKernel
         'powersAuth'=>\App\Http\Middleware\PowersAuth::class,
         'globalAuth'=>\App\Http\Middleware\globalAuth::class,
         'catAuth'=>\App\Http\Middleware\catAuth::class,
+        'bannerTag'=>\App\Http\Middleware\BannerTag::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
     ];
 }
