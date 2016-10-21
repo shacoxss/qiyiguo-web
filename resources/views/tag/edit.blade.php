@@ -345,7 +345,7 @@
                                             <link rel="stylesheet" type="text/css" href="{{asset('pulgin/wangEditor/dist/css/wangEditor.min.css')}}">
                                             
                                             <div id="editor-container" class="container">
-                                                <div id="editor-trigger"><p>@{{ content }}</p></div>
+                                                <div id="editor-trigger"><p>{!! $tag->content !!}</p></div>
                                                 <!-- <textarea id="editor-trigger" style="display:none;">
                                                     <p>请输入内容...</p>
                                                 </textarea> -->

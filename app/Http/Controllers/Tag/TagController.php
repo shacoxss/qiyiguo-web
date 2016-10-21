@@ -55,10 +55,10 @@ class TagController extends Controller
             $new['notice'] = $input['platform_notice'];
         }
 
-        $same = ['background_color', 'template', 'current_url', 'name', 'keywords', 'description', 'content'];
+        $same = ['background_color', 'template', 'name', 'keywords', 'description', 'content'];
 
         foreach ($same as $key) {
-            $new[$key] = $input[$key];
+            $new[$key] = $input[$key] ? $input[$key] : null;
         }
 
         if ($request->hasFile('logo')) {
@@ -66,7 +66,6 @@ class TagController extends Controller
             $new['logo'] = '/upload/tag_logo/'.$file->hashName();
             $file_name = public_path($new['logo']);
             $img = Image::make($file->getRealPath());
-            $img->fit(250, 250);
             $img->save($file_name);
         }
 

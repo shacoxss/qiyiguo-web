@@ -17,8 +17,8 @@ Route::get('/', function () {
 
 //home
 Route::group(['namespace'=>'Home'],function(){
-    Route::get('contentLists','contentController@lists');
-    Route::get('contentDetail/{id}','contentController@detail');
+    Route::get('contentLists','contentController@contentLists')->name('archive.index');
+    Route::get('archive/{archive}','contentController@detail')->name('archive.show');
 });
 
 

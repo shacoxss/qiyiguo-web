@@ -207,10 +207,12 @@ class ArchiveController extends Controller
             ->with('counter', $counter);
     }
 
-    public function destroy($id)
+    public function destroy(Archive $archive)
     {
-        if(session('user')->master) {
-            Archive::destroy($id);
+        $user = session('user');
+        if($archive->user_id == $user->id || $this->checkMaster()) {
+            $archive->detail->delete();
+            $archive->delete();
             echo 'success';
         }
     }

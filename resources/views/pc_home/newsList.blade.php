@@ -156,7 +156,7 @@
 					<div class="am-g list-c">
 						<div class="am-u-sm-12 am-u-sm-centered list-box">
 							<div class="am-u-sm-4" style="padding: 0;margin-right: 30px;">
-								<a href="#">
+								<a href="{{route('archive.show', [$archive->id])}}">
 									@if($archive->cover)
 										<img class="am-thumbnail list-pic" src="{{route('image', [$archive->cover, '264x160'])}}" alt=""/>
 									@else
@@ -165,10 +165,10 @@
 								</a>
 							</div>
 							<div class="am-thumbnail-caption content-list">
-								<a href="#"> <h3>{{$archive->title}}</h3></a>
+								<a href="{{route('archive.show', [$archive->id])}}"> <h3>{{$archive->title}}</h3></a>
 								<span>
 									<a href="#">{{ $archive->user->nickname }}</a>
-									-1小时前
+									&nbsp;{{date('n-d G:i', strtotime($archive->updated_at))}}
 								</span>
 								<p>
 									{{ mb_substr($archive->abstract, 0, 80) }}...

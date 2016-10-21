@@ -12,7 +12,14 @@ class TagHeadController extends Controller
     //
     public function index(Tag $tag)
     {
-        //if ($tag->status != 2) abort(404);
-        dd($tag->archives()->get());
+        if ($tag->status != 2) abort(404);
+        $archives = $tag->archives()->ofPattern('review')->paginate(8);
+
+        //dd($archives);
+
+        return view('pc_home.tagLists')
+            ->with('archives', $archives)
+            ->with('tag', $tag)
+        ;
     }
 }
