@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Model\Users;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Input;
 require('../vendor/gee-team/gt-php-sdk/lib/class.geetestlib.php');
 require('../vendor/sms/ccpRestSmsSDK.php');
@@ -15,7 +14,7 @@ class RegisterController extends Controller
         if($input = Input::except('_token')){
             if($input['code'] == session('code')){
                 session(['code'=>null]);
-                $data['password'] = Crypt::encrypt($input['password']);
+                $data['password'] = md5($input['password']);
                 $data['phone'] = $input['phone'];
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 if(strlen($input['password'])<6||strlen($input['password'])>16){

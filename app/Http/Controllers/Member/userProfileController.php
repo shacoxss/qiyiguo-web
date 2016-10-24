@@ -44,21 +44,29 @@ class userProfileController extends Controller
         if($input = Input::except('_token')){
 
             $rules = [
-                'old_password'=>'required',
                 'password'=>'required|between:6,16|confirmed',
             ];
             $message = [
-                'old_password.required' => '原密码不能为空！',
                 'password.required' => '新密码不能为空！',
                 'password.between' => '密码长度在6到16位之间！',
                 'password.confirmed' => '两次密码输入不一致！',
             ];
             $validator = Validator::make($input,$rules,$message);
             if($validator->passes()){
-                if($input['old_password']!= Crypt::decrypt( session('user')->password)){
+                if(session('user')->password==''){
+                    $data['password'] =md5($input['password']);
+                    $result = Users::where('phone',session('user')->phone)->update($data);
+                    if($result){
+                        $user = Users::where('phone',session('user')->phone)->first();
+                        session(['user'=>$user]);
+                        return back()->with('msg','密码修改成功！');
+                    }else{
+                        return back()->with('errors','密码修改失败！');
+                    }
+                }else if(md5($input['old_password'])!=  session('user')->password){
                     return back()->with('errors','原密码错误！');
                 }else{
-                    $data['password'] = Crypt::encrypt($input['password']);
+                    $data['password'] =md5($input['password']);
                     $result = Users::where('phone',session('user')->phone)->update($data);
                     if($result){
                         $user = Users::where('phone',session('user')->phone)->first();
@@ -183,97 +191,6 @@ class userProfileController extends Controller
             }
         }else{
             return back()->with('errors','错误！');
-        }
-    }
-    public function weixinWeb()
-    {
-        return \Socialite::with('weixinweb')->redirect();
-    }
-
-    public function weixinWebCallback()
-    {
-        $oauthUser = \Socialite::with('weixinweb')->user();
-        $data['binding_weixin'] = 1;
-        $data['wx_open_id'] = $oauthUser->getId();
-        $data['nickname'] = $oauthUser->getNickname();
-        $data['head_img'] = $oauthUser->avatar();
-        $user = User::where('wx_open_id',$oauthUser->getId())->first();
-        //已绑定
-        if($user){
-            $url = url('member/userProfile');
-            echo "<script>window.parent.location.href = '".$url."';</script>";
-        }else{
-        //未绑定
-            $user = session('user');
-            if(Users::where('id',$user->id)->update($data)){
-                $user = Users::where('id',$user->id)->first();
-                session(['user'=>$user]);
-                $url = url('member/userProfile');
-                echo "<script>window.parent.location.href = '".$url."';</script>";
-            }
-        }
-    }
-    //QQ登陆
-    public function qq()
-    {
-        return \Socialite::with('qq')->redirect();
-
-    }
-
-    public function qqCallback()
-    {
-        $oauthUser = \Socialite::with('qq')->user();
-        //登陆成功处理
-        $data['binding_qq'] = 1;
-        $data['qq_open_id'] = $oauthUser->getId();
-        $data['nickname'] = $oauthUser->getNickname();
-        $data['head_img'] = $oauthUser->getAvatar();
-        $user = User::where('qq_open_id',$oauthUser->getId())->first();
-
-        //已绑定
-        if($user){
-            $url = url('member/userProfile');
-            echo "<script>window.parent.location.href = '".$url."';</script>";
-        }else{
-            //未绑定
-            $user = session('user');
-            if(Users::where('id',$user->id)->update($data)){
-                $user = Users::where('id',$user->id)->first();
-                session(['user'=>$user]);
-                $url = url('member/userProfile');
-                echo "<script>window.parent.location.href = '".$url."';</script>";
-            }
-        }
-    }
-    //微博登陆
-    public function weibo()
-    {
-        return \Socialite::with('weibo')->redirect();
-    }
-
-    public function weiboCallback()
-    {
-        $oauthUser = \Socialite::with('weibo')->user();
-        //登陆成功处理
-        $data['binding_weibo'] = 1;
-        $data['wb_open_id'] = $oauthUser->getId();
-        $data['nickname'] = $oauthUser->getNickname();
-        $data['head_img'] = $oauthUser->getAvatar();
-        $user = User::where('wb_open_id',$oauthUser->getId())->first();
-
-        //已绑定
-        if($user){
-            $url = url('member/userProfile');
-            echo "<script>window.parent.location.href = '".$url."';</script>";
-        }else{
-            //未绑定
-            $user = session('user');
-            if(Users::where('id',$user->id)->update($data)){
-                $user = Users::where('id',$user->id)->first();
-                session(['user'=>$user]);
-                $url = url('member/userProfile');
-                echo "<script>window.parent.location.href = '".$url."';</script>";
-            }
         }
     }
 }

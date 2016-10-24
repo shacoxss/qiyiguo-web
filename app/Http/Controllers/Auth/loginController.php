@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Input;
 require('../vendor/gee-team/gt-php-sdk/lib/class.geetestlib.php');
 
@@ -57,7 +56,7 @@ class loginController extends Controller
             if ($result == TRUE) {
                 $input = Input::except('_token');
                 $user = Users::where('phone',$input['phone'])->first();
-                if( empty($user) || $input['password'] != Crypt::decrypt($user->password)){
+                if( empty($user) || md5($input['password']) !=$user->password){
                     return response()->json('用户名或密码错误！');
                 }else{
                     //更新最后登录时间，存入session
@@ -130,20 +129,38 @@ class loginController extends Controller
         $data['head_img'] = $oauthUser->avatar();
         $user = User::where('wx_open_id',$oauthUser->getId())->first();
 
-        if($user){
-            $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
-            Users::where('id',$user->id)->update($data);
-            session(['user'=>$user]);
-            $url = url('auth/success');
-            echo "<script>window.parent.location.href = '".$url."';</script>";
+
+        if(isset(session('user')->phone)){
+            if($user){
+                $url = url('member/userProfile');
+                echo "<script>window.parent.location.href = '".$url."';</script>";
+            }else{
+                //未绑定
+                $user = session('user');
+                if(Users::where('id',$user->id)->update($data)){
+                    $user = Users::where('id',$user->id)->first();
+                    session(['user'=>$user]);
+                    $url = url('member/userProfile');
+                    echo "<script>window.parent.location.href = '".$url."';</script>";
+                }
+            }
         }else{
-            $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
-            if($user = Users::create($data)){
+            if($user){
+                $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
+                Users::where('id',$user->id)->update($data);
                 session(['user'=>$user]);
                 $url = url('auth/success');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
+            }else{
+                $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
+                if($user = Users::create($data)){
+                    session(['user'=>$user]);
+                    $url = url('auth/success');
+                    echo "<script>window.parent.location.href = '".$url."';</script>";
+                }
             }
         }
+
     }
     //QQ登陆
     public function qq()
@@ -162,18 +179,36 @@ class loginController extends Controller
         $data['head_img'] = $oauthUser->getAvatar();
         $user = User::where('qq_open_id',$oauthUser->getId())->first();
 
-        if($user){
-            $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
-            Users::where('id',$user->id)->update($data);
-            session(['user'=>$user]);
-            $url = url('auth/success');
-            echo "<script>window.parent.location.href = '".$url."';</script>";
+        //绑定
+        if(isset(session('user')->phone)){
+            if($user){
+                $url = url('member/userProfile');
+                echo "<script>window.parent.location.href = '".$url."';</script>";
+            }else{
+                //未绑定
+                $user = session('user');
+                if(Users::where('id',$user->id)->update($data)){
+                    $user = Users::where('id',$user->id)->first();
+                    session(['user'=>$user]);
+                    $url = url('member/userProfile');
+                    echo "<script>window.parent.location.href = '".$url."';</script>";
+                }
+            }
         }else{
-            $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
-            if($user = Users::create($data)){
+        //登陆
+            if($user){
+                $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
+                Users::where('id',$user->id)->update($data);
                 session(['user'=>$user]);
                 $url = url('auth/success');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
+            }else{
+                $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
+                if($user = Users::create($data)){
+                    session(['user'=>$user]);
+                    $url = url('auth/success');
+                    echo "<script>window.parent.location.href = '".$url."';</script>";
+                }
             }
         }
     }
@@ -193,20 +228,38 @@ class loginController extends Controller
         $data['head_img'] = $oauthUser->getAvatar();
         $user = User::where('wb_open_id',$oauthUser->getId())->first();
 
-        if($user){
-            $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
-            Users::where('id',$user->id)->update($data);
-            session(['user'=>$user]);
-            $url = url('auth/success');
-            echo "<script>window.parent.location.href = '".$url."';</script>";
+
+        if(isset(session('user')->phone)){
+            if($user){
+                $url = url('member/userProfile');
+                echo "<script>window.parent.location.href = '".$url."';</script>";
+            }else{
+                //未绑定
+                $user = session('user');
+                if(Users::where('id',$user->id)->update($data)){
+                    $user = Users::where('id',$user->id)->first();
+                    session(['user'=>$user]);
+                    $url = url('member/userProfile');
+                    echo "<script>window.parent.location.href = '".$url."';</script>";
+                }
+            }
         }else{
-            $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
-            if($user = Users::create($data)){
+            if($user){
+                $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
+                Users::where('id',$user->id)->update($data);
                 session(['user'=>$user]);
                 $url = url('auth/success');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
+            }else{
+                $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
+                if($user = Users::create($data)){
+                    session(['user'=>$user]);
+                    $url = url('auth/success');
+                    echo "<script>window.parent.location.href = '".$url."';</script>";
+                }
             }
         }
+
     }
     public function loginSuccess()
     {
