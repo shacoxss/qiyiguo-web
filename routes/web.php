@@ -50,6 +50,7 @@ Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
 
     Route::get('weibo', 'loginController@weibo');
     Route::get('weiboCallback', 'loginController@weiboCallback');
+    Route::any('bindingPhone','RegisterController@binding');
 });
 Route::group(['prefix'=>'register','namespace'=>'Auth'],function(){
     Route::any('/','RegisterController@reg');
