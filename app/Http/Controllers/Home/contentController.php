@@ -14,10 +14,11 @@ use Illuminate\Support\Facades\DB;
 
 class contentController extends Controller
 {
-    public function contentLists(Request $request)
+    public function contentLists(Request $request, $cate_id)
     {
-        $cate = Category::where('cate_id',29)->first();
+        $cate = Category::where('cate_id',$cate_id)->first();
         $archives = Archive::ofPattern('review')
+            ->where('category_id', $cate_id)
             ->orderBy('weight', 'desc')
             ->orderBy('created_at', 'desc')
             ->paginate(8);

@@ -90,8 +90,7 @@
 		<div class="am-g nl-bg">
 			<div class="am-u-sm-12 am-u-sm-centered nl-width">
 				<div class="zm-u-sm-6 am-u-sm-centered banner-t">
-					<h2>精彩推荐 </h2>
-					<span>WONDERFUL RECOMMENDATION</span>
+					<h2>{{ $cate->cate_name }} </h2>
 				</div>
 				<div class="am-g nl-width">
 					<div class="am-u-sm-3 nl-box">

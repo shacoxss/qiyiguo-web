@@ -88,9 +88,9 @@
                     <th>ID </th>
                     <th>标题 </th>
                     <th>时间</th>
-                    {{--<th>发布者</th>--}}
+                    <th>发布者</th>
                     <th width="100">类型</th>
-                    {{--<th>标签</th>--}}
+                    <th>标签</th>
                     <th width="100">点击</th>
                     <th width="150">权限</th>
                     <th width="150">操作</th>
@@ -111,13 +111,13 @@
                             @endforeach
                         </td>
                         <td>{{$a->created_at}}</td>
-                        {{--<td>{{$a->user->nickname}}</td>--}}
+                        <td>{{ !empty($a->user->nickname) ? $a->user->nickname : $a->user->phone}}</td>
                         <td class="center">{{$a->type->display_name}}</td>
-                        {{--<td class="center">--}}
-                            {{--@foreach($a->tags()->get() as $tag)--}}
-                            {{--<a href="{{ $tag->url }}" class="btn btn-primary btn-xss">{{$tag->name}}</a>--}}
-                            {{--@endforeach--}}
-                        {{--</td>--}}
+                        <td class="center">
+                            @foreach($a->tags()->get() as $tag)
+                            <a href="{{ $tag->url }}" class="btn btn-primary btn-xss">{{$tag->name}}</a>
+                            @endforeach
+                        </td>
                         <td class="center">{{$a->visit_count}}</td>
                         <td class="center tag-status">
                             @if($a->hasPattern('review'))

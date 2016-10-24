@@ -12,7 +12,6 @@
     <script type="text/javascript" src="{{asset('home/js/base.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/list.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/layer.js')}}"></script>
-    <script src="http://code.jquery.com/jquery-1.12.3.min.js"></script>
     <script src="http://static.geetest.com/static/tools/gt.js"></script>
 
     @section('title')

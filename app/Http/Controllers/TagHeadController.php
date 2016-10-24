@@ -12,10 +12,8 @@ class TagHeadController extends Controller
     //
     public function index(Tag $tag)
     {
-        if ($tag->status != 2) abort(404);
+        if ($tag->status != 2) return response('该标签未通过审核', 403);
         $archives = $tag->archives()->ofPattern('review')->paginate(8);
-
-        //dd($archives);
 
         return view('pc_home.tagLists')
             ->with('archives', $archives)
