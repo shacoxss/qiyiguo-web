@@ -15,7 +15,8 @@
     <script src="http://code.jquery.com/jquery-1.12.3.min.js"></script>
     <script src="http://static.geetest.com/static/tools/gt.js"></script>
 
-
+    @section('title')
+        @show
     <title></title>
 </head>
 

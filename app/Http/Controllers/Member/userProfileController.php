@@ -193,4 +193,35 @@ class userProfileController extends Controller
             return back()->with('errors','错误！');
         }
     }
+
+    public function resetIntro()
+    {
+        $user = session('user');
+        if($input = Input::except('_token')){
+
+            $rules = [
+                'intro'=>'required|between:6,255',
+            ];
+            $message = [
+                'phone.required' => '简介不能为空！',
+                'phone.between' => '简介长度在6到255个字！',
+            ];
+            $validator = Validator::make($input,$rules,$message);
+            if($validator->passes()){
+                    $data['intro'] = $input['intro'];
+                    $result = Users::where('id',$user->id)->update($data);
+                    if($result){
+                        $user = Users::where('id',$user->id)->first();
+                        session(['user'=>$user]);
+                        return back()->with('msg','信息修改成功！');
+                    }else{
+                        return back()->with('errors','信息修改失败！');
+                    }
+            }else{
+                return back()->withErrors($validator);
+            }
+        }else{
+            return back()->with('errors','错误！');
+        }
+    }
 }

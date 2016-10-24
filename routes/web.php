@@ -81,12 +81,7 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::post('resetNickname','userProfileController@resetNickname');
     Route::post('resetPhone','userProfileController@resetPhone');
     Route::post('bindingPhone','userProfileController@bindingPhone');
-    Route::get('weixinWeb', 'userProfileController@weixinWeb');
-    Route::get('weixinWebCallback', 'userProfileController@weixinWebCallback');
-    Route::get('qq', 'userProfileController@qq');
-    Route::get('qqCallback', 'userProfileController@qqCallback');
-    Route::get('weibo', 'userProfileController@weibo');
-    Route::get('weiboCallback', 'userProfileController@weiboCallback');
+    Route::post('resetIntro','userProfileController@resetIntro');
     Route::resource('userManage','userManageController');
     Route::post('saveNickname','userManageController@saveNickname')->middleware('userManageAuth');
     Route::post('savePhonePassword','userManageController@savePhonePassword')->middleware('userManageAuth');
@@ -103,6 +98,7 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::get('masterCategoryDel/{id}','categoryController@delete')->middleware('catAuth');
     Route::get('masterCategory/{id}','categoryController@edit')->middleware('catAuth');
     Route::post('masterCategory/{id}','categoryController@update')->middleware('catAuth');
+
 });
 Route::get('noAuth',function(){
    return view('member.noAuth');
