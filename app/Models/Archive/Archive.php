@@ -87,7 +87,7 @@ class Archive extends Model
         $content = $model->content;
         foreach ($this->tags()->get() as $tag) {
             $name = trim($tag->name);
-            $content = str_replace($name, "<a href='$tag->url'>$tag->name</a>",$content);
+            $content =  preg_replace('/'.$name.'/', "<a class='tag' href='$tag->url'>$tag->name</a>", $content, 1);
         }
         $model->content = $content;
         $model->save();
