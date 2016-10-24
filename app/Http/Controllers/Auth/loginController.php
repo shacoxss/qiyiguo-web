@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Input;
 require('../vendor/gee-team/gt-php-sdk/lib/class.geetestlib.php');
 
@@ -57,7 +56,7 @@ class loginController extends Controller
             if ($result == TRUE) {
                 $input = Input::except('_token');
                 $user = Users::where('phone',$input['phone'])->first();
-                if( empty($user) || $input['password'] != Crypt::decrypt($user->password)){
+                if( empty($user) || md5($input['password']) !=$user->password){
                     return response()->json('用户名或密码错误！');
                 }else{
                     //更新最后登录时间，存入session

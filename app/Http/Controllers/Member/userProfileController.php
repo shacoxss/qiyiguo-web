@@ -55,10 +55,10 @@ class userProfileController extends Controller
             ];
             $validator = Validator::make($input,$rules,$message);
             if($validator->passes()){
-                if($input['old_password']!= Crypt::decrypt( session('user')->password)){
+                if(md5($input['old_password'])!=  session('user')->password){
                     return back()->with('errors','原密码错误！');
                 }else{
-                    $data['password'] = Crypt::encrypt($input['password']);
+                    $data['password'] =md5($input['password']);
                     $result = Users::where('phone',session('user')->phone)->update($data);
                     if($result){
                         $user = Users::where('phone',session('user')->phone)->first();
