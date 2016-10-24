@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
+ * @property int id
  * @property mixed detail_model
  * @property mixed type
  * @property mixed t_edit
@@ -15,7 +16,8 @@ use Illuminate\Support\Facades\DB;
  */
 class Archive extends Model
 {
-    //
+    use VisitCountable;
+
     public $guarded = [];
     public function type()
     {

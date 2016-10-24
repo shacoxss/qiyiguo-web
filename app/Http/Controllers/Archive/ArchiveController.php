@@ -19,8 +19,10 @@ class ArchiveController extends Controller
     public function index(Request $request, $left = null)
     {
         $user = session('user');
+        $query = Archive::orderBy('created_at', 'desc');
+
         if ($left == 'master' && $this->checkMaster()) {
-            $archives = Archive::orderBy('created_at', 'desc')->get();
+            $archives = $query->get();
             if($request->has('mode')) {
                 $archives = $archives->filter(function ($a) use($request) {
                     return !$a->hasPattern($request->mode);
@@ -28,7 +30,7 @@ class ArchiveController extends Controller
             }
             $is_master = true;
         } else {
-            $archives = Archive::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+            $archives = $query->where('user_id', $user->id)->get();
             $is_master = false;
         }
         $counter = [
