@@ -44,11 +44,9 @@ class userProfileController extends Controller
         if($input = Input::except('_token')){
 
             $rules = [
-                'old_password'=>'required',
                 'password'=>'required|between:6,16|confirmed',
             ];
             $message = [
-                'old_password.required' => '原密码不能为空！',
                 'password.required' => '新密码不能为空！',
                 'password.between' => '密码长度在6到16位之间！',
                 'password.confirmed' => '两次密码输入不一致！',
