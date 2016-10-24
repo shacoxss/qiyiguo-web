@@ -53,7 +53,17 @@ class userProfileController extends Controller
             ];
             $validator = Validator::make($input,$rules,$message);
             if($validator->passes()){
-                if(md5($input['old_password'])!=  session('user')->password){
+                if(session('user')->password==''){
+                    $data['password'] =md5($input['password']);
+                    $result = Users::where('phone',session('user')->phone)->update($data);
+                    if($result){
+                        $user = Users::where('phone',session('user')->phone)->first();
+                        session(['user'=>$user]);
+                        return back()->with('msg','密码修改成功！');
+                    }else{
+                        return back()->with('errors','密码修改失败！');
+                    }
+                }else if(md5($input['old_password'])!=  session('user')->password){
                     return back()->with('errors','原密码错误！');
                 }else{
                     $data['password'] =md5($input['password']);
