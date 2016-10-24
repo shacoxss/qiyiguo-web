@@ -28,4 +28,17 @@ trait Marks
             $this->likedUsers()->attach($user->id);
         }
     }
+
+    public function isLiked($user)
+    {
+        return !$user
+            || !$this->likedUsers()->where('user_id', $user->id)->first()
+            ? false
+            : true;
+    }
+
+    public function getLikedCountAttribute()
+    {
+        return $this->likedUsers()->count();
+    }
 }

@@ -187,7 +187,7 @@
 								</dl>
 								<p style="text-align: right;">
 									<span><img src="{{asset('home/images/pinglun.png')}}">300</span>
-									<span><img src="{{asset('home/images/shoucang.png')}}">{{$archive->like}}</span>
+									<span><img src="{{asset('home/images/shoucang.png')}}">{{$archive->liked_count}}</span>
 								</p>
 							</div>
 						</div>

@@ -13,7 +13,7 @@
 					<p>{{ $archive->title }}</p>
 				</div>
 				<div class="news-author-view">
-					<span class="news-author-view-name">作者：{{$archive->user->nickname}}</span>
+					<span class="news-author-view-name">作者：{{$archive->user->nickname or ''}}</span>
 					<span>发布于：{{date('Y-n-d G:i', strtotime($archive->updated_at))}}</span>
 					{{--<span>来源：乐视网</span>--}}
 					<div style="display: inline-block;float: left;">
@@ -32,7 +32,12 @@
 				<div class="am-u-sm-8 news-detail-content-left" style="width: 796px;margin-top: 10px;">
 					<div class="news-detail-content-left-p">
 						{!! $archive->detail->content !!}
-						<p style="text-align: center;"><button type="button" class="am-btn am-btn-success btn">喜欢&nbsp;{{$archive->like}}</button></p>
+						<p style="text-align: center;">
+							<button type="button"
+			   					class="am-btn am-btn-success btn like" @if($archive->isLiked(session('user'))) disabled @endif>
+								喜欢&nbsp;<span>{{$archive->liked_count}}</span>
+							</button>
+						</p>
 					</div>
 					<div class="changyan-comment">
 						<!--<div id="comment_frame">
@@ -79,7 +84,7 @@
 							<div class="news-d-about-author-r">
 								<h3>{{$archive->user->nickname}}</h3>
 								<button class="news-d-about-author-r-add"></button>
-								
+
 								<p>个人简介：{{$archive->user->intro}}</p>
 							</div>
 
@@ -222,4 +227,24 @@
 		</div>
 
 		<!--底部-->
+@endsection
+
+@section('scripts')
+	<script>
+		$(function () {
+			$('.like').on('click', function () {
+				var $this = $(this)
+				var index = layer.load(0, {shade: false, time : 10000});
+				$.getJSON('{{ route('archive.like', [$archive->id]) }}', function (response){
+					$this.attr('disabled', true)
+					layer.close(index)
+					layer.msg(response.msg)
+					if (response.code == 0) {
+						var count = parseInt($this.find('span').text())
+						$this.find('span').text(count + 1)
+					}
+				})
+			})
+		})
+	</script>
 @endsection

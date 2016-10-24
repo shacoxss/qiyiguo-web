@@ -42,10 +42,13 @@ class contentController extends Controller
     {
         $user = session('user');
 
-        if ($user) {
-            $archive->like($user);
+        if (!$user) redirect('/auth');
+
+        if ($archive->isLiked($user)) {
+            return response()->json(['msg' => '您已经喜欢过该文章了！', 'code' => 1]);
         } else {
-            redirect('/auth');
+            $archive->like($user);
+            return response()->json(['msg' => '感谢您的支持！', 'code' => 0]);
         }
     }
 }

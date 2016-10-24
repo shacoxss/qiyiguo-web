@@ -95,7 +95,7 @@
 @else
             <div class="am-topbar-right already-l">
                 <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
-                    <a href="{{url('member/index')}}"><span class="l-pic"><img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img.100100.png')}}'"></span>
+                    <a href="{{url('member/index')}}"><span class="l-pic"><img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'"></span>
                         @if(session('user')->nickname)
                         <span class="l-txt">{{session('user')->nickname}}</span><span class="am-icon-caret-down"></span></a>
                         @else

@@ -11,10 +11,9 @@
 
     <script type="text/javascript" src="{{asset('home/js/jquery-3.1.0.min.js')}}"></script>
 
-    <script type="text/javascript" src="{{asset('home/js/layer.js')}}"></script>
+    <script type="text/javascript" src="{{asset('pulgin/layer/layer.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/amazeui.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/base.js')}}"></script>
-    <script src="http://code.jquery.com/jquery-1.12.3.min.js"></script>
     <script src="http://static.geetest.com/static/tools/gt.js"></script>
     <title></title>
 </head>
@@ -222,7 +221,7 @@
 </div>
 
 <!--底部-->
-
+@yield('scripts')
 </body>
 
 </html>
