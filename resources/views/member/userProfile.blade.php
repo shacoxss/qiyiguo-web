@@ -406,7 +406,7 @@
 				shadeClose: true,
 				closeBtn: true,
 				area: ['830px' , '400px'],
-				content: '{{url('auth/qq')}}'
+				content: '{{url('member/qq')}}'
 			})
 		});
 
@@ -418,7 +418,7 @@
 				shadeClose: true,
 				closeBtn: true,
 				area: ['830px' , '400px'],
-				content: '{{url('auth/weixinWeb')}}'
+				content: '{{url('member/weixinWeb')}}'
 			})
 		});
 
@@ -430,7 +430,7 @@
 				shadeClose: true,
 				closeBtn: true,
 				area: ['830px' , '400px'],
-				content: '{{url('auth/weibo')}}'
+				content: '{{url('member/weibo')}}'
 			})
 		});
 		//第三方登陆结束
