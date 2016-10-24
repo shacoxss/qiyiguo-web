@@ -25,7 +25,7 @@ trait VisitCountable
                 ;
             })
             ->where('archive_id', $this->id)
-            ->where('updated_at', '>', DB::raw('NOW()-'.ArchiveVisit::VISITED_EXPIRE.''))
+            ->where('updated_at', '>', \DB::raw('NOW()-'.ArchiveVisit::VISITED_EXPIRE.''))
             ->first()
         ;
 

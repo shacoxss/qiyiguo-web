@@ -66,6 +66,8 @@ Route::bind('tag', function ($name) {
     return $tag ? $tag : App\Models\Tag\Tag::where('abbr', $name)->firstOrFail();
 });
 
+Route::get('/archive/like/{archive}', 'Home\contentController@like');
+
 Route::get('/{defined}', function (\Illuminate\Http\Request $request, $url) {
 
     $tag = \App\Models\Tag\Tag::where('current_url', '/'.$request->path())->firstOrFail();

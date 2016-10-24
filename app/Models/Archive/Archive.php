@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
  */
 class Archive extends Model
 {
-    use VisitCountable;
+    use VisitCountable, Marks;
 
     public $guarded = [];
     public function type()

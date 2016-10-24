@@ -34,4 +34,15 @@ class contentController extends Controller
             ->with('archive', $archive)
         ;
     }
+
+    public function like(Request $request, Archive $archive)
+    {
+        $user = session('user');
+
+        if ($user) {
+            $archive->like($user);
+        } else {
+            redirect('/auth');
+        }
+    }
 }
