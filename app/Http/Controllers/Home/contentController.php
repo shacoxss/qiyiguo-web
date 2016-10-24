@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Model\Category;
 use App\Models\Archive\Archive;
 use App\Models\Archive\ArchiveVisit;
 use Illuminate\Http\Request;
@@ -15,12 +16,14 @@ class contentController extends Controller
 {
     public function contentLists(Request $request)
     {
+        $cate = Category::where('cate_id',27)->first();
         $archives = Archive::ofPattern('review')
             ->orderBy('weight', 'desc')
             ->orderBy('created_at', 'desc')
             ->paginate(8);
         return view('pc_home.newsList')
             ->with('archives', $archives)
+            ->with('cate',$cate)
         ;
     }
 

@@ -34,6 +34,7 @@
               <li><a href="#cellphoneEdit" data-toggle="tab"> 修改手机号码</a> </li>
 				@endif
               <li><a href="#accounts" data-toggle="tab"> 第三方帐号绑定</a> </li>
+              <li><a href="#intro" data-toggle="tab"> 个人简介</a> </li>
             </ul>
             
             <!-- Tab panes -->
@@ -109,29 +110,29 @@
 				@if(empty(session('user')->phone))
               	<div class="tab-pane fade padding" id="cellphone">
 
-              		<div class="alert alert-danger" id="bindingPhone_error">错误提示信息样式</div>
-              		<div class="alert alert-success" id="bindingPhone_success">成功提示信息</div>
-	              	<form role="form" class="col-md-4" action="{{url('member/bindingPhone')}}" method="post">
-						{{csrf_field()}}
-		                <div class="form-group">
-			              <label>手机号</label>
-			              <input type="text" class="form-control" placeholder="手机号" name="phone" id="phone">
-			            </div>
-			            <div class="col-md-12" style="padding-left:0;padding-right:0;">
-			              	<div class="text-center col-md-2" style="padding-left:0; margin-top:15px;">
-			                  	QYG -
-			              	</div>
-			              	<div class="form-group col-md-6" style="padding-left:0;">
-			                  	<input type="text" class="form-control" placeholder="验证码" maxlength="4" name="code">
-			              	</div>
-			              	<div class="form-group col-md-4">
-			                  	<button type="button" class="btn btn-success btn-xs get_code" id="get_code2">发送验证码</button>
-			              	</div>
-			            </div> <br><br><br>
-			            <br>         
-						<button type="submit" class="btn btn-primary">绑 定</button>
-	                </form>
-              	</div>
+						<div class="alert alert-danger" id="bindingPhone_error">错误提示信息样式</div>
+						<div class="alert alert-success" id="bindingPhone_success">成功提示信息</div>
+						<form role="form" class="col-md-4" action="{{url('member/bindingPhone')}}" method="post">
+							{{csrf_field()}}
+							<div class="form-group">
+								<label>手机号</label>
+								<input type="text" class="form-control" placeholder="手机号" name="phone" id="phone">
+							</div>
+							<div class="col-md-12" style="padding-left:0;padding-right:0;">
+								<div class="text-center col-md-2" style="padding-left:0; margin-top:15px;">
+									QYG -
+								</div>
+								<div class="form-group col-md-6" style="padding-left:0;">
+									<input type="text" class="form-control" placeholder="验证码" maxlength="4" name="code">
+								</div>
+								<div class="form-group col-md-4">
+									<button type="button" class="btn btn-success btn-xs get_code" id="get_code2">发送验证码</button>
+								</div>
+							</div> <br><br><br>
+							<br>
+							<button type="submit" class="btn btn-primary">绑 定</button>
+						</form>
+					</div>
 				@else
               	<div class="tab-pane fade padding" id="cellphoneEdit">
 
@@ -196,6 +197,22 @@
 						</div>
 	            	</div>
 	            </div>
+				<div class="tab-pane fade padding" id="intro">
+
+					<form role="form" class="col-md-4" action="{{url('member/resetIntro')}}" method="post">
+						{{csrf_field()}}
+						<div class="form-group">
+							<label>个人简介：</label>
+						</div>
+						<div class="form-group">
+
+							<textarea name="intro" id="" cols="60" rows="5">{{$user->intro}}</textarea>
+						</div>
+						<button type="submit" class="btn btn-primary">修 改</button>
+					</form>
+				</div>
+
+				
             </div>
             <!-- Tab panes -->
           </div>

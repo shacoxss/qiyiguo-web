@@ -1,4 +1,10 @@
 @extends('pc_home.commonIn')
+
+@section('title')
+	<title>{{$archive->title}}</title>
+	<meta name="Keywords" content="">
+	<meta name="description" content="" />
+@endsection
 @section('content')
 		<!--banner-->
 		<div class="am-g news-d-title" style="margin-top:79px">
@@ -74,7 +80,7 @@
 								<h3>{{$archive->user->nickname}}</h3>
 								<button class="news-d-about-author-r-add"></button>
 								
-								<p>个人简介：网络就像是监狱，本来是偷了个钱包进来的，等出去的 时候就什么都学会了。</p>
+								<p>个人简介：{{$archive->user->intro}}</p>
 							</div>
 
 						</div>

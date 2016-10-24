@@ -1,4 +1,10 @@
 @extends('pc_home.commonOut')
+@section('title')
+		<title>{{$cate->cate_name}}</title>
+		<meta name="Keywords" content="{{$cate->seo_key}}">
+		<meta name="description" content="{{$cate->seo_intro}}" />
+@endsection
+
 @section('content')
 		<!--轮播图-->
 		<div class="am-g">
