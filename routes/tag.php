@@ -8,7 +8,6 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
         return view('archive.userAddIndex');
     })->name('userAddIndex');
 
-    Route::get('/userArchivesList','Archive\ArchiveController@userArchivesList' )->name('userArchivesList');
 
     Route::get('/tags', 'Tag\TagController@index')->name('tag.index');
 
@@ -31,10 +30,12 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
         return App\Models\Tag\TagAttribute::find($id);
     });
 
-    Route::resource('archives', 'Archive\ArchiveController');
+    Route::get('archives/{left?}', 'Archive\ArchiveController@index')->name('archives.index');
+    //Route::resource('archives', 'Archive\ArchiveController');
     Route::post('archives/upload', 'Archive\ArchiveController@upload')->name('archives.upload');
     Route::get('archives/create/{archive_type}', 'Archive\ArchiveController@create')->name('archives.create');
     Route::post('archives/{archive_type}', 'Archive\ArchiveController@store')->name('archives.store');
+    Route::put('archives/{archive}', 'Archive\ArchiveController@update')->name('archives.update');
     Route::get('archives/{archive}/toggle/{name}', 'Archive\ArchiveController@toggle')->name('archives.toggle');
     Route::get('archives/destroy/{archive}', 'Archive\ArchiveController@destroy')->name('archives.destroy');
     Route::get('archives/{archive}/{user_type}/edit', 'Archive\ArchiveController@edit')->name('archives.edit');
@@ -58,7 +59,7 @@ Route::get('/image/{uri}/{size}.jpeg', function ($uri, $size) {
     return $img->response('jpeg');
 })->name('image')->where(['uri' => '.+']);
 
-Route::get('/tag/{tag}', 'TagHeadController@index');
+Route::get('/tag/{tag}', 'TagHeadController@index')->name('tag.list');
 
 Route::bind('tag', function ($name) {
     $tag = App\Models\Tag\Tag::where('pinyin', $name)->first();

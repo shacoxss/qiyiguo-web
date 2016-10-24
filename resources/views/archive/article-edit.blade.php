@@ -1,4 +1,4 @@
-@extends('member.'.$left)
+@extends('member.'.$left.'Common')
 @section('content')
 <style>
     a.btn-xss {
@@ -186,11 +186,12 @@
                 contentType: false
             })
             .done(function (response) {
-                layer.confirm('编辑成功', {
+                console.log(response);
+                layer.confirm(response[0], {
                     title: '信息',
-                    btn: ['返回','继续修改'] //按钮
+                    btn: ['确定', response[1]] //按钮
                 }, function () {
-                    history.go(-1)
+                    window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'
                 }, function () {
                     window.location.reload()
                 })
