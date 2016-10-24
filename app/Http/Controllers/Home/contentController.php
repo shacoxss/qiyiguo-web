@@ -16,7 +16,7 @@ class contentController extends Controller
 {
     public function contentLists(Request $request)
     {
-        $cate = Category::where('cate_id',27)->first();
+        $cate = Category::where('cate_id',29)->first();
         $archives = Archive::ofPattern('review')
             ->orderBy('weight', 'desc')
             ->orderBy('created_at', 'desc')
