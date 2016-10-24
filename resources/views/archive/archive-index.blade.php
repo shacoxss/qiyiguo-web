@@ -1,4 +1,4 @@
-@extends('member.masterCommon')
+@extends('member.'.($is_master ? 'master' : 'user').'Common')
 @section('content')
 
     <div class="row">
@@ -88,9 +88,9 @@
                     <th>ID </th>
                     <th>标题 </th>
                     <th>时间</th>
-                    <th>发布者</th>
+                    {{--<th>发布者</th>--}}
                     <th width="100">类型</th>
-                    <th>标签</th>
+                    {{--<th>标签</th>--}}
                     <th width="100">点击</th>
                     <th width="150">权限</th>
                     <th width="150">操作</th>
@@ -111,13 +111,13 @@
                             @endforeach
                         </td>
                         <td>{{$a->created_at}}</td>
-                        <td>{{$a->user->nickname}}</td>
+                        {{--<td>{{$a->user->nickname}}</td>--}}
                         <td class="center">{{$a->type->display_name}}</td>
-                        <td class="center">
-                            @foreach($a->tags() as $tag)
-                            <a href="#" class="btn btn-primary btn-xss">{{$tag->name}}</a>
-                            @endforeach
-                        </td>
+                        {{--<td class="center">--}}
+                            {{--@foreach($a->tags()->get() as $tag)--}}
+                            {{--<a href="{{ $tag->url }}" class="btn btn-primary btn-xss">{{$tag->name}}</a>--}}
+                            {{--@endforeach--}}
+                        {{--</td>--}}
                         <td class="center">{{$a->visit_count}}</td>
                         <td class="center tag-status">
                             @if($a->hasPattern('review'))
@@ -127,10 +127,10 @@
                             @endif
                         </td>
                         <td class="center">
-                            <a href="{{route('archives.edit', [$a->id, 'master'])}}" class="btn btn-circle btn-primary ">编辑</a>
-                            {{--<a href="{{route('archives.edit', [$a->id])}}" class="btn btn-circle btn-success ">预览</a>--}}
+                            <a href="{{route('archives.edit', [$a->id, $is_master ? 'master' : 'user'])}}" class="btn btn-circle btn-primary ">编辑</a>
+                            <a href="{{route('archive.show', [$a->id])}}" class="btn btn-circle btn-success ">预览</a>
                             <a href="javascript:void(0)" class="btn btn-circle btn-danger delete-archives" data-id="{{$a->id}}">删除</a>
-                            @if(session('user')->master)
+                            @if(session('user')->master && $is_master)
                                 @if($a->hasPattern('review'))
                                     <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" data-id="{{$a->id}}" class="ajax-request btn btn-circle btn-danger ajax-request">不准看</a>
                                 @else

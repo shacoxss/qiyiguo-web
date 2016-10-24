@@ -16,22 +16,29 @@ use Intervention\Image\Facades\Image;
 class ArchiveController extends Controller
 {
     //
-    public function index(Request $request)
+    public function index(Request $request, $left = null)
     {
         $user = session('user');
-        if (!$user->master) abort(403);
-        $archives = Archive::orderBy('created_at', 'desc')->get();
-        if($request->has('mode')) {
-            $archives = $archives->filter(function ($a) use($request) {
-                return !$a->hasPattern($request->mode);
-            });
+        if ($left == 'master' && $this->checkMaster()) {
+            $archives = Archive::orderBy('created_at', 'desc')->get();
+            if($request->has('mode')) {
+                $archives = $archives->filter(function ($a) use($request) {
+                    return !$a->hasPattern($request->mode);
+                });
+            }
+            $is_master = true;
+        } else {
+            $archives = Archive::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
+            $is_master = false;
         }
         $counter = [
             'article' => Archive::where('archive_type_id', 1)->count()
         ];
         return view('archive.archive-index')
             ->with('archives', $archives)
-            ->with('counter', $counter);
+            ->with('counter', $counter)
+            ->with('is_master', $is_master)
+        ;
     }
 
     public function create(ArchiveType $type)
@@ -43,16 +50,16 @@ class ArchiveController extends Controller
         return view($type->t_edit)
             ->with('patterns', $patterns)
             ->with('cate', $cate)
-            ->with('left', 'userCommon')
+            ->with('left', 'user')
         ;
     }
     public function edit(Request $request, Archive $archive, $user_type)
     {
         $user = session('user');
-        if ($user_type == 'master' && $user->master) {
-            $left = 'masterCommon';
+        if ($user_type == 'master' && $this->checkMaster()) {
+            $left = 'master';
         } elseif ($archive->user_id == $user->id) {
-            $left = 'userCommon';
+            $left = 'user';
         } else {
             return abort(403, '禁止访问');
         }
@@ -60,7 +67,6 @@ class ArchiveController extends Controller
         $cate = Category::sort(Category::all());
         $patterns = \DB::table('patterns')
         ->where('type', 1)->get();
-        
         return view($archive->type->t_edit)
             ->with('archive', $archive)
             ->with('patterns', $patterns)
@@ -104,7 +110,7 @@ class ArchiveController extends Controller
 
         $archive->generateTagUrl();
 
-        return response()->json(['msg' => '保存成功！']);
+        return response()->json(['发布成功！', '继续发布']);
     }
 
     public function update(Request $request, Archive $archive)
@@ -154,7 +160,7 @@ class ArchiveController extends Controller
 
         $archive->generateTagUrl();
 
-        return response()->json(['msg' => '修改成功！']);
+        return response()->json(['修改成功！', '继续修改']);
     }
 
     public function upload(Request $request)
@@ -193,18 +199,6 @@ class ArchiveController extends Controller
         $this->checkMaster();
         $archive->togglePattern($name);
         return response()->json(['msg' => '操作成功！']);
-    }
-
-    public function userArchivesList()
-    {
-        $user = session('user');
-        $archives = Archive::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
-        $counter = [
-            'article' => Archive::where('archive_type_id', 1)->where('user_id', $user->id)->count()
-        ];
-        return view('archive.archive-user-index')
-            ->with('archives', $archives)
-            ->with('counter', $counter);
     }
 
     public function destroy(Archive $archive)

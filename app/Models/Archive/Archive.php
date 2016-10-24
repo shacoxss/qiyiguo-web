@@ -36,7 +36,6 @@ class Archive extends Model
     {
         return $this
             ->belongsToMany('App\Models\Tag\Tag')
-            ->where('status', 2)
         ;
     }
 
