@@ -130,7 +130,7 @@ class loginController extends Controller
         $user = User::where('wx_open_id',$oauthUser->getId())->first();
 
 
-        if(session('user')->phone){
+        if(isset(session('user')->phone)){
             if($user){
                 $url = url('member/userProfile');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
@@ -180,7 +180,7 @@ class loginController extends Controller
         $user = User::where('qq_open_id',$oauthUser->getId())->first();
 
         //绑定
-        if(session('user')->phone){
+        if(isset(session('user')->phone)){
             if($user){
                 $url = url('member/userProfile');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
@@ -229,7 +229,7 @@ class loginController extends Controller
         $user = User::where('wb_open_id',$oauthUser->getId())->first();
 
 
-        if(session('user')->phone){
+        if(isset(session('user')->phone)){
             if($user){
                 $url = url('member/userProfile');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
