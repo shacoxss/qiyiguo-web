@@ -15,7 +15,6 @@ class Auth
      */
     public function handle($request, Closure $next)
     {
-        echo $request;exit;
         if(!session('user')){
             return redirect('auth');
         }elseif( session('user') && empty(session('user')->phone)){
