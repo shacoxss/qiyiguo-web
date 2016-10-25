@@ -261,9 +261,8 @@ class loginController extends Controller
         }
 
     }
-    public function loginSuccess($request)
+    public function loginSuccess()
     {
-        dd($request);
         return view('auth.loginSuccess');
     }
 }
