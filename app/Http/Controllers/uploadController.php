@@ -24,7 +24,63 @@ class uploadController extends Controller
             $fileNewName = 'head_img'.'.'.$extension;
             $file->move($dir,$fileNewName);
             $filepath = '/upload/userProfile/'.session('user')->id.'/'.$fileNewName;
-            return response()->json(['result'=>$filepath]);
+
+            $file_data = json_decode(Input::get('avatar_data'),true) ;
+            $x = $file_data['x'];
+            $y = $file_data['y'];
+
+            $width = $file_data['width'];
+            $height = $file_data['height'];
+            switch ($extension) {
+                case 'jpg':
+                    $s = imagecreatefromjpeg(base_path().'/public/'.$filepath);
+                    break;
+                case 'jpeg':
+                    $s = imagecreatefromjpeg(base_path().'/public/'.$filepath);
+                    break;
+                case 'png':
+                    $s = imagecreatefrompng(base_path().'/public/'.$filepath);
+                    break;
+                case 'gif':
+                    $s = imagecreatefromgif(base_path().'/public/'.$filepath);
+                    break;
+                default:
+                    $s = imagecreatefromjpeg(base_path().'/public/'.$filepath);
+                    break;
+            }
+
+
+            $bg = imagecreatetruecolor($width,$height);        //创建$w*$h的空白图像
+            if(imagecopy($bg,$s,0,0,$x,$y,$width,$height)){
+                switch ($extension) {
+                    case 'jpg':
+                        $rs = imagejpeg($bg,base_path().'/public/'."/upload/userProfile/".session('user')->id.'/'.$fileNewName);
+                        break;
+                    case 'jpeg':
+                        $rs = imagejpeg($bg,base_path().'/public/'."/upload/userProfile/".session('user')->id.'/'.$fileNewName);
+                        break;
+                    case 'png':
+                        $rs = imagepng($bg,base_path().'/public/'."/upload/userProfile/".session('user')->id.'/'.$fileNewName);
+                        break;
+                    case 'gif':
+                        $rs = imagegif($bg,base_path().'/public/'."/upload/userProfile/".session('user')->id.'/'.$fileNewName);
+                        break;
+                    default:
+                        $rs = false;
+                        break;
+                }
+                if($rs){            //将生成的图片保存到img/new_img.jpg
+                    $msg =  "success";
+                }else{
+                    $msg = "false";
+                }
+            }else{
+                $msg = "false";
+            }
+            imagedestroy($s);                //关闭图片
+            imagedestroy($bg);
+
+            return response()->json(['result'=>$filepath,'msg'=>$msg]);
         }
     }
     public function uploadWebLogo()
