@@ -2,6 +2,7 @@
 
 
 Route::get('/test', 'TestController@index');
+Route::get('/any', 'TestController@anyData');
 Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
 
     Route::get('/userAddIndex', function () {
