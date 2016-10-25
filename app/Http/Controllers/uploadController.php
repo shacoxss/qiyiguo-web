@@ -24,6 +24,27 @@ class uploadController extends Controller
             $fileNewName = 'head_img'.'.'.$extension;
             $file->move($dir,$fileNewName);
             $filepath = '/upload/userProfile/'.session('user')->id.'/'.$fileNewName;
+
+
+            $src = $src = imagecreatefromstring(file_get_contents($filepath));
+            $file_data = json_decode(Input::get('avatar_data'),true) ;
+            $x = $file_data['x'];
+            $y = $file_data['y'];
+//裁剪区域的宽和高
+            $width = $file_data['width'];
+            $height = $file_data['height'];
+//最终保存成图片的宽和高，和源要等比例，否则会变形
+            $final_width = 100;
+            $final_height = round($final_width * $height / $width);
+//将裁剪区域复制到新图片上，并根据源和目标的宽高进行缩放或者拉升
+            $new_image = imagecreatetruecolor($final_width, $final_height);
+            imagecopyresampled($new_image, $src, 0, 0, $x, $y, $final_width, $final_height, $width, $height);
+//输出图片
+            header('Content-Type: image/jpeg');
+            imagejpeg($new_image);
+            imagedestroy($src);
+            imagedestroy($new_image);
+
             return response()->json(['result'=>$filepath]);
         }
     }
