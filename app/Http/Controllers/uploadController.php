@@ -25,27 +25,62 @@ class uploadController extends Controller
             $file->move($dir,$fileNewName);
             $filepath = '/upload/userProfile/'.session('user')->id.'/'.$fileNewName;
 
-
-            $src = $src = imagecreatefromstring(file_get_contents($filepath));
             $file_data = json_decode(Input::get('avatar_data'),true) ;
             $x = $file_data['x'];
             $y = $file_data['y'];
-//裁剪区域的宽和高
+
             $width = $file_data['width'];
             $height = $file_data['height'];
-//最终保存成图片的宽和高，和源要等比例，否则会变形
-            $final_width = 100;
-            $final_height = round($final_width * $height / $width);
-//将裁剪区域复制到新图片上，并根据源和目标的宽高进行缩放或者拉升
-            $new_image = imagecreatetruecolor($final_width, $final_height);
-            imagecopyresampled($new_image, $src, 0, 0, $x, $y, $final_width, $final_height, $width, $height);
-//输出图片
-            header('Content-Type: image/jpeg');
-            imagejpeg($new_image);
-            imagedestroy($src);
-            imagedestroy($new_image);
+            switch ($extension) {
+                case 'jpg':
+                    $s = imagecreatefromjpeg(base_path().'/public/'.$filepath);
+                    break;
+                case 'jpeg':
+                    $s = imagecreatefromjpeg(base_path().'/public/'.$filepath);
+                    break;
+                case 'png':
+                    $s = imagecreatefrompng(base_path().'/public/'.$filepath);
+                    break;
+                case 'gif':
+                    $s = imagecreatefromgif(base_path().'/public/'.$filepath);
+                    break;
+                default:
+                    $s = imagecreatefromjpeg(base_path().'/public/'.$filepath);
+                    break;
+            }
 
-            return response()->json(['result'=>$filepath]);
+
+            $bg = imagecreatetruecolor($width,$height);        //创建$w*$h的空白图像
+            if(imagecopy($bg,$s,0,0,$x,$y,$width,$height)){
+                switch ($extension) {
+                    case 'jpg':
+                        $rs = imagejpeg($bg,base_path().'/public/'."/upload/userProfile/".session('user')->id.'/'.$fileNewName);
+                        break;
+                    case 'jpeg':
+                        $rs = imagejpeg($bg,base_path().'/public/'."/upload/userProfile/".session('user')->id.'/'.$fileNewName);
+                        break;
+                    case 'png':
+                        $rs = imagepng($bg,base_path().'/public/'."/upload/userProfile/".session('user')->id.'/'.$fileNewName);
+                        break;
+                    case 'gif':
+                        $rs = imagegif($bg,base_path().'/public/'."/upload/userProfile/".session('user')->id.'/'.$fileNewName);
+                        break;
+                    default:
+                        $rs = false;
+                        break;
+                }
+                if($rs){            //将生成的图片保存到img/new_img.jpg
+                    $msg =  "success";
+                }else{
+                    $msg = "false";
+                }
+            }else{
+                $msg = "false";
+            }
+            imagedestroy($s);                //关闭图片
+            imagedestroy($bg);
+
+            return response()->json(['result'=>$filepath,'msg'=>$msg]);
         }
     }
     public function uploadWebLogo()
