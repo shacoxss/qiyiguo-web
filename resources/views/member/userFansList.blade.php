@@ -29,32 +29,25 @@
             </tr>
           </thead>
           <tbody>
+          @foreach($fans as $v)
             <tr class="odd">
-              <td><img src="http://www.qiyiguo.tv/uploads/allimg/160930/18_09301I13RY1.jpg" class="gridpic"></td>
-              <td>信心阿仔</td>
-              <td>7个月</td>
-              <td class="center">2016-09-06</td>
+              <td><img src="{{$v->user['head_img']}}" onerror="this.src='{{asset('img/100100.png')}}'" class="gridpic"></td>
+                @if($v->nickname)
+                    <td>{{$v->user['nickname']}}</td>
+                @else
+                    <td>{{$v->user['phone']}}</td>
+                @endif
+              <td>{{floor((time()-time($v->user['create_at']))/(3600*24*30))}}个月</td>
+              <td class="center">{{$v->user['lastlogin_at']}}</td>
               <td class="center">果宝宝</td>
-              <td class="center">7</td>
-              <td class="center">11</td>
+              <td class="center">{{$v->user['follows_count']}}</td>
+              <td class="center">{{$v->user['fans_count']}}</td>
               <td class="center">
                 <a href="article_add.php" class="btn btn-circle btn-primary ">私信</a>
                 <a href="" class="btn btn-circle btn-success ">看他</a>
               </td>
             </tr>
-            <tr class="even">
-              <td><img src="http://www.qiyiguo.tv/uploads/allimg/160930/18_09301612153202.jpg" class="gridpic"></td>
-              <td>阿毛</td>
-              <td>6个月</td>
-              <td class="center">2016-10-07</td>
-              <td class="center">果小班</td>
-              <td class="center">17</td>
-              <td class="center">23</td>
-              <td class="center">
-                <a href="article_add.php" class="btn btn-circle btn-primary ">私信</a>
-                <a href="" class="btn btn-circle btn-success ">看他</a>
-              </td>
-            </tr>
+          @endforeach
           </tbody>
         </table>
       </div>

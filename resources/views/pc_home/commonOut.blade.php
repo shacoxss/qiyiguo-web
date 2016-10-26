@@ -96,11 +96,15 @@
                 <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
                     <a href="{{url('member/index')}}"><span class="l-pic"><img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'"></span>
                         @if(session('user')->nickname)
-                        <span class="l-txt">{{session('user')->nickname}}</span><span class="am-icon-caret-down"></span></a>
-                        @else
-                        <span class="l-txt">{{session('user')->phone}}</span><span class="am-icon-caret-down"></span></a>
-                        @endif
 
+                        <span class="l-txt" title="{{session('user')->nickname}}">{{mb_substr(session('user')->nickname,0,4)}}
+                            @if(strlen(session('user')->nickname)>5)
+                                ...
+                            @endif
+                        </span><span class="am-icon-caret-down"></span></a>
+                        @else
+                        <span class="l-txt" title="{{session('user')->phone}}">{{mb_substr(session('user')->phone,0,5)}}...</span><span class="am-icon-caret-down"></span></a>
+                        @endif
                     <!--<button class="am-btn am-btn-secondary am-topbar-btn am-btn-sm am-dropdown-toggle">其他 <span class="am-icon-caret-down"></span></button>-->
                     <ul class="am-dropdown-content already-l-ul">
                         <li>

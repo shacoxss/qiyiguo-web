@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Member;
 
+use App\Model\FollowUser;
 use App\Model\Users;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
@@ -15,6 +16,10 @@ class userManageController extends Controller
     public function index()
     {
         $users = Users::orderBy('id','desc')->get();
+        foreach($users as $v){
+            $v->follows_count = FollowUser::where('user_id',$v->user_id)->count();
+            $v->fans_count = FollowUser::where('followed_id',$v->user_id)->count();
+        }
         $count = Users::count();
         return view('member.masterUserList',compact('users','count'));
     }

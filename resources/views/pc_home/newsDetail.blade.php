@@ -73,7 +73,7 @@
 						<div class="am-u-sm-6 ">
 							<div class="news-d-about-author-l">
 								@if($archive->user->head_img)
-									<img src="{{route('image', [$archive->user->head_img, '161x161'])}}" alt=""/>
+									<img src="{{route('image', [$archive->user->head_img, '161x161'])}}" alt="" onerror="this.src='{{asset('img/200200.png')}}'"/>
 								@else
 									<img src="{{asset('img/200200.png')}}" alt=""/>
 								@endif
@@ -82,10 +82,25 @@
 						</div>
 						<div class="am-u-sm-6">
 							<div class="news-d-about-author-r">
-								<h3>{{$archive->user->nickname}}</h3>
-								<button class="news-d-about-author-r-add"></button>
-
-								<p>个人简介：{{$archive->user->intro}}</p>
+								@if($archive->user->nickname)
+									<h3 title="{{$archive->user->nickname}}">{{mb_substr($archive->user->nickname,0,4)}}
+									@if(strlen($archive->user->nickname)>5)
+									...
+									@endif
+									</h3>
+								@else
+									<h3>{{mb_substr($archive->user->phone)}}...</h3>
+								@endif
+								@if($followed)
+									<button class="news-d-about-author-r-add" data-follow="{{$followed}}" style="background:url('{{asset('home/images/tab/del.png')}}')center no-repeat;background-size: 24px 24px;"></button>
+								@else
+									<button class="news-d-about-author-r-add" data-follow="{{$followed}}" style="background:url('{{asset('home/images/tab/add.png')}}')center no-repeat;background-size: 24px 24px;"></button>
+								@endif
+								@if($archive->user->intro)
+									<p>个人简介：{{$archive->user->intro}}</p>
+								@else
+									<p>作者很懒，什么也没有留下~</p>
+								@endif
 							</div>
 
 						</div>
@@ -225,7 +240,6 @@
 				</div>
 			</div>
 		</div>
-
 		<!--底部-->
 @endsection
 
@@ -246,5 +260,51 @@
 				})
 			})
 		})
+
+		//添加关注
+		$(function(){
+
+			$('.news-d-about-author-r-add').click(function(){
+				var token = "{{csrf_token()}}";
+				var followed_id = "{{$archive->user->id}}";
+				if($(this).data('follow')==-1){
+					layer.msg('请先登录！');
+				}else if($(this).data('follow')==1){
+					$('.news-d-about-author-r-add').data('follow',0);
+					var followed = 1;
+					$.ajax({
+						url:"{{url('archive/follow')}}",
+						type:"post",
+						data:{_token:token,followed_id:followed_id,followed:followed},
+						success:function(data){
+							if(data.rs=='error'){
+								layer.msg('取消关注失败！');
+							}else{
+								var url = "{{asset('home/images/tab/add.png')}}";
+								$('.news-d-about-author-r-add').attr('style',"background:url('"+url+"')center no-repeat;background-size: 24px 24px;");
+								layer.msg('您已取消关注！');
+							}
+						}
+					});
+				}else{
+					$('.news-d-about-author-r-add').data('follow',1);
+					var followed = 0;
+					$.ajax({
+						url:"{{url('archive/follow')}}",
+						type:"post",
+						data:{_token:token,followed_id:followed_id,followed:followed},
+						success:function(data){
+							if(data.rs=='error'){
+								layer.msg('关注失败！');
+							}else{
+								var url = "{{asset('home/images/tab/del.png')}}";
+								$('.news-d-about-author-r-add').attr('style',"background:url('"+url+"')center no-repeat;background-size: 24px 24px;");
+								layer.msg('感谢您的关注！');
+							}
+						}
+					});
+				}
+			});
+		});
 	</script>
 @endsection

@@ -75,7 +75,15 @@
             <ul class="nav" id="side-menu">
                 <li> <a href="{{url('member/index')}}"><i class="fa fa-dashboard fa-fw"></i> 用户中心</a> </li>
                 <li> <a href="{{url('member/userFans')}}"><i class="fa fa-users fa-fw"></i> 我的粉丝</a> </li>
-                <li> <a href="{{url('member/userFollow')}}"><i class="fa fa-heart fa-fw"></i> 我的关注</a></li>
+{{--                <li> <a href=""><i class="fa fa-heart fa-fw"></i> 我的关注</a></li>--}}
+                <li>
+                    <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-heart fa-fw"></i> 我的关注 <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="{{url('member/userFollow')}}">关注主播</a></li>
+                        <li><a href="{{url('member/userFollow_users')}}">关注用户</a></li>
+                    </ul>
+                    <!-- /.nav-second-level -->
+                </li>
                 <li> <a href="{{url('member/userCollect')}}"><i class="fa fa-star fa-fw"></i> 我的收藏</a></li>
                 <li>
                     <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-save"></i> 内容管理 <span class="fa arrow"></span></a>
