@@ -40,6 +40,9 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
     Route::get('archives/{archive}/toggle/{name}', 'Archive\ArchiveController@toggle')->name('archives.toggle');
     Route::get('archives/destroy/{archive}', 'Archive\ArchiveController@destroy')->name('archives.destroy');
     Route::get('archives/{archive}/{user_type}/edit', 'Archive\ArchiveController@edit')->name('archives.edit');
+    Route::get('/plupload', function (){
+        return view('archive.plupload');
+    })->name('archives.plupload');
 
     Route::bind('archive_type', function ($type_name) {
         if ($type_name) {

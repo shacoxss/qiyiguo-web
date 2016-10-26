@@ -55,10 +55,14 @@
                                                     <textarea class="form-control" rows="5"></textarea>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label>图集简介 </label>
+                                                    <input type="file" multiple id="gallery" />
+                                                </div>
+                                                <div class="form-group">
                                                     <label>上传图集 &nbsp;&nbsp;&nbsp;<input type="checkbox" style="vertical-align:sub; "> 使用第一张图片作为封面</label><br><br>
                                                     <a href="javascript:;" class="uploadImgGroup btn btn-primary btn-xl"><i class="fa fa-plus"></i> 点击上传图片</a><br><br>
                                                     <!--图片列表模式-->
-                                                    <div class="row">
+                                                    <div class="row sortable">
                                                         <!--图片单张模式-->
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="panel panel-success userlist">
@@ -95,7 +99,7 @@
                                                         <div class="col-lg-3 col-md-4 col-sm-6">
                                                             <div class="panel panel-success userlist">
                                                                 <div class="panel-heading">
-                                                                    <h3 class="page-header small" style="font-size:14px;">20161009170601</h3>
+                                                                    <h3 class="page-header small" style="font-size:14px;">111</h3>
                                                                     <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a> </div>
                                                                 <div class="panel-body text-center">
                                                                     <div class="userprofile">
@@ -173,7 +177,29 @@
 
 
 @section('scripts')
+    <script src="{{ asset('js/Sortable.js') }}"></script>
+    <script src="{{ asset('js/jquery.binding.js') }}"></script>
     <script>
+        function generateItem(data) {
+            return $(
+                '<div class="col-lg-3 col-md-4 col-sm-6">\
+                    <div class="panel panel-success userlist">\
+                        <div class="panel-heading">\
+                            <h3 class="page-header small" style="font-size:14px;">'+data.name+'</h3>\
+                            <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a>\
+                        </div>\
+                        <div class="panel-body text-center">\
+                            <div class="userprofile">\
+                                <div> <img src="'+window.URL.createObjectURL(data)+'" style="height: 150px;max-width: 100%"> </div>\
+                            </div>\
+                            <input class="form-control " placeholder="图片标题">\
+                            <textarea class="form-control" rows="5"></textarea>\
+                        </div>\
+                    </div>\
+                </div>'
+            )
+        }
+
         $('.uploadImgGroup').click(function(){
             layer.open({
                 type: 2,
@@ -182,7 +208,7 @@
                 shadeClose: true,
                 closeBtn: true,
                 area: ['830px' , '363px'],
-                content: 'plupLoad.html'
+                content: '{{ route('archives.plupload') }}'
             })
         });
         $('.delete-pic').click(function(){
@@ -193,5 +219,13 @@
                 layer.msg('删除成功', {icon: 1});
             });
         });
+
+        $('#gallery').on('change', function (event) {
+            var box = $('.sortable').html('')
+            for(var i = 0; i < this.files.length; i++) {
+                box.append(generateItem(this.files.item(i)))
+            }
+            box.sortable();
+        })
     </script>
 @endsection
