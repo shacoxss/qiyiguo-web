@@ -76,8 +76,8 @@
                     <td>{{floor((time()-time($v->create_at))/(3600*24*30))}}个月</td>
                     <td class="center">{{$v->lastlogin_at}}</td>
                     <td class="center">{{$v->level}}</td>
-                    <td class="center">{{$v->follow}}</td>
-                    <td class="center">{{$v->fans}}</td>
+                    <td class="center">{{$v->follows_count}}</td>
+                    <td class="center">{{$v->fans_count}}</td>
                     <td class="center">
                         @if($v->phone)
                             <i class="fa fa-tablet btn btn-circle btn-warning"></i>

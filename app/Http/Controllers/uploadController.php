@@ -69,7 +69,7 @@ class uploadController extends Controller
                         $rs = false;
                         break;
                 }
-                if($rs){            //将生成的图片保存到img/new_img.jpg
+                if($rs){
                     $msg =  "success";
                 }else{
                     $msg = "false";

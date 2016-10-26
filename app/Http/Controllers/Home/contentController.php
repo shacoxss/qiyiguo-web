@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Home;
 
 use App\Model\Category;
+use App\Model\FollowUser;
 use App\Models\Archive\Archive;
 use App\Models\Archive\ArchiveVisit;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 
 class contentController extends Controller
@@ -33,9 +35,23 @@ class contentController extends Controller
         if (!$archive->hasPattern('review')) return response('没有通过审核', 404);
 
         $archive->visit($request);
+        $user = session('user');
+        if($user){
+            $author_id = $archive->user->id;
+            $follow = FollowUser::where('user_id',$user->id)->first();
+            if($author_id == $follow['followed_id']){
+                $followed = 1;
+            }else{
+                $followed = 0;
+            }
+        }else{
+            $followed = -1;
+        }
 
         return view('pc_home.newsDetail')
             ->with('archive', $archive)
+            ->with('followed',$followed)
+            ->with('user',$user)
         ;
     }
 
@@ -50,6 +66,33 @@ class contentController extends Controller
         } else {
             $archive->like($user);
             return response()->json(['msg' => '感谢您的支持！', 'code' => 0]);
+        }
+    }
+
+    public function changeFollow()
+    {
+        $user = session('user');
+        if($input = Input::except('_token')){
+            if($input['followed']){
+                if(FollowUser::where('user_id',$user->id)->where('followed_id',$input['followed_id'])->delete()){
+                    return response()->json(['rs'=>'success','msg'=>'取消关注成功！']);
+                }else{
+                    return response()->json(['rs'=>'error','msg'=>'取消关注失败！']);
+                }
+            }else{
+                $data['user_id'] = $user->id;
+                $data['followed_id'] = $input['followed_id'];
+                $data['followed_at'] = date('Y-m-d H:i:s',time());
+                if(FollowUser::where('user_id',$user->id)->where('followed_id',$input['followed_id'])->first()){
+                    return response()->json(['rs'=>'success','msg'=>'您已关注过！']);
+                }else if(FollowUser::create($data)){
+                    return response()->json(['rs'=>'success','msg'=>'关注成功！']);
+                }else{
+                    return response()->json(['rs'=>'error','msg'=>'关注失败！']);
+                }
+            }
+        }else{
+            return response()->json(['rs'=>'error','msg'=>'非法请求！']);
         }
     }
 }

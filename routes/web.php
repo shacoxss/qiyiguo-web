@@ -19,6 +19,7 @@ Route::get('/', function () {
 Route::group(['namespace'=>'Home'],function(){
     Route::get('contentLists/{cate_id}','contentController@contentLists')->name('archive.index');
     Route::get('archive/{archive}','contentController@detail')->name('archive.show');
+    Route::post('archive/follow','contentController@changeFollow');
 });
 
 
@@ -74,6 +75,8 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::get('masterIndex','indexController@masterIndex')->middleware('masterAuth');
     Route::get('userProfile','userProfileController@index');
     Route::get('userFollow','userFollowController@index');
+    Route::get('userFollow_users','userFollowController@users');
+    Route::post('userFollow_users','userFollowController@cancelFollowUser');
     Route::get('userFans','userFansController@index');
     Route::get('userCollect','userCollectController@index');
     Route::post('saveHeadImg','userProfileController@saveHeadImg');

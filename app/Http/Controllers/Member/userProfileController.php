@@ -89,10 +89,12 @@ class userProfileController extends Controller
         if($input = Input::except('_token')){
 
             $rules = [
-                'nickname'=>'required',
+                'nickname'=>'required|between:0,16',
             ];
             $message = [
-                'nickname.required' => '用户名不能为空！',
+                'nickname.required' => '昵称不能为空！',
+                'nickname.between' => '昵称长度在不能超过16个字符',
+
             ];
             $validator = Validator::make($input,$rules,$message);
             if($validator->passes()){
