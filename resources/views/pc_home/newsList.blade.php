@@ -164,7 +164,7 @@
 							<div class="am-u-sm-4" style="padding: 0;margin-right: 30px;">
 								<a href="{{route('archive.show', [$archive->id])}}">
 									@if($archive->cover)
-										<img class="am-thumbnail list-pic" src="{{route('image', [$archive->cover, '264x160'])}}" alt=""/>
+										<img class="am-thumbnail list-pic" src="{{route('image', [trim($archive->cover, '/'), '264x160'])}}" alt=""/>
 									@else
 										<img class="am-thumbnail list-pic" src="{{asset('img/200200.png')}}" alt=""/>
 									@endif

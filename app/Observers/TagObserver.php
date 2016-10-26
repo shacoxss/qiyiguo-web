@@ -16,7 +16,7 @@ class TagObserver
 //        }
 //    }
 
-    public function saving($tag)
+    public function creating($tag)
     {
         $tag->name = trim($tag->name);
 
