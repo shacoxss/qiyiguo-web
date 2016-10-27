@@ -23,7 +23,7 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="http://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
     <script src="http://static.geetest.com/static/tools/gt.js"></script>
 </head>
 @section('content')
