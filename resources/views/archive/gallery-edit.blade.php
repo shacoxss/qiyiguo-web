@@ -74,7 +74,7 @@
                                                                             <h3 class="page-header small" style="font-size:14px;">{{$img->title}}.</h3>
                                                                             <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a> </div>
                                                                         <div class="panel-body text-center">
-                                                                            <div class="userprofile">
+                                                                            <div class="image-box">
                                                                                 <div> <img src="{{ route('image', [$img->url, '300x300']) }}" width="100%"> </div>
                                                                             </div>
                                                                             <input class="form-control " placeholder="图片标题" value="{{$img->title}}">
@@ -121,7 +121,7 @@
 
 @section('scripts')
     <style>
-        .userprofile {
+        .image-box {
             height: 300px;
             overflow: hidden;
         }
@@ -139,7 +139,7 @@
                             <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a>\
                         </div>\
                         <div class="panel-body text-center">\
-                            <div class="userprofile">\
+                            <div class="image-box">\
                                 <div> <img src="'+URL.createObjectURL(file)+'" style="width: 100%"> </div>\
                             </div>\
                             <input class="form-control " placeholder="图片标题">\
