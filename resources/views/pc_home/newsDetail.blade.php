@@ -89,7 +89,7 @@
 									@endif
 									</h3>
 								@else
-									<h3>{{mb_substr($archive->user->phone)}}...</h3>
+									<h3>{{mb_substr($archive->user->phone, 0, 6)}}...</h3>
 								@endif
 								@if($followed==1)
 									<button class="news-d-about-author-r-add" data-follow="{{$followed}}" style="background:url('{{asset('home/images/tab/del.png')}}')center no-repeat;background-size: 24px 24px;"></button>
