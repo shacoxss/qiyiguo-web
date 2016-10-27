@@ -79,6 +79,7 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::post('userFollow_users','userFollowController@cancelFollowUser');
     Route::get('userFans','userFansController@index');
     Route::get('userCollect','userCollectController@index');
+    Route::post('userCollect','userCollectController@cancelCollect');
     Route::post('saveHeadImg','userProfileController@saveHeadImg');
     Route::post('resetPassword','userProfileController@resetPassword');
     Route::post('resetNickname','userProfileController@resetNickname');

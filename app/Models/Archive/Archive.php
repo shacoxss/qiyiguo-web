@@ -99,4 +99,8 @@ class Archive extends Model
         return $query->whereRaw("(`mode` & $pattern) = $pattern");
     }
 
+    public function collect()
+    {
+        return $this->belongsTo('App\Model\Collect','archive_id','id');
+    }
 }

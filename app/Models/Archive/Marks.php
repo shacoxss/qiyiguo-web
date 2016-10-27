@@ -20,7 +20,7 @@ trait Marks
         ;
     }
 
-    public function like(Users $user)
+    public function like($user)
     {
         $liked = $this->likedUsers()->where('user_id', $user->id)->first();
 
