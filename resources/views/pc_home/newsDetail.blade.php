@@ -73,7 +73,7 @@
 						<div class="am-u-sm-6 ">
 							<div class="news-d-about-author-l">
 								@if($archive->user->head_img)
-									<img src="{{route('image', [$archive->user->head_img, '161x161'])}}" alt="" onerror="this.src='{{asset('img/200200.png')}}'"/>
+									<img src="{{$archive->user->head_img}}" alt="" onerror="this.src='{{asset('img/200200.png')}}'"/>
 								@else
 									<img src="{{asset('img/200200.png')}}" alt=""/>
 								@endif
