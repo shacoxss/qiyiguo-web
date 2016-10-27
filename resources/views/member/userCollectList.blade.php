@@ -25,34 +25,32 @@
             </tr>
           </thead>
           <tbody>
+          @foreach($mark as $v)
             <tr class="odd">
               <td>
                 <a href="#">
-                  <img src="http://www.qiyiguo.tv/uploads/allimg/160930/18_09301I13RY1.jpg" class="gridpic">
-                  LOL主播帝师直播遇灵异事件全过程 木偶转动衣柜自开
+                    @if($v->archive->cover)
+                  <img src="{{$v->archive->cover}}" class="gridpic">
+                    @endif
+                  {{$v->archive->title}}
                 </a>
               </td>
-              <td>视频</td>
-              <td class="center">2016-09-06</td>
+                @if($v->archive->archive_type_id==1)
+                    <td>文章</td>
+                @elseif($v->archive->archive_type_id==2)
+                    <td>图集</td>
+                @elseif($v->archive->archive_type_id==3)
+                    <td>视频</td>
+                @else
+                    <td>默认</td>
+                @endif
+              <td class="center">{{$v->created_at}}</td>
               <td class="center">
-                <a href="#" class="btn btn-circle btn-primary ">浏览</a>
-                <a href="javascript:;" class="delete-collect btn btn-circle btn-danger ">取消</a>
+                <a href="{{url('archive/'.$v->archive_id)}}" class="btn btn-circle btn-primary ">浏览</a>
+                <a href="javascript:;" class="delete-collect btn btn-circle btn-danger " data-archive="{{$v->archive_id}}">取消</a>
               </td>
             </tr>
-            <tr class="even">
-              <td>
-                <a href="#">
-                  <img src="http://www.qiyiguo.tv/uploads/allimg/160930/18_09301612153202.jpg" class="gridpic">
-                  男子与性感女主播为邻报警:午夜劲歌艳舞
-                </a>
-              </td>
-              <td>文章</td>
-              <td class="center">2016-09-06</td>
-              <td class="center">
-                <a href="#" class="btn btn-circle btn-primary ">浏览</a>
-                <a href="javascript:;" class="delete-collect btn btn-circle btn-danger ">取消</a>
-              </td>
-            </tr>
+          @endforeach
           </tbody>
         </table>
       </div>
@@ -80,11 +78,26 @@
                 }
             });
             $('.delete-collect').click(function(){
+                var _this = $(this);
               layer.confirm('确认取消收藏', {
                 title: '取消收藏',
                 btn: ['确认','取消'] //按钮
               }, function(){
-                layer.msg('取消收藏成功', {icon: 1});
+                  var token = "{{csrf_token()}}";
+                  var id = _this.data('archive');
+                  $.ajax({
+                      url:"{{url('member/userCollect')}}",
+                      type:"post",
+                      data:{_token:token,id:id},
+                      success:function(data){
+                          if(data=='success'){
+                              layer.msg('取消收藏成功！', {icon: 1});
+                              location.reload();
+                          }else{
+                              layer.msg('取消收藏失败！', {icon: 2});
+                          }
+                      }
+                  });
               });
             });
         });

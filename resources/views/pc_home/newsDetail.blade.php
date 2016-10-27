@@ -91,8 +91,10 @@
 								@else
 									<h3>{{mb_substr($archive->user->phone)}}...</h3>
 								@endif
-								@if($followed)
+								@if($followed==1)
 									<button class="news-d-about-author-r-add" data-follow="{{$followed}}" style="background:url('{{asset('home/images/tab/del.png')}}')center no-repeat;background-size: 24px 24px;"></button>
+								@elseif($followed==-1)
+									<button class="news-d-about-author-r-add" data-follow="{{$followed}}" style="background:url('{{asset('home/images/tab/add.png')}}')center no-repeat;background-size: 24px 24px;"></button>
 								@else
 									<button class="news-d-about-author-r-add" data-follow="{{$followed}}" style="background:url('{{asset('home/images/tab/add.png')}}')center no-repeat;background-size: 24px 24px;"></button>
 								@endif
@@ -247,6 +249,11 @@
 	<script>
 		$(function () {
 			$('.like').on('click', function () {
+				var islogin = $('.news-d-about-author-r-add').data('follow');
+				if(islogin==-1){
+					layer.msg('请先登录！');
+					return false;
+				}
 				var $this = $(this)
 				var index = layer.load(0, {shade: false, time : 10000});
 				$.getJSON('{{ route('archive.like', [$archive->id]) }}', function (response){
@@ -269,6 +276,7 @@
 				var followed_id = "{{$archive->user->id}}";
 				if($(this).data('follow')==-1){
 					layer.msg('请先登录！');
+					return false;
 				}else if($(this).data('follow')==1){
 					$('.news-d-about-author-r-add').data('follow',0);
 					var followed = 1;
