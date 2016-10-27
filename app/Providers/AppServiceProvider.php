@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Tag\Tag;
 use App\Observers\TagObserver;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -34,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
 //        if ($this->app->environment() !== 'production') {
-//            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
 //        }
     }
 }

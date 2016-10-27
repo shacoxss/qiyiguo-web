@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Archive;
 
+use App\Helpers\UploadFile;
 use App\Model\Category;
 use App\Models\Archive\Archive;
 use App\Models\Archive\ArchiveType;
@@ -15,6 +16,9 @@ use Intervention\Image\Facades\Image;
 
 class ArchiveController extends Controller
 {
+
+    private $fields = ['title', 'abstract', 'category_id'];
+
     //
     public function index(Request $request, $left = null)
     {
@@ -80,19 +84,15 @@ class ArchiveController extends Controller
 
     public function store(Request $request,ArchiveType $type)
     {
-        $new = $request->only(['title', 'abstract', 'category_id']);
+        dd($request->all());
+        $new = $request->only($this->fields);
         $new['archive_type_id'] = $type->id;
         $new['mode'] = $this->calcMode($request);
         $new['user_id'] = session('user')->id;
 
 
         if ($request->hasFile('cover')) {
-            $file = $request->file('cover');
-            $url = '/upload/archive/'.$file->hashName();
-            $file_name = public_path($url);
-            $img = Image::make($file->getRealPath());
-            $img->save($file_name);
-            $new['cover'] = $url;
+            $new['cover'] = UploadFile::save($request->file('cover'));
         }
 
         $archive = Archive::create($new);
@@ -107,7 +107,7 @@ class ArchiveController extends Controller
 
         $detail = $request->only(explode(',', $type->fields));
         $detail['archive_id'] = $archive->id;
-//        ((string)$type->model)::create($detail);
+
         (new $type->model($detail))->save();
 
         $archive->generateTagUrl();
@@ -123,11 +123,9 @@ class ArchiveController extends Controller
         $archive->detachPattern(7);
         $archive->mode = $this->calcMode($request, $archive->mode);
 
-        $input = $request->only(['title', 'abstract', 'category_id']);
+        $input = $request->only($this->fields);
         //$input['user_id'] = session('user')->id;
-        foreach ($input as $key => $i) {
-            $archive->{$key} = $i;
-        }
+        $archive->fill($input);
 
         if ($request->hasFile('cover')) {
             $file = $request->file('cover');
@@ -220,4 +218,5 @@ class ArchiveController extends Controller
         }
         return true;
     }
+
 }

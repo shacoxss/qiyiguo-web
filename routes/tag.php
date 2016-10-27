@@ -55,13 +55,7 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
     });
 });
 
-Route::get('/image/{uri}/{size}.jpeg', function ($uri, $size) {
-    $img = Image::make(asset($uri));
-    $size = explode('x', $size);
-    if(!isset($size[1])) $size[1] = $size[0];
-    $img->fit($size[0], $size[1]);
-    return $img->response('jpeg');
-})->name('image')->where(['uri' => '.+']);
+Route::get('/image/{uri}/{size}.jpeg', '\App\Helpers\UploadFile@read')->name('image')->where(['uri' => '.+']);
 
 Route::get('/tag/{tag}', 'TagHeadController@index')->name('tag.list');
 
@@ -74,6 +68,6 @@ Route::get('/archive/like/{archive}', 'Home\contentController@like')->name('arch
 
 Route::get('/{defined}', function (\Illuminate\Http\Request $request, $url) {
 
-    $tag = \App\Models\Tag\Tag::where('current_url', '/'.$request->path())->firstOrFail();
-    return (new \App\Http\Controllers\TagHeadController)->index($tag);
+    $tag = \App\Models\Tag\Tag::where('current_url', '/'.$request->path())->first();
+    return $tag ? (new \App\Http\Controllers\TagHeadController)->index($tag) : abort(404, 'Not Found');
 })->where(['defined' => '.+']);

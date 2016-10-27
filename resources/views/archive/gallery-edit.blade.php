@@ -31,12 +31,13 @@
                             <div class="tab-content">
                                 <div class="tab-pane fade padding in active" id="normal">
                                     <!--Tab start-->
-                                    <form role="form">
+                                    <form role="form" method="POST" id="submit">
+                                        {{ csrf_field() }}
                                         <div class="row">
                                             <div class="col-lg-9">
                                                 <div class="form-group ">
                                                     <label>文章标题：</label>
-                                                    <input class="form-control " placeholder="文章标题：" >
+                                                    <input class="form-control " placeholder="文章标题：" name="title">
                                                 </div>
                                                 <div class="form-group">
                                                     <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
@@ -56,7 +57,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>图集简介 </label>
-                                                    <input type="file" multiple id="gallery" />
+                                                    <input type="file" multiple id="gallery" name="files[]" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label>上传图集 &nbsp;&nbsp;&nbsp;<input type="checkbox" style="vertical-align:sub; "> 使用第一张图片作为封面</label><br><br>
@@ -192,8 +193,8 @@
                             <div class="userprofile">\
                                 <div> <img src="'+window.URL.createObjectURL(data)+'" style="height: 150px;max-width: 100%"> </div>\
                             </div>\
-                            <input class="form-control " placeholder="图片标题">\
-                            <textarea class="form-control" rows="5"></textarea>\
+                            <input class="form-control " placeholder="图片标题" name="img_title[]">\
+                            <textarea class="form-control" rows="5" name="img_description[]"></textarea>\
                         </div>\
                     </div>\
                 </div>'
@@ -226,6 +227,35 @@
                 box.append(generateItem(this.files.item(i)))
             }
             box.sortable();
+        })
+
+        $('#submit').on('submit', function () {
+            var data =  new FormData($('#submit')[0]);
+
+            console.log(data)
+            $.ajax({
+                url: '{{ route('archives.store', ['gallery']) }}',
+                type: 'POST',
+                cache: false,
+                data: data,
+                processData: false,
+                contentType: false
+            });
+            {{--.done(function (response) {--}}
+                {{--console.log(response);--}}
+                {{--layer.confirm(response[0], {--}}
+                    {{--title: '信息',--}}
+                    {{--btn: ['确定', response[1]] //按钮--}}
+                {{--}, function () {--}}
+                    {{--window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'--}}
+                {{--}, function () {--}}
+                    {{--window.location.reload()--}}
+                {{--})--}}
+            {{--})--}}
+            {{--.fail(function (response) {--}}
+                {{--layer.msg("失败", {icon: 2})--}}
+            {{--})--}}
+            return false;
         })
     </script>
 @endsection
