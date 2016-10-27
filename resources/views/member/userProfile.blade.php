@@ -346,7 +346,7 @@
 				// 提交验证码信息
 
 				$.ajax({
-					url: "{{url('register/verifyLogin')}}",
+					url: "{{url('auth/verifyLogin')}}",
 					type: "post",
 					// dataType: "json",
 					data: {

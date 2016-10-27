@@ -110,7 +110,8 @@ class ArchiveController extends Controller
         }
 
         $detail = $request->only(explode(',', $type->fields));
-        ($type->model)::saveDetail($archive, $detail);
+        $model = $type->model;
+        $model::saveDetail($archive, $detail);
 
         $archive->generateTagUrl();
 
@@ -134,7 +135,8 @@ class ArchiveController extends Controller
 
         $archive->save();
         $detail = $request->only(explode(',', $archive->type->fields));
-        ($archive->type->model)::saveDetail($archive, $detail);
+        $model = $archive->type;
+        $model::saveDetail($archive, $detail);
 
 
         $tags = $archive->tags()->get()->pluck('id')->all();
