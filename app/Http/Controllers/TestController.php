@@ -15,7 +15,7 @@ class TestController extends Controller
 
     public function index(Request $request)
     {
-        return view('vendor.datatables.print');
+        dd(Archive::find(42));
     }
 
     public function anyData(Request $request)

@@ -82,9 +82,13 @@ class ArchiveController extends Controller
         ;
     }
 
-    public function store(Request $request,ArchiveType $type)
+    /**
+     * @param Request $request
+     * @param ArchiveType $type
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(Request $request, ArchiveType $type)
     {
-        dd($request->all());
         $new = $request->only($this->fields);
         $new['archive_type_id'] = $type->id;
         $new['mode'] = $this->calcMode($request);
@@ -106,9 +110,7 @@ class ArchiveController extends Controller
         }
 
         $detail = $request->only(explode(',', $type->fields));
-        $detail['archive_id'] = $archive->id;
-
-        (new $type->model($detail))->save();
+        ($type->model)::saveDetail($archive, $detail);
 
         $archive->generateTagUrl();
 
@@ -124,25 +126,15 @@ class ArchiveController extends Controller
         $archive->mode = $this->calcMode($request, $archive->mode);
 
         $input = $request->only($this->fields);
-        //$input['user_id'] = session('user')->id;
         $archive->fill($input);
 
         if ($request->hasFile('cover')) {
-            $file = $request->file('cover');
-            $url = '/upload/archive/'.$file->hashName();
-            $file_name = public_path($url);
-            $img = Image::make($file->getRealPath());
-            $img->save($file_name);
-            $archive->cover = $url;
+            $archive->cover = UploadFile::save($request->file('cover'));
         }
 
         $archive->save();
         $detail = $request->only(explode(',', $archive->type->fields));
-        $model = $archive->detail()->first();
-        foreach ($detail as $key => $i) {
-            $model->{$key} = $i;
-        }
-        $model->save();
+        ($archive->type->model)::saveDetail($archive, $detail);
 
 
         $tags = $archive->tags()->get()->pluck('id')->all();

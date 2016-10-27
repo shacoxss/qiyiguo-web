@@ -44,7 +44,7 @@ class UploadFile
         $path .= "/$size[0]x$size[1].".self::EXT;
 
         if (!file_exists($path)) {
-            $img = Image::make("$uri/".self::RAW.'.'.self::EXT);
+            $img = Image::make(public_path($uri)."/".self::RAW.'.'.self::EXT);
             $img->fit($size[0], $size[1]);
             $img->save($path);
         }

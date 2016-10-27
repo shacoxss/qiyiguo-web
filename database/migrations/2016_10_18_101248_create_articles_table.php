@@ -15,7 +15,7 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->increments('archive_id')->references('id')->on('archives');
-            $table->text('content')->nullable;
+            $table->text('content')->nullable();
         });
     }
 

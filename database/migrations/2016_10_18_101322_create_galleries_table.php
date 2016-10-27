@@ -13,9 +13,10 @@ class CreateGalleriesTable extends Migration
      */
     public function up()
     {
-//        Schema::create('galleries', function (Blueprint $table) {
-//            $table->increments('id')->references('id')->on('archives');
-//        });
+        Schema::create('galleries', function (Blueprint $table) {
+            $table->increments('archive_id')->references('id')->on('archives');
+            $table->text('content')->nullable();
+        });
     }
 
     /**

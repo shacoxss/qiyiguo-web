@@ -33,15 +33,16 @@
                                     <!--Tab start-->
                                     <form role="form" method="POST" id="submit">
                                         {{ csrf_field() }}
+                                        {{ method_field(isset($archive) ? 'PUT' : 'POST') }}
                                         <div class="row">
                                             <div class="col-lg-9">
                                                 <div class="form-group ">
                                                     <label>文章标题：</label>
-                                                    <input class="form-control " placeholder="文章标题：" name="title">
+                                                    <input class="form-control " placeholder="文章标题：" name="title" value="{{$archive->title or ''}}">
                                                 </div>
                                                 <div class="form-group">
                                                     <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
-                                                    <input class="form-control " placeholder="标签">
+                                                    <input class="form-control " placeholder="标签" name="tags">
                                                     <br>
                                                     <p>
                                                         推荐标签：
@@ -53,11 +54,11 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>图集简介 </label>
-                                                    <textarea class="form-control" rows="5"></textarea>
+                                                    <textarea class="form-control" rows="5" name="content">{!! $archive->detail->content or '' !!}</textarea>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>图集简介 </label>
-                                                    <input type="file" multiple id="gallery" name="files[]" />
+                                                    <input type="file" multiple id="gallery"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>上传图集 &nbsp;&nbsp;&nbsp;<input type="checkbox" style="vertical-align:sub; "> 使用第一张图片作为封面</label><br><br>
@@ -65,84 +66,25 @@
                                                     <!--图片列表模式-->
                                                     <div class="row sortable">
                                                         <!--图片单张模式-->
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="panel panel-success userlist">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="page-header small" style="font-size:14px;">20161009170601</h3>
-                                                                    <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a> </div>
-                                                                <div class="panel-body text-center">
-                                                                    <div class="userprofile">
-                                                                        <div> <img src="img/500.png" width="100%" height=""> </div>
+                                                        @if (isset($archive))
+                                                            @foreach ($archive->detail->images()->get() as $img)
+                                                                <div class="col-lg-3 col-md-4 col-sm-6">
+                                                                    <div class="panel panel-success userlist">
+                                                                        <div class="panel-heading">
+                                                                            <h3 class="page-header small" style="font-size:14px;">{{$img->title}}.</h3>
+                                                                            <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a> </div>
+                                                                        <div class="panel-body text-center">
+                                                                            <div class="userprofile">
+                                                                                <div> <img src="{{ route('image', [$img->url, '300x300']) }}" width="100%"> </div>
+                                                                            </div>
+                                                                            <input class="form-control " placeholder="图片标题" value="{{$img->title}}">
+                                                                            <textarea class="form-control" rows="5">{!! $img->description !!}</textarea>
+                                                                            <input type="hidden" value="{{$img->url}}" class="img_url" >
+                                                                        </div>
                                                                     </div>
-                                                                    <input class="form-control " placeholder="图片标题">
-                                                                    <textarea class="form-control" rows="5">这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊</textarea>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--图片单张模式结束-->
-                                                        <!--图片单张模式-->
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="panel panel-success userlist">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="page-header small" style="font-size:14px;">20161009170601</h3>
-                                                                    <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a> </div>
-                                                                <div class="panel-body text-center">
-                                                                    <div class="userprofile">
-                                                                        <div> <img src="img/500.png" width="100%"> </div>
-                                                                    </div>
-                                                                    <input class="form-control " placeholder="图片标题">
-                                                                    <textarea class="form-control" rows="5">这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊</textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--图片单张模式结束-->
-                                                        <!--图片单张模式-->
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="panel panel-success userlist">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="page-header small" style="font-size:14px;">111</h3>
-                                                                    <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a> </div>
-                                                                <div class="panel-body text-center">
-                                                                    <div class="userprofile">
-                                                                        <div> <img src="img/500.png" width="100%"> </div>
-                                                                    </div>
-                                                                    <input class="form-control " placeholder="图片标题">
-                                                                    <textarea class="form-control" rows="5">这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊</textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--图片单张模式结束-->
-                                                        <!--图片单张模式-->
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="panel panel-success userlist">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="page-header small" style="font-size:14px;">20161009170601</h3>
-                                                                    <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a> </div>
-                                                                <div class="panel-body text-center">
-                                                                    <div class="userprofile">
-                                                                        <div> <img src="img/500.png" width="100%"> </div>
-                                                                    </div>
-                                                                    <input class="form-control " placeholder="图片标题">
-                                                                    <textarea class="form-control" rows="5">这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊</textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <!--图片单张模式结束-->
-                                                        <!--图片单张模式-->
-                                                        <div class="col-lg-3 col-md-4 col-sm-6">
-                                                            <div class="panel panel-success userlist">
-                                                                <div class="panel-heading">
-                                                                    <h3 class="page-header small" style="font-size:14px;">20161009170601</h3>
-                                                                    <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a> </div>
-                                                                <div class="panel-body text-center">
-                                                                    <div class="userprofile">
-                                                                        <div> <img src="img/500.png" width="100%"> </div>
-                                                                    </div>
-                                                                    <input class="form-control " placeholder="图片标题">
-                                                                    <textarea class="form-control" rows="5">这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊这里写的是图片的简介啊</textarea>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                            @endforeach
+                                                        @endif
                                                         <!--图片单张模式结束-->
                                                     </div>
                                                     <!--图片列表模式结束-->
@@ -151,7 +93,7 @@
                                             <!-- /.col-lg-6 (nested) -->
                                             <div class="col-lg-3">
                                                 <h3>封面上传 </h3>
-                                                <input type="file">
+                                                <input type="file" name="cover">
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                         </div>
@@ -178,83 +120,110 @@
 
 
 @section('scripts')
+    <style>
+        .userprofile {
+            height: 300px;
+            overflow: hidden;
+        }
+    </style>
     <script src="{{ asset('js/Sortable.js') }}"></script>
     <script src="{{ asset('js/jquery.binding.js') }}"></script>
     <script>
-        function generateItem(data) {
+        var $files = [];
+        function generateItem(file, index) {
             return $(
-                '<div class="col-lg-3 col-md-4 col-sm-6">\
+                '<div data-index="'+index+'" class="col-lg-3 col-md-4 col-sm-6">\
                     <div class="panel panel-success userlist">\
                         <div class="panel-heading">\
-                            <h3 class="page-header small" style="font-size:14px;">'+data.name+'</h3>\
+                            <h3 class="page-header small" style="font-size:14px;">'+file.name+'</h3>\
                             <a href="javascript:;" class="delete-pic availablity btn btn-circle btn-danger" title="删除"><i class="fa fa-times"></i></a>\
                         </div>\
                         <div class="panel-body text-center">\
                             <div class="userprofile">\
-                                <div> <img src="'+window.URL.createObjectURL(data)+'" style="height: 150px;max-width: 100%"> </div>\
+                                <div> <img src="'+URL.createObjectURL(file)+'" style="width: 100%"> </div>\
                             </div>\
-                            <input class="form-control " placeholder="图片标题" name="img_title[]">\
-                            <textarea class="form-control" rows="5" name="img_description[]"></textarea>\
+                            <input class="form-control " placeholder="图片标题">\
+                            <textarea class="form-control" rows="5" ></textarea>\
                         </div>\
                     </div>\
                 </div>'
             )
         }
 
-        $('.uploadImgGroup').click(function(){
-            layer.open({
-                type: 2,
-                border: [0],
-                title: false,
-                shadeClose: true,
-                closeBtn: true,
-                area: ['830px' , '363px'],
-                content: '{{ route('archives.plupload') }}'
-            })
-        });
-        $('.delete-pic').click(function(){
-            layer.confirm('确认删除此图片', {
-                title: '删除确认',
-                btn: ['确认','取消'] //按钮
-            }, function(){
-                layer.msg('删除成功', {icon: 1});
+        function generate_del_click() {
+            $('.delete-pic').click(function(){
+                var ctx = $(this)
+                layer.confirm('确认删除此图片', {
+                    title: '删除确认',
+                    btn: ['确认','取消'] //按钮
+                }, function(){
+                    ctx.parents('div.col-lg-3').remove()
+                    layer.msg('删除成功', {icon: 1});
+                });
             });
+        }
+
+        generate_del_click()
+
+        $('.sortable').sortable();
+        $('.uploadImgGroup').click(function(){
+            $('#gallery').click();
         });
 
+
         $('#gallery').on('change', function (event) {
-            var box = $('.sortable').html('')
-            for(var i = 0; i < this.files.length; i++) {
-                box.append(generateItem(this.files.item(i)))
+            var box = $('.sortable')//.html('')
+            out:
+            for (var i = 0; i < this.files.length; i++) {
+                for (var j = 0; j < $files.length; j++) {
+                    if ($files[j] == this.files.item(i)) continue out;
+                }
+                $files.push(this.files.item(i))
+                box.append(generateItem(this.files.item(i), $files.length - 1))
             }
-            box.sortable();
+            generate_del_click();
         })
 
         $('#submit').on('submit', function () {
             var data =  new FormData($('#submit')[0]);
+            var files = $('#gallery')[0].files;
 
-            console.log(data)
+            $('.sortable>div').each(function (i, item) {
+                var old = $(item).find('input.img_url')
+                var file = old.length === 1 ? old.val() : $(item).data('index')
+                data.append('images[]', JSON.stringify({
+                    title : $(item).find('input.form-control').val(),
+                    description : $(item).find('textarea.form-control').val(),
+                    url : file
+                }))
+//                data.append('img_title[]', $(item).find('input.form-control').val())
+//                data.append('img_description[]', $(item).find('textarea.form-control').val())
+            })
+            $files.forEach(function(file) {
+                data.append('files[]', file)
+            })
             $.ajax({
-                url: '{{ route('archives.store', ['gallery']) }}',
+                url: '{{isset($archive) ? route('archives.update', [$archive->id]) : route('archives.store', ['gallery'])}}',
                 type: 'POST',
                 cache: false,
                 data: data,
                 processData: false,
                 contentType: false
-            });
-            {{--.done(function (response) {--}}
-                {{--console.log(response);--}}
-                {{--layer.confirm(response[0], {--}}
-                    {{--title: '信息',--}}
-                    {{--btn: ['确定', response[1]] //按钮--}}
-                {{--}, function () {--}}
-                    {{--window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'--}}
-                {{--}, function () {--}}
-                    {{--window.location.reload()--}}
-                {{--})--}}
-            {{--})--}}
-            {{--.fail(function (response) {--}}
-                {{--layer.msg("失败", {icon: 2})--}}
-            {{--})--}}
+            })
+            .done(function (response) {
+                console.log(response);
+                layer.confirm(response[0], {
+                    title: '信息',
+                    btn: ['确定', response[1]] //按钮
+                }, function () {
+                    window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'
+                }, function () {
+                    window.location.reload()
+                })
+            })
+            .fail(function (response) {
+                layer.msg("失败", {icon: 2})
+            })
             return false;
         })
     </script>
