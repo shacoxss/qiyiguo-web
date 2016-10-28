@@ -50,7 +50,8 @@
                                                     </span>
                                                     </p>
                                                 </div>
-                                                <div class="form-group col-md-12">
+
+                                                <div class="form-group">
                                                     <label>关联系统栏目</label>
                                                     <select class="form-control" name="category_id">
                                                         @foreach($cate as $c)
@@ -63,7 +64,6 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                            </div>
                                                 {{--<div class="form-group">--}}
                                                     {{--<label>视频上传</label> <br><br>--}}
                                                     {{--<a href="#" class="btn btn-primary btn-xss input-file-a-style">--}}

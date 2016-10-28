@@ -50,7 +50,7 @@
                                                     </span>
                                                     </p>
                                                 </div>
-                                                <div class="form-group col-md-12">
+                                                <div class="form-group">
                                                     <label>关联系统栏目</label>
                                                     <select class="form-control" name="category_id">
                                                         @foreach($cate as $c)
@@ -63,7 +63,6 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                            </div>
                                                 <div class="form-group">
                                                     <label>图集简介 </label>
                                                     <textarea class="form-control" rows="5" name="content">{!! $archive->detail->content or '' !!}</textarea>
