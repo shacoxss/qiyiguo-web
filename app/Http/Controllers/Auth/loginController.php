@@ -147,7 +147,7 @@ class loginController extends Controller
         }else{
             if($user){
                 $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
-                Users::where('id',$user->id)->update($data);
+                Users::where('id',$user->id)->update($input);
                 session(['user'=>$user]);
                 $url = url('/');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
@@ -198,7 +198,7 @@ class loginController extends Controller
         //登陆
             if($user){
                 $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
-                Users::where('id',$user->id)->update($data);
+                Users::where('id',$user->id)->update($input);
                 session(['user'=>$user]);
                 $url = url('/');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
@@ -246,7 +246,7 @@ class loginController extends Controller
         }else{
             if($user){
                 $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
-                Users::where('id',$user->id)->update($data);
+                Users::where('id',$user->id)->update($input);
                 session(['user'=>$user]);
                 $url = url('/');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
