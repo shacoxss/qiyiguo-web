@@ -224,7 +224,6 @@
                 contentType: false
             })
             .done(function (response) {
-                console.log(response);
                 layer.confirm(response[0], {
                     title: '信息',
                     btn: ['确定', response[1]] //按钮

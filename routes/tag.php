@@ -11,7 +11,8 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
 
 
     Route::get('/tags', 'Tag\TagController@index')->name('tag.index');
-
+    Route::get('/tag/create', 'Tag\TagController@create')->name('tag.create');
+    Route::post('/tag/store', 'Tag\TagController@store')->name('tag.store');
     Route::get('/tag/{tag_name}/edit', 'Tag\TagController@edit')->name('tag.edit');
     Route::get('/tag/{tag_name}/status/{code}', 'Tag\TagController@status')->name('tag.status');
 
