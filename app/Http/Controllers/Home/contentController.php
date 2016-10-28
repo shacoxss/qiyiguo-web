@@ -48,7 +48,7 @@ class contentController extends Controller
             $followed = -1;
         }
 
-        return view('pc_home.newsDetail')
+        return view($archive->type->t_show)
             ->with('archive', $archive)
             ->with('followed',$followed)
             ->with('user',$user)

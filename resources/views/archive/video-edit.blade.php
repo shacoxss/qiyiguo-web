@@ -38,7 +38,7 @@
                                             <div class="col-lg-9">
                                                 <div class="form-group ">
                                                     <label>文章标题：</label>
-                                                    <input class="form-control " placeholder="文章标题："  name="title">
+                                                    <input class="form-control " placeholder="文章标题：" name="title" value="{{$archive->title or ''}}">
                                                 </div>
                                                 <div class="form-group">
                                                     <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
@@ -94,16 +94,19 @@
                                                 {{--</div>--}}
                                                 <div class="form-group">
                                                     <label>视频地址(第三方视频网站调用)</label>
-                                                    <input class="form-control " placeholder="视频地址：" name="link" >
+                                                    <input class="form-control " placeholder="视频地址：" name="link" value="{{ $archive->detail->link or '' }}" >
                                                 </div>
                                                 <div class="form-group">
                                                     <label>视频简介</label>
-                                                    <textarea class="form-control" rows="5" name="content"></textarea>
+                                                    <textarea class="form-control" rows="5" name="content">{!! $archive->detail->content or '' !!}</textarea>
                                                 </div>
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                             <div class="col-lg-3">
                                                 <h3>缩略图上传</h3>
+                                                @if(isset($archive) && $archive->cover)
+                                                    <img style="max-width:250px;" src="{{route('image', [$archive->cover, '250'])}}" />
+                                                @endif
                                                 <input type="file" name="cover">
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->

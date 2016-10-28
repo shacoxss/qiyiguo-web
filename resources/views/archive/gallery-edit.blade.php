@@ -57,6 +57,7 @@
                                                 <input type="file" multiple id="gallery" style="display: none;"/>
                                                 <div class="form-group">
                                                     <a href="javascript:;" class="uploadImgGroup btn btn-primary btn-xl"><i class="fa fa-plus"></i> 点击上传图片</a><br><br>
+                                                    <p class="info">拖动可排序</p>
                                                     <!--图片列表模式-->
                                                     <div class="row sortable">
                                                         <!--图片单张模式-->
@@ -86,6 +87,9 @@
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                             <div class="col-lg-3">
+                                                @if(isset($archive) && $archive->cover)
+                                                    <img style="max-width:250px;" src="{{route('image', [$archive->cover, '250'])}}" />
+                                                @endif
                                                 <a href="javascript:;" class="uploadImgGroup btn btn-primary btn-xl"><i class="fa fa-plus"></i> 点击上传封面
                                                     <input type="file" name="cover" style="display: none;">
                                                 </a>
