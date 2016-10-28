@@ -108,7 +108,6 @@ class ArchiveController extends Controller
             $tags = Tag::convertToPrimaries($tags);
             $archive->tags()->attach($tags->all());
         }
-
         $detail = $request->only(explode(',', $type->fields));
         $model = $type->model;
         $model::saveDetail($archive, $detail);

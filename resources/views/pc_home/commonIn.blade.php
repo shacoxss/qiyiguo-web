@@ -8,7 +8,7 @@
     <link href="{{asset('home/js/skin/layer.css')}}" type="text/css" rel="stylesheet" />
     <link href="{{asset('home/css/all.css')}}" type="text/css" rel="stylesheet" />
     <link href="{{asset('home/css/details.css')}}" type="text/css" rel="stylesheet" />
-
+    <link href="{{asset('home/css/list.css')}}" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="{{asset('home/js/jquery-3.1.0.min.js')}}"></script>
 
     <script type="text/javascript" src="{{asset('pulgin/layer/layer.js')}}"></script>
