@@ -1,4 +1,4 @@
-@extends('pc_home.commonOut')
+@extends('pc_home.commonIn')
 @section('title')
 		<title>{{$cate->cate_name}}</title>
 		<meta name="Keywords" content="{{$cate->seo_key}}">
@@ -7,7 +7,7 @@
 
 @section('content')
 		<!--轮播图-->
-		<div class="am-g">
+		<div class="am-g" style="margin-top:81px">
 			<div class="slider">
 				<div class="bd">
 					<ul>
@@ -174,7 +174,7 @@
 								<a href="{{route('archive.show', [$archive->id])}}"> <h3>{{$archive->title}}</h3></a>
 								<span>
 									<a href="#">{{ $archive->user->nickname }}</a>
-									&nbsp;{{date('n-d G:i', strtotime($archive->updated_at))}}
+									&nbsp;{{worldTime(strtotime($archive->updated_at))}}
 								</span>
 								<p>
 									{{ mb_substr($archive->abstract, 0, 66) }}...

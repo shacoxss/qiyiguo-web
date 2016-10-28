@@ -55,7 +55,7 @@
               </div>
             </div>
           </div>
-          <a href="userFansList.php.php">
+          <a href="{{'member/userFans'}}">
           <div class="panel-footer"> <span class="pull-left">粉丝管理</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
             <div class="clearfix"></div>
           </div>

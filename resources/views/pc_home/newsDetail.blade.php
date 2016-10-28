@@ -13,8 +13,8 @@
 					<p>{{ $archive->title }}</p>
 				</div>
 				<div class="news-author-view">
-					<span class="news-author-view-name">作者：{{$archive->user->nickname or ''}}</span>
-					<span>发布于：{{date('Y-n-d G:i', strtotime($archive->updated_at))}}</span>
+					<span class="news-author-view-name">作者：{{$archive->user->nickname or $archive->user->phone}}</span>
+					<span>发布于：{{worldTime(strtotime($archive->updated_at))}}</span>
 					{{--<span>来源：乐视网</span>--}}
 					<div style="display: inline-block;float: left;">
 						<dl class="tab-block-r-ul">

@@ -20,7 +20,7 @@
 */
 
 require __DIR__.'/../bootstrap/autoload.php';
-
+require __DIR__.'/../app/Helpers/time.php';
 /*
 |--------------------------------------------------------------------------
 | Turn On The Lights
