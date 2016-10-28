@@ -228,6 +228,7 @@
         var forget_url = "{{url('forget')}}";
         var qq_login = "{{url('auth/qq')}}";
         var wx_login = "{{url('auth/weixinWeb')}}";
+        var wb_login = "{{url('auth/weibo')}}";
         var login = {
             init: function() {
 
@@ -236,10 +237,11 @@
                     layer.open({
                         type: 1,
                         title: false,
+                        area: ['auto', 'auto'],
                         closeBtn: 0,
                         shadeClose: true,
                         zIndex:899990,
-                        content: '<div class="login-pop"data-point="dlk"><div class="login-pop-close"></div><div class="login-pop-tab"><ul><li><a href="#" class="t-login current">登录</a></li><li><a href="'+reg_url+'" target="_blank">注册</a></li></ul></div><div class="login-pop-cont clearfix"><div class="c-item clearfix popLogin"><form method="post" action=""><input type="hidden" name="name" value="login"><input type="hidden" name="dopost" value="login"><input type="hidden" name="gourl" value=""><p><input class="ipt" type="text" name="userid" id="phone" placeholder="电话号码"></p><p><input class="ipt" type="password" name="pwd" id="password" placeholder="密码"></p><div class="toreg clearfix"><input class="btn-sub"type="button"value="登录" id="popup-submit"><p>没有账号？<a href="'+reg_url+'" title="马上注册" target="_blank">马上注册</a></p></div></form></div><div class="c-oth"><p>用第三方账号直接登录</p><div><a href="'+qq_login+'" class="btn-qq" title="QQ账号登录"data-point-2="qq"><span class="dy-icon dy-sina"></span><span>QQ账号登录</span></a></div><div><a href="'+wx_login+'" class="btn-wx" title="微信登录"data-point-2="qq"><span class="dy-icon dy-wx"></span><span>微信登录</span></a></div><p class="forget-pass"><a href="'+forget_url+'" target="_blank">忘记密码？</a></p></div></div></div>'
+                        content: '<div class="login-pop"data-point="dlk"><div class="login-pop-close"></div><div class="login-pop-tab"><ul><li><a href="#" class="t-login current">登录</a></li><li><a href="'+reg_url+'" target="_blank">注册</a></li></ul></div><div class="login-pop-cont clearfix"><div class="c-item clearfix popLogin"><form method="post" action=""><input type="hidden" name="name" value="login"><input type="hidden" name="dopost" value="login"><input type="hidden" name="gourl" value=""><p><input class="ipt" type="text" name="userid" id="phone" placeholder="电话号码"></p><p><input class="ipt" type="password" name="pwd" id="password" placeholder="密码"></p><div class="toreg clearfix"><input class="btn-sub"type="button"value="登录" id="popup-submit"><p>没有账号？<a href="'+reg_url+'" title="马上注册" target="_blank">马上注册</a></p></div></form></div><div class="c-oth"><p>用第三方账号直接登录</p><div><a href="'+qq_login+'" class="btn-qq" title="QQ账号登录"data-point-2="qq"><span class="dy-icon dy-sina"></span><span>QQ账号登录</span></a></div><div><a href="'+wx_login+'" class="btn-wx" title="微信登录"data-point-2="qq"><span class="dy-icon dy-wx"></span><span>微信登录</span></a></div><div><a href="'+wb_login+'" class="btn-sina" title="微博登录"data-point-2="sina"><span class="dy-icon dy-qq"></span><span>微博登录</span></a></div><p class="forget-pass"><a href="'+forget_url+'" target="_blank">忘记密码？</a></p></div></div></div>'
                     })
                     $(".t-login").on("click", function() {
                         $(".t-login").addClass("current");
