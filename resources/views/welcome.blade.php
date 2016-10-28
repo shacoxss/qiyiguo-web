@@ -78,7 +78,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="{{route('archive.index')}}">内容列表</a>
+                    <a href="{{url('contentLists/29')}}">精彩推荐</a>
                 </div>
             </div>
         </div>

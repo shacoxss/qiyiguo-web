@@ -149,13 +149,13 @@ class loginController extends Controller
                 $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 Users::where('id',$user->id)->update($data);
                 session(['user'=>$user]);
-                $url = url('auth/success');
+                $url = url('/');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
             }else{
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 if($user = Users::create($data)){
                     session(['user'=>$user]);
-                    $url = url('auth/success');
+                    $url = url('/');
                     echo "<script>window.parent.location.href = '".$url."';</script>";
                 }
             }
@@ -200,13 +200,13 @@ class loginController extends Controller
                 $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 Users::where('id',$user->id)->update($data);
                 session(['user'=>$user]);
-                $url = url('auth/success');
+                $url = url('/');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
             }else{
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 if($user = Users::create($data)){
                     session(['user'=>$user]);
-                    $url = url('auth/success');
+                    $url = url('/');
                     echo "<script>window.parent.location.href = '".$url."';</script>";
                 }
             }
@@ -248,13 +248,13 @@ class loginController extends Controller
                 $input['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 Users::where('id',$user->id)->update($data);
                 session(['user'=>$user]);
-                $url = url('auth/success');
+                $url = url('/');
                 echo "<script>window.parent.location.href = '".$url."';</script>";
             }else{
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 if($user = Users::create($data)){
                     session(['user'=>$user]);
-                    $url = url('auth/success');
+                    $url = url('/');
                     echo "<script>window.parent.location.href = '".$url."';</script>";
                 }
             }
