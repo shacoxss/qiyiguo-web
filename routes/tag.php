@@ -55,7 +55,7 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
     });
 });
 
-Route::get('/image/{uri}/{size}.jpeg', '\App\Helpers\UploadFile@read')->name('image')->where(['uri' => '.+']);
+Route::get('/{uri}/{size}.jpeg', '\App\Helpers\UploadFile@read')->name('image')->where(['uri' => '.+']);
 
 Route::get('/tag/{tag}', 'TagHeadController@index')->name('tag.list');
 

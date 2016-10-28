@@ -15,7 +15,7 @@ class TestController extends Controller
 
     public function index(Request $request)
     {
-        dd(Archive::find(42));
+        return 'Hello World';
     }
 
     public function anyData(Request $request)

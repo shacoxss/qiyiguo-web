@@ -13,9 +13,11 @@ class CreateVideosTable extends Migration
      */
     public function up()
     {
-//        Schema::create('videos', function (Blueprint $table) {
-//            $table->increments('id')->references('id')->on('archives');
-//        });
+        Schema::create('videos', function (Blueprint $table) {
+            $table->increments('archive_id')->references('id')->on('archives');
+            $table->text('content')->nullable();
+            $table->string('link');
+        });
     }
 
     /**

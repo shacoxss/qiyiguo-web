@@ -135,7 +135,7 @@ class ArchiveController extends Controller
 
         $archive->save();
         $detail = $request->only(explode(',', $archive->type->fields));
-        $model = $archive->type;
+        $model = $archive->type->model;
         $model::saveDetail($archive, $detail);
 
 

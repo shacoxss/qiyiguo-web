@@ -42,26 +42,20 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
-                                                    <input class="form-control " placeholder="标签" name="tags">
+                                                    <input class="form-control" placeholder="标签" name="tags" value="{{$tags or ''}}">
                                                     <br>
-                                                    <p>
+                                                    <p style="display: none;">
                                                         推荐标签：
-                                                        <a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> FPS</a>
-                                                        <a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> 射击游戏</a>
-                                                        <a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> NGA战队</a>
+                                                        <span id="extract">
+                                                    </span>
                                                     </p>
-                                                    <!--from通用提示-->
                                                 </div>
                                                 <div class="form-group">
                                                     <label>图集简介 </label>
                                                     <textarea class="form-control" rows="5" name="content">{!! $archive->detail->content or '' !!}</textarea>
                                                 </div>
+                                                <input type="file" multiple id="gallery" style="display: none;"/>
                                                 <div class="form-group">
-                                                    <label>图集简介 </label>
-                                                    <input type="file" multiple id="gallery"/>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>上传图集 &nbsp;&nbsp;&nbsp;<input type="checkbox" style="vertical-align:sub; "> 使用第一张图片作为封面</label><br><br>
                                                     <a href="javascript:;" class="uploadImgGroup btn btn-primary btn-xl"><i class="fa fa-plus"></i> 点击上传图片</a><br><br>
                                                     <!--图片列表模式-->
                                                     <div class="row sortable">
@@ -92,8 +86,10 @@
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                             <div class="col-lg-3">
-                                                <h3>封面上传 </h3>
-                                                <input type="file" name="cover">
+                                                <a href="javascript:;" class="uploadImgGroup btn btn-primary btn-xl"><i class="fa fa-plus"></i> 点击上传封面
+                                                    <input type="file" name="cover" style="display: none;">
+                                                </a>
+                                                <label>默认使用图集第一张图片作为封面</label>
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                         </div>
@@ -226,5 +222,67 @@
             })
             return false;
         })
+
+        $extract_tags_url = '{{route('tag.extract')}}';
+        $content = $('textarea[name=content]');
+        $content_length = $content.val().length;
+
+        var gen_add_tag = function () {
+            $('#extract a.btn-xss').on('click', function () {
+                var input = $(this).parents('div.form-group').find('input')
+                input.val(input.val() + (input.val() ? ',' : '') + $(this).text())
+                if ($('#extract a.btn-xss').length == 1) $(this).parents('p').css('display', 'none')
+                $(this).remove()
+            })
+        }
+
+        $editor_change = function (text) {
+            var lock_count, lock_time, lock_response
+            lock_count = lock_time = lock_response = false
+            return function () {
+                text = text.replace(/\s\s/g, '');
+
+//                lock_count = Math.abs(text.length - $content_length) < 20
+//                        ? true : false
+
+
+                if (lock_count || lock_time || lock_response) return ;
+
+                lock_time = lock_response = true
+                setTimeout(function () {lock_time = false}, 5000)
+                $content_length = text.length
+                $.ajax({
+                    url : $extract_tags_url,
+                    type : 'POST',
+                    data : {
+                        'text' : text,
+                        '_token' : $_token
+                    }
+                }).done(function (response) {
+                    var sort = [];
+                    for (var tag in response) {
+                        sort.push({tag:tag, weight: response[tag]})
+                    }
+                    sort = sort.sort(function down(x, y) {
+                        return (x.weight < y.weight) ? 1 : -1
+
+                    });
+                    var $extract = $('#extract');
+                    $extract.html('')
+                    for (var i = 0; i < sort.length; i++) {
+                        $extract.append('<a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> '+sort[i].tag+'</a>')
+                        if(i>7) break;
+                    }
+                    gen_add_tag()
+                    $extract.parents('p').css('display', 'block')
+                    lock_response = false
+                }).fail(function () {
+                    lock_response = false;
+                })
+            }
+
+        }
+        $content.on('change', $editor_change($content.val()))
+
     </script>
 @endsection
