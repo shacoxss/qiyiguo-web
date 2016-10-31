@@ -1,0 +1,152 @@
+.item_list{
+	font-size: 14px;
+	
+}
+.masonry_brick .title{
+	width: 50%;
+	float: left;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.tk-liulan{
+	max-width: 50%;
+	float: right;
+	    padding: 8px 0;
+	    font-size: 12px;
+	    color: #999999;
+	    overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	
+}
+.tk-liulan span:first-child{
+	margin-left: 10px;
+}
+.tk-liulan span{
+	display: inline-block;
+	
+}
+.tk-icon{
+	width: 12px;
+	height: 12px;
+}
+.icon-pl{
+	background: url(../../images/pinglun.jpg)center no-repeat;
+}
+.icon-xh{
+	background: url(../../images/video/v-like.png)center no-repeat;
+}
+.tuku-modal{
+	width: 1238px;
+	    left: 50%;
+    margin-left: -600px;
+    text-align: left;
+	
+}
+.tuku-modal-dialog{
+	width: 100%;
+	position: absolute;
+	top: 20px;
+	left: 0;
+	background: transparent;
+}
+.am-dimmer{
+	background: rgba(256,256,256,0.85);
+}
+.tk-pics{
+	width: 100%;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	padding: 20px 34px;
+	background: #FFFFFF;
+	margin-bottom: 20px;
+}
+.tk-pics .v-a-like{
+	border: none;
+}
+.tk-pics .v-a-like button{
+	float: left;
+}
+.tk-p-top{
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+.tk-p-liulan{
+	text-align: left;
+	font-size: 12px;
+	color: #999999;
+	padding: 10px 0;
+}
+.tk-p-icon{
+	width: 12px;
+	height: 12px;
+}
+.tk-p-liulan span{
+	display: inline-block;
+	margin-right: 10px;
+}
+.tk-p-icon .icon-pl{
+	background: url(../../images/pinglun.png)center no-repeat;
+}
+.tk-p-icon .icon-xh{
+	background: url(../../images/video/v-like.png)center no-repeat;
+}
+.in-item-list{
+	width: 695px;
+    margin: 0 auto;
+}
+.a-a-icon{
+	width: 48px;
+	height: 48px;
+	border-radius: 24px;
+	overflow: hidden;
+	float: left;
+}
+.a-a-icon img{
+	width: 100%;
+}
+.album-auther-pics{
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	padding: 25px 10px 40px;
+	background: #FFFFFF;
+	margin-bottom: 20px;
+}
+.a-author span{
+	margin-left: 10px;
+    margin-top: 12px;
+    display: inline-block;
+    float: left;
+}
+.a-author{
+	overflow: hidden;
+}
+.album-author-prev-imgs{
+	width: 100%;
+	height: 356px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+.item-list-author-pics .item{
+	width: 80px;
+	margin: 0;
+}
+.item-list-author-pics .item .item_t{
+	padding: 0;
+}
+.item-list-author-pics .item .item_t img{
+	width: 80px;
+}
+.a-author{
+	margin-bottom: 20px;
+}
+.masonry_brick a{
+	 cursor:pointer;
+}
+.item-list-parent{
+	margin-bottom: 20px;
+}

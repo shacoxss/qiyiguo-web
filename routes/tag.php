@@ -67,6 +67,7 @@ Route::bind('tag', function ($name) {
 Route::get('/archive/like/{archive}', 'Home\contentController@like')->name('archive.like');
 
 Route::get('/galleries', 'Home\GalleryController@index')->name('galleries.index');
+Route::get('/gallery/{archive}', 'Home\GalleryController@show')->name('galleries.show');
 
 
 Route::get('/{uri}/{size}.jpeg', '\App\Helpers\UploadFile@read')->name('image')->where(['uri' => '.+']);
