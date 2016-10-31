@@ -90,7 +90,7 @@
                 <li>
                     <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-tag"></i> 标签管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="#">新增</a></li>
+                        <li><a href="{{ route('tag.create') }}">新增</a></li>
                         <li><a href="{{route('tag.index')}}">列表</a></li>
                     </ul>
                     <!-- /.nav-second-level -->

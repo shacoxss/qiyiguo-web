@@ -249,6 +249,7 @@
                 contentType: false
             })
             .done(function (response) {
+<<<<<<< HEAD
                 if(response.error){
                     if(typeof(response.msg.title)!='undefined'){
                         layer.msg(response.msg.title[0]);
@@ -274,6 +275,16 @@
                     })
                 }
 
+=======
+                layer.confirm(response[0], {
+                    title: '信息',
+                    btn: ['确定', response[1]] //按钮
+                }, function () {
+                    window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'
+                }, function () {
+                    window.location.reload()
+                })
+>>>>>>> 68175064ade04b3628d5d1e58e8e3b6467246da9
             })
             .fail(function (response) {
                 layer.msg("失败", {icon: 2})

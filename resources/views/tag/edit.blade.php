@@ -247,14 +247,14 @@
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                         <div class="col-lg-3 input-file">
-                                            <img v-if="logo" v-bind:src="logo" height="100" />
+                                            <img v-if="logo" v-bind:src="logo+'/250x250.jpeg'" height="100" />
                                             <a href="javascript:void(0);" class="btn btn-primary btn-xss input-file-a-style" v-on:click="file_upload">
                                                 <i class="fa fa-plus"></i> <span>点击上传LOGO</span>
                                                 <input type="file" class="input-file-style" name="logo"  v-on:change="file_change">
                                             </a>
                                         </div>
                                         <div class="col-lg-3 input-file">
-                                            <img v-if="background_image" v-bind:src="background_image" height="100" />
+                                            <img v-if="background_image" v-bind:src="background_image+'/250x250.jpeg'" height="100" />
                                             <a href="javascript:void(0)" class="btn btn-primary btn-xss input-file-a-style"  v-on:click="file_upload">
                                                 <i class="fa fa-plus"></i> <span>点击上传背景</span>
                                                 <input type="file" class="input-file-style" name="background_image" v-on:change="file_change">

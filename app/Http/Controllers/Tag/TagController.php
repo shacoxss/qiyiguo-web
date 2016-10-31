@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tag;
 
+use App\Helpers\UploadFile;
 use App\Models\Tag\Tag;
 use App\Models\Tag\TagAttribute;
 use App\Models\Tag\TagFinder;
@@ -21,6 +22,12 @@ class TagController extends Controller
         return view('tag.index')
             ->with('tags', $tags);
     }
+
+    public function create()
+    {
+        return view('tag.create');
+    }
+
     public function edit(Request $request,Tag $tag)
     {
         
@@ -36,6 +43,28 @@ class TagController extends Controller
             ->with('tag', $tag)
             ->with('data', json_encode($data))
         ;
+    }
+
+    public function store(Request $request)
+    {
+        $new = $request->only(['name', 'current_url', 'template']);
+        $new['type'] = 'normal';
+
+        if ($request->hasFile('logo')) {
+            $new['logo'] = UploadFile::save($request->file('logo'));
+        }
+
+        if ($request->hasFile('background_image')) {
+            $new['background_image'] = UploadFile::save($request->file('logo'));
+        }
+
+        foreach ($new as $key => $_) {
+            $new[$key] = $new[$key] ? $new[$key] : null;
+        }
+
+        if (Tag::create($new)) {
+            return response()->json(['新增成功！', '继续新增']);
+        }
     }
 
     public function update(Request $request, $tag)
@@ -62,19 +91,11 @@ class TagController extends Controller
         }
 
         if ($request->hasFile('logo')) {
-            $file = $request->file('logo');
-            $new['logo'] = '/upload/tag_logo/'.$file->hashName();
-            $file_name = public_path($new['logo']);
-            $img = Image::make($file->getRealPath());
-            $img->save($file_name);
+            $new['logo'] = UploadFile::save($request->file('logo'));
         }
 
         if ($request->hasFile('background_image')) {
-            $file = $request->file('background_image');
-            $new['background_image'] = '/upload/background_image/'.$file->hashName();
-            $file_name = public_path($new['background_image']);
-            $img = Image::make($file->getRealPath());
-            $img->save($file_name);
+            $new['background_image'] = UploadFile::save($request->file('logo'));
         }
 
         if (Tag::find($input['id'])) {
