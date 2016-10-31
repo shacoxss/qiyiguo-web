@@ -26,6 +26,10 @@ class ArchiveController extends Controller
         $user = session('user');
         $query = Archive::orderBy('created_at', 'desc');
 
+        if ($request->has('type')) {
+            $query->where('archive_type_id', ArchiveType::where('name', $request->input('type'))->value('id'));
+        }
+
         if ($left == 'master' && $this->checkMaster()) {
             $archives = $query->get();
             if($request->has('mode')) {
