@@ -56,7 +56,6 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
     });
 });
 
-Route::get('/{uri}/{size}.jpeg', '\App\Helpers\UploadFile@read')->name('image')->where(['uri' => '.+']);
 
 Route::get('/tag/{tag}', 'TagHeadController@index')->name('tag.list');
 
@@ -67,6 +66,10 @@ Route::bind('tag', function ($name) {
 
 Route::get('/archive/like/{archive}', 'Home\contentController@like')->name('archive.like');
 
+Route::get('/galleries', 'Home\GalleryController@index')->name('galleries.index');
+
+
+Route::get('/{uri}/{size}.jpeg', '\App\Helpers\UploadFile@read')->name('image')->where(['uri' => '.+']);
 Route::get('/{defined}', function (\Illuminate\Http\Request $request, $url) {
 
     $tag = \App\Models\Tag\Tag::where('current_url', '/'.$request->path())->first();
