@@ -39,11 +39,11 @@
                     <a href="">文章</a>
                 </li>
                 <li>
-                    <a href="{{asset('video')}}">视频</a>
+                    <a href="{{url('video')}}">视频</a>
                 </li>
 
                 <li class="tab-divider">
-                    <a href="">图库</a>
+                    <a href="{{url('galleries')}}">图库</a>
 
                 </li>
             </ul>
