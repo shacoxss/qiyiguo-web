@@ -186,15 +186,27 @@
                 contentType: false
             })
             .done(function (response) {
-                console.log(response);
-                layer.confirm(response[0], {
-                    title: '信息',
-                    btn: ['确定', response[1]] //按钮
-                }, function () {
-                    window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'
-                }, function () {
-                    window.location.reload()
-                })
+                if(response.error){
+                    if(typeof(response.msg.title)!='undefined'){
+                        layer.msg(response.msg.title[0]);
+                        return false;
+                    }else if(typeof(response.msg.content)!='undefined'){
+                        layer.msg(response.msg.content[0]);
+                        return false;
+                    }else if(typeof(response.msg.tags)!='undefined'){
+                        layer.msg(response.msg.tags[0]);
+                        return false;
+                    }
+                }else {
+                    layer.confirm(response[0], {
+                        title: '信息',
+                        btn: ['确定', response[1]] //按钮
+                    }, function () {
+                        window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'
+                    }, function () {
+                        window.location.reload()
+                    })
+                }
             })
             .fail(function (response) {
                 layer.msg("失败", {icon: 2})
