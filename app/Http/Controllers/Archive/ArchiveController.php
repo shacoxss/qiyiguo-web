@@ -65,6 +65,7 @@ class ArchiveController extends Controller
             ->with('patterns', $patterns)
             ->with('cate', $cate)
             ->with('left', 'user')
+            ->with('type', $type)
         ;
     }
     public function edit(Request $request, Archive $archive, $user_type)
@@ -87,6 +88,7 @@ class ArchiveController extends Controller
             ->with('cate', $cate)
             ->with('tags', implode(',', $archive->tags()->get()->pluck('name')->all()))
             ->with('left', $left)
+            ->with('type', $archive->type)
         ;
     }
 
