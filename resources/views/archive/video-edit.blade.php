@@ -37,8 +37,8 @@
                                         <div class="row">
                                             <div class="col-lg-9">
                                                 <div class="form-group ">
-                                                    <label>文章标题：</label>
-                                                    <input class="form-control " placeholder="文章标题：" name="title" value="{{$archive->title or ''}}">
+                                                    <label>视频标题：</label>
+                                                    <input class="form-control " placeholder="视频标题：" name="title" value="{{$archive->title or ''}}">
                                                 </div>
                                                 <div class="form-group">
                                                     <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
@@ -111,8 +111,33 @@
                                                     <input class="form-control " placeholder="视频地址：" name="link" value="{{ $archive->detail->link or '' }}" >
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>视频简介</label>
-                                                    <textarea class="form-control" rows="5" name="content">{!! $archive->detail->content or '' !!}</textarea>
+                                                    <label>视频简介</label>                                            <!--编辑器开始-->
+                                                    <div class="form-group">
+                                                        <link rel="stylesheet" type="text/css" href="{{asset('pulgin/wangEditor/dist/css/wangEditor.min.css')}}">
+                                                        <style type="text/css">
+                                                            #editor-trigger {
+                                                                height: 600px;
+                                                                /*max-height: 600px;*/
+                                                            }
+                                                            .container {
+                                                                width: 100%;
+                                                                margin: 0 auto;
+                                                                position: relative;
+                                                                padding: 0;
+                                                            }
+                                                        </style>
+                                                        <input type="hidden" name="content">
+                                                        <div id="editor-container" class="container">
+                                                            <div id="editor-trigger">
+                                                                {!! $archive->detail->content or '' !!}
+                                                            </div>
+                                                            <!-- <textarea id="editor-trigger" style="display:none;">
+                                                                <p>请输入内容...</p>
+                                                            </textarea> -->
+                                                        </div>
+                                                    </div>
+                                                    <!--编辑器结束-->
+
                                                 </div>
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
@@ -152,6 +177,10 @@
 
         $('#archive').on('submit', function () {
             var data =  new FormData($('#archive')[0]);
+            var html = editor.$txt.html().replace(/\s\s/g, '');
+            var text = editor.$txt.text().replace(/\s\s/g, '').substr(0, 120);
+            data.append('content', html);
+            data.append('abstract', text);
             $.ajax({
                 url: '{{isset($archive) ? route('archives.update', [$archive->id]) : route('archives.store', ['video'])}}',
                 type: 'POST',
@@ -162,14 +191,30 @@
             })
                     .done(function (response) {
                         console.log(response);
-                        layer.confirm(response[0], {
-                            title: '信息',
-                            btn: ['确定', response[1]] //按钮
-                        }, function () {
-                            window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'
-                        }, function () {
-                            window.location.reload()
-                        })
+                        if(response.error){
+                            if(typeof(response.msg.title)!='undefined'){
+                                layer.msg(response.msg.title[0]);
+                                return false;
+                            }else if(typeof(response.msg.content)!='undefined'){
+                                layer.msg(response.msg.content[0]);
+                                return false;
+                            }else if(typeof(response.msg.tags)!='undefined'){
+                                layer.msg(response.msg.tags[0]);
+                                return false;
+                            }else if(typeof(response.msg.link)!='undefined'){
+                                layer.msg(response.msg.link[0]);
+                                return false;
+                            }
+                        }else {
+                            layer.confirm(response[0], {
+                                title: '信息',
+                                btn: ['确定', response[1]] //按钮
+                            }, function () {
+                                window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'
+                            }, function () {
+                                window.location.reload()
+                            })
+                        }
                     })
                     .fail(function (response) {
                         layer.msg("失败", {icon: 2})
@@ -178,8 +223,6 @@
         })
 
         $extract_tags_url = '{{route('tag.extract')}}';
-        $content = $('textarea[name=content]');
-        $content_length = $content.val().length;
 
         var gen_add_tag = function () {
             $('#extract a.btn-xss').on('click', function () {
@@ -190,13 +233,15 @@
             })
         }
 
-        $editor_change = function (text) {
+        $editor_change = function () {
             var lock_count, lock_time, lock_response
             lock_count = lock_time = lock_response = false
             return function () {
-                text = $(this).val().replace(/\s\s/g, '');
-//                lock_count = Math.abs(text.length - $content_length) < 20
-//                        ? true : false
+                var text = editor.$txt.text().replace(/\s\s/g, '');
+
+                lock_count = Math.abs(text.length - $content_length) < 20
+                        ? true : false
+
 
 
                 if (lock_count || lock_time || lock_response) return ;
@@ -235,7 +280,8 @@
             }
 
         }
-        $content.on('change', $editor_change($content.val()))
-
     </script>
+    <script type="text/javascript" src={{asset("pulgin/wangEditor/dist/js/wangEditor.js")}}></script>
+    <!--<script type="text/javascript" src="pulgin/wangEditor/dist/js/wangEditor.min.js"></script>-->
+    <script type="text/javascript" src={{asset("js/wangEditor_emoji.js")}}></script>
 @endsection

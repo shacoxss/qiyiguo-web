@@ -20,6 +20,7 @@ Route::group(['namespace'=>'Home'],function(){
     Route::get('contentLists/{cate_id}','contentController@contentLists')->name('archive.index');
     Route::get('archive/{archive}','contentController@detail')->name('archive.show');
     Route::post('archive/follow','contentController@changeFollow');
+    Route::any('video','videoController@index');
 });
 
 

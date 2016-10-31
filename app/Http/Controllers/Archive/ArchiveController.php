@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class ArchiveController extends Controller
@@ -95,11 +96,43 @@ class ArchiveController extends Controller
         $new['user_id'] = session('user')->id;
 
 
+        $input = $request->except('_token');
+        $rules = [
+            'title'=>'required|between:3,16|unique:archives,title',
+            'tags'=>'required',
+            'category_id'=>'required',
+            'content'=>'required',
+        ];
+        $message = [
+            'title.required' => '标题不能为空',
+            'title.between' => '标题长度4~16个字',
+            'title.unique' => '标题已存在',
+            'tags.required' => '标签不能为空',
+            'category_id.required' => '请选择栏目',
+            'content.required' => '内容或简介不能为空',
+        ];
+
+        if($new['archive_type_id']==2){
+            $rules['images'] = 'required';
+            $message['images.required'] = '请上传图片！';
+        }elseif($new['archive_type_id']==3){
+            $rules['link'] = 'required';
+            $message['link.required'] = '请填写url！';
+        }
+
+
+
         if ($request->hasFile('cover')) {
             $new['cover'] = UploadFile::save($request->file('cover'));
         }
 
-        $archive = Archive::create($new);
+        $validator = Validator::make($input,$rules,$message);
+        if($validator->passes()){
+            $archive = Archive::create($new);
+        }else{
+            return response()->json(['error'=>1,'msg'=>$validator->errors()]);
+        }
+
 
         $tags = explode(',', $request->tags);
         $tags = array_slice($tags, 0, 3);

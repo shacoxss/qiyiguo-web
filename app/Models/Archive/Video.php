@@ -23,4 +23,9 @@ class Video extends Model
 
         return $article;
     }
+
+    public function archive()
+    {
+        return $this->hasOne('App\Models\Archive\Archive');
+    }
 }
