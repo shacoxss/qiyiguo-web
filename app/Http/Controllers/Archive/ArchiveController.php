@@ -116,9 +116,8 @@ class ArchiveController extends Controller
             $rules['images'] = 'required';
             $message['images.required'] = '请上传图片！';
         }elseif($new['archive_type_id']==3){
-            $rules['link'] = 'required|url';
+            $rules['link'] = 'required';
             $message['link.required'] = '请填写url！';
-            $message['link.url'] = '请填写正确的url！';
         }
 
 
