@@ -39,7 +39,7 @@
                     <a href="">文章</a>
                 </li>
                 <li>
-                    <a href="">视频</a>
+                    <a href="{{asset('video')}}">视频</a>
                 </li>
 
                 <li class="tab-divider">
