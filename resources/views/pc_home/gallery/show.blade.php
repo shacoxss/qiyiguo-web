@@ -54,7 +54,7 @@
             <div class="am-u-sm-8 news-detail-content-left" style="width: 796px;margin-top: 10px;">
                 <div id="lightgallery">
                     @foreach($images as $image)
-                        <a href="{{$image->url.'/raw.jpeg'}}" data-sub-html="aaa">
+                        <a href="{{$image->url.'/raw.jpeg'}}" data-sub-html="<h3>{{$image->title}}</h3><p>{{$image->description}}</p>">
                             <img src="{{route('image', [$image->url, '180x120'])}}" />
                         </a>
                     @endforeach
