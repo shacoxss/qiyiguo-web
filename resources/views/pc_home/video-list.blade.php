@@ -174,7 +174,7 @@
 									<div class="btn-pic" style="height: 145px;"><img src="{{asset('images/v-btn.png')}}"></div>
 
 								</div>
-								<div style="margin-top: 10px;border-bottom: 1px solid #DDDDDD;overflow: hidden;padding-left: 10px;">
+								<div style="height:34px;margin-top: 10px;border-bottom: 1px solid #DDDDDD;overflow: hidden;padding-left: 10px;">
 									<dl class="tab-block-r-ul">
 										@foreach($archive->tags()->get() as $tag)
 											<dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}" title="{{$tag->name}}">{{ mb_substr($tag->name,0,4)}}
