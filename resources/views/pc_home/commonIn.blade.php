@@ -43,7 +43,7 @@
                 </li>
 
                 <li class="tab-divider">
-                    <a href="">图库</a>
+                    <a href="{{route('galleries.index')}}">图库</a>
 
                 </li>
             </ul>
