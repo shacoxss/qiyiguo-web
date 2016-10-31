@@ -95,12 +95,12 @@
 @else
             <div class="am-topbar-right already-l" style="margin-top:30px">
                 <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
-                    <a href="{{url('member/index')}}"><span class="l-pic"><img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'"></span>
+                    <a href=""><span class="l-pic"><img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'"></span>
 
                         @if(session('user')->nickname)
 
                             <span class="l-txt" title="{{session('user')->nickname}}">{{mb_substr(session('user')->nickname,0,4)}}
-                                @if(strlen(session('user')->nickname)>5)
+                                @if(strlen(session('user')->nickname)>15)
                                     ...
                                 @endif
                         </span><span class="am-icon-caret-down"></span></a>
@@ -116,7 +116,7 @@
                         </li>
                         <li>
 
-                            <a href="{{url('member/userArchivesList')}}" target="_blank"><span class="menu-span menu-span2"></span>我的稿件</a>
+                            <a href="{{url('member/archives')}}" target="_blank"><span class="menu-span menu-span2"></span>我的稿件</a>
 
                         </li>
                         <li>
@@ -394,5 +394,10 @@
                 $(".all-tabs").hide();
             $(".all-tabs").data('hide',1);
         })
+    })
+    $(function(){
+        $('.tab-regist').click(function(){
+            location.href = "{{url('register')}}";
+        });
     })
 </script>

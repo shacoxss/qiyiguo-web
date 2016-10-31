@@ -34,12 +34,14 @@ class ArchiveController extends Controller
                 });
             }
             $is_master = true;
-        } else {
+        }else{
             $archives = $query->where('user_id', $user->id)->get();
             $is_master = false;
         }
         $counter = [
-            'article' => Archive::where('archive_type_id', 1)->count()
+            'article' => Archive::where('archive_type_id', 1)->count(),
+            'gallery' => Archive::where('archive_type_id', 2)->count(),
+            'video' => Archive::where('archive_type_id', 3)->count()
         ];
         return view('archive.archive-index')
             ->with('archives', $archives)
