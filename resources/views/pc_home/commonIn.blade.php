@@ -36,15 +36,14 @@
         <div class="am-collapse am-topbar-collapse header-ul tab-header-ul" id="doc-topbar-collapse">
             <ul class="am-nav am-nav-pills am-topbar-nav tab-ul-nav">
                 <li>
-                    <a href="">文章</a>
+                    <a href="{{url('article')}}">文章</a>
                 </li>
                 <li>
                     <a href="{{url('video')}}">视频</a>
                 </li>
 
                 <li class="tab-divider">
-                    <a href="{{url('galleries')}}">图库</a>
-
+                    <a href="{{route('galleries.index')}}">图库</a>
                 </li>
             </ul>
             <ul class="am-nav am-nav-pills am-topbar-nav tab-ul-nav tab-ul-nav-right">
@@ -168,13 +167,13 @@
                 <p class="block-title ">奇异果资讯</p>
                 <ul class="block-item-ul ">
                     <li>
-                        <a href=" ">行业新闻</a>
+                        <a href="{{url('qyg/news')}}">行业新闻</a>
                     </li>
                     <li>
-                        <a href=" ">奇异果公告</a>
+                        <a href="{{url('qyg/notice')}}">奇异果公告</a>
                     </li>
                     <li>
-                        <a href=" ">热门活动</a>
+                        <a href="{{url('qyg/active')}}">热门活动</a>
                     </li>
                 </ul>
             </div>

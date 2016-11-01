@@ -26,6 +26,10 @@ class ArchiveController extends Controller
         $user = session('user');
         $query = Archive::orderBy('created_at', 'desc');
 
+        if ($request->has('type')) {
+            $query->where('archive_type_id', ArchiveType::where('name', $request->input('type'))->value('id'));
+        }
+
         if ($left == 'master' && $this->checkMaster()) {
             $archives = $query->get();
             if($request->has('mode')) {
@@ -99,6 +103,11 @@ class ArchiveController extends Controller
 
 
         $input = $request->except('_token');
+        if($input['news']=='on'){
+            $new['news'] = 1;
+        }else{
+            $new['news'] = 0;
+        }
         $rules = [
             'title'=>'required|between:3,16|unique:archives,title',
             'tags'=>'required',

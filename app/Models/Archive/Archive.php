@@ -34,6 +34,10 @@ class Archive extends Model
         return $this->belongsTo('App\Model\Users', 'user_id', 'id');
     }
 
+    public function category()
+    {
+        return $this->belongsTo('App\Model\Category', 'category_id', 'cate_id');
+    }
     public function tags()
     {
         return $this
