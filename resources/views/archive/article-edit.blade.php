@@ -42,7 +42,6 @@
                                     <input name="id" type="hidden" />
                                     <div class="row">
                                         <div class="col-lg-9">
-<<<<<<< HEAD
                                             <div class="form-group">
                                                 <label>文章标题：</label>
                                                 <input class="form-control" name="title" placeholder="文章标题：" value="{{$archive->title or ''}}">
@@ -78,8 +77,21 @@
                                                     </div>
                                                 </div>
                                                 @endforeach
-
-
+                                                <div class="form-group col-md-3">
+                                                    <div class="list-group-item withswitch">
+                                                        <h5 class="list-group-item-heading">奇异果资讯</h5>
+                                                        <p class="list-group-item-text">news</p>
+                                                        <div class="switch">
+                                                            <input id="cmn-toggle-news" class="cmn-toggle
+                                                            cmn-toggle-round" type="checkbox" name="news"
+                                                                   @if(isset($archive) && $archive->news)
+                                                                   checked="checked"
+                                                                    @endif
+                                                            >
+                                                            <label for="cmn-toggle-news" style="border:none;"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <!-- 单属性控制 -->
                                                 <div class="form-group col-md-12">
                                                     <label>关联系统栏目</label>
@@ -98,28 +110,7 @@
                                             </div>
                                             <!-- 管理员属性编辑开始 -->
                                             @endif
-                                            @if(session('user')->master)
-                                            <div class="row">
-                                                <div class="form-group col-md-3">
-                                                    <div class="list-group-item withswitch">
-                                                        <h5 class="list-group-item-heading">奇异果资讯</h5>
-                                                        <p class="list-group-item-text">news</p>
-                                                        <div class="switch">
-                                                            <input id="cmn-toggle-news" class="cmn-toggle
-                                                                cmn-toggle-round" type="checkbox" name="news"
-                                                                   @if(isset($archive) && $archive->news)
-                                                                   checked="checked"
-                                                                    @endif
-                                                            >
-                                                            <label for="cmn-toggle-news" style="border:none;"></label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endif
-=======
-                                            @include('archive.common-input')
->>>>>>> 5fc7e42a74fe236cc30fd51f38bdd61771d8d021
+                                            {{--@include('archive.common-input')--}}
                                             <!--编辑器开始-->
                                             <div class="form-group">
                                                 <label style="margin-top:15px; margin-bottom:15px;">正文</label>
