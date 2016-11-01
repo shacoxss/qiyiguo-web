@@ -790,3 +790,39 @@
         </div>
     </div>
 @endsection
+
+@section('scripts')
+    <script>
+        $(".mr_frbox").slide({
+
+            titCell: "",
+
+            mainCell: ".mr_frUl ul",
+
+            autoPage: true,
+
+            effect: "leftLoop",
+
+            autoPlay: true,
+
+            vis: 4,
+            scroll: 4
+
+        });
+        $(".tempWrap").css("width", "3600px");
+        $(".tempWrap").css("height", "166px");
+
+        /* 鼠标悬停图片效果 */
+
+        $("li").hover(
+                function(e) {
+                    $(this).find('.mr_zhe').show();
+                    $(this).find('img').css("opacity", "0.8");
+                },
+                function() {
+                    $(this).find('.mr_zhe').hide();
+                    $(this).find('img').css("opacity", "1");
+                }
+        );
+    </script>
+@endsection
