@@ -106,6 +106,9 @@
                                 <img src="{{route('image', [$a->cover, '30x30'])}}" onerror="$(this).remove()" alt="" class="gridpic">
                             @endif
                             {{$a->title}}<br>
+                                @if($a->news)
+                                    <i class="btn btn-default btn-xss">奇异果资讯</i>
+                                @endif
                             @foreach($a->patterns(1) as $p)
                                 <i class="btn {{$p->description}} btn-xss">{{$p->display_name}}</i>
                             @endforeach

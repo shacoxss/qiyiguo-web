@@ -106,6 +106,11 @@ class ArchiveController extends Controller
 
 
         $input = $request->except('_token');
+        if($input['news']=='on'){
+            $new['news'] = 1;
+        }else{
+            $new['news'] = 0;
+        }
         $rules = [
             'title'=>'required|between:3,30|unique:archives,title',
             'tags'=>'required',

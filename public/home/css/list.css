@@ -725,9 +725,6 @@ img.list-pics {
 	padding: 0;
 	margin-top: 35px;
 }
-
-
-}
 .nl-box {
 	padding: 0;
 	width: 285px;
@@ -982,7 +979,6 @@ img.list-pic {
 	margin-left: 5px;
 }
 .gz {
-	margin-left: 160px;
 	margin-bottom: 20px;
 	margin-top: 20px
 }
@@ -997,8 +993,6 @@ img.list-pic {
 .gl-pic li {
 	display: block;
 	margin-bottom: 10px;
-	width: 340px;
-	height: 110px;
 }
 .gl-pic li img {
 	border: 1px solid #FFFFFF;
@@ -1075,10 +1069,6 @@ img.list-pic {
 }
 .p-active a {
 	font-size: 12px;
-}
-.pagination li:hover {
-	color: #FFFFFF;
-	background-color: #79a200;
 }
 .r-tiltle {
 	display: block;

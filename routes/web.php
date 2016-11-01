@@ -19,6 +19,9 @@ Route::group(['namespace'=>'Home'],function(){
     Route::post('archive/follow','contentController@changeFollow');
     Route::any('video','videoController@index');
     Route::get('/', 'IndexController@index')->name('index');
+    Route::any('article','articleController@index');
+    Route::any('qyg/{cate?}','qygController@index');
+    Route::get('qyg/detail/{id}','qygController@detail');
 });
 
 
