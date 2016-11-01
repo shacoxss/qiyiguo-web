@@ -42,6 +42,7 @@
                                     <input name="id" type="hidden" />
                                     <div class="row">
                                         <div class="col-lg-9">
+<<<<<<< HEAD
                                             <div class="form-group">
                                                 <label>文章标题：</label>
                                                 <input class="form-control" name="title" placeholder="文章标题：" value="{{$archive->title or ''}}">
@@ -116,6 +117,9 @@
                                                 </div>
                                             </div>
                                             @endif
+=======
+                                            @include('archive.common-input')
+>>>>>>> 5fc7e42a74fe236cc30fd51f38bdd61771d8d021
                                             <!--编辑器开始-->
                                             <div class="form-group">
                                                 <label style="margin-top:15px; margin-bottom:15px;">正文</label>

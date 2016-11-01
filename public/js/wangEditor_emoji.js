@@ -279,7 +279,7 @@
                                         // editor.config.codeDefaultLang = 'html'
 
                                         // 只粘贴纯文本
-                                        editor.config.pasteText = true;
+                                        editor.config.pasteText = false;
 
                                         // 跨域上传
                                         // editor.config.uploadImgUrl = 'http://localhost:8012/upload';

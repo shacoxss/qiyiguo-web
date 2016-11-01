@@ -27,7 +27,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a href="{{route('archives.index', [$left, 'type' => 'article'])}}">
                     <div class="panel-footer"> <span class="pull-left"><i class="fa fa-search"></i> 仅显示文章</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="galleryAdd.php">
+                <a href="{{route('archives.index', [$left, 'type' => 'gallery'])}}">
                     <div class="panel-footer"> <span class="pull-left"><i class="fa fa-search"></i> 仅显示图集</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="vedioAdd.php">
+                <a href="{{route('archives.index', [$left, 'type' => 'video'])}}">
                     <div class="panel-footer"> <span class="pull-left"><i class="fa fa-search"></i> 仅显示视频</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                         <div class="clearfix"></div>
                     </div>

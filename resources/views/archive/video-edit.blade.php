@@ -36,34 +36,7 @@
                                         {{ method_field(isset($archive) ? 'PUT' : 'POST') }}
                                         <div class="row">
                                             <div class="col-lg-9">
-                                                <div class="form-group ">
-                                                    <label>视频标题：</label>
-                                                    <input class="form-control " placeholder="视频标题：" name="title" value="{{$archive->title or ''}}">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
-                                                    <input class="form-control" placeholder="标签" name="tags" value="{{$tags or ''}}">
-                                                    <br>
-                                                    <p style="display: none;">
-                                                        推荐标签：
-                                                        <span id="extract">
-                                                    </span>
-                                                    </p>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label>关联系统栏目</label>
-                                                    <select class="form-control" name="category_id">
-                                                        @foreach($cate as $c)
-                                                            <option @if(isset($archive) && $archive->category_id == $c->cate_id)
-                                                                    selected
-                                                                    @endif
-                                                                    value="{{$c->cate_id}}">
-                                                                {{str_repeat('--', $c->lev)}} {{$c->cate_name}}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
+                                                @include('archive.common-input')
                                                 {{--<div class="form-group">--}}
                                                     {{--<label>视频上传</label> <br><br>--}}
                                                     {{--<a href="#" class="btn btn-primary btn-xss input-file-a-style">--}}
