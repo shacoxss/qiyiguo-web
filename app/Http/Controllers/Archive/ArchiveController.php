@@ -171,9 +171,9 @@ class ArchiveController extends Controller
 
         $input = $request->except('_token');
         $rules = [
-            'title'=>'required|between:3,30|unique:archives,title',
+            //'title'=>'required|between:3,30|unique:archives,title',
             'tags'=>'required',
-            'category_id'=>'required',
+            //'category_id'=>'required',
             'content'=>'required',
         ];
         $message = [

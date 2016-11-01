@@ -11,9 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 //home
 Route::group(['namespace'=>'Home'],function(){
@@ -21,6 +18,7 @@ Route::group(['namespace'=>'Home'],function(){
     Route::get('archive/{archive}','contentController@detail')->name('archive.show');
     Route::post('archive/follow','contentController@changeFollow');
     Route::any('video','videoController@index');
+    Route::get('/', 'IndexController@index')->name('index');
     Route::any('article','articleController@index');
     Route::any('qyg/{cate?}','qygController@index');
     Route::get('qyg/detail/{id}','qygController@detail');
