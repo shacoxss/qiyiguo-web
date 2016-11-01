@@ -6,6 +6,7 @@
     <link href="{{asset('home/css/amazeui.min.css')}}" type="text/css" rel="stylesheet" />
     <link href="{{asset('home/css/all.css')}}" type="text/css" rel="stylesheet" />
     <link href="{{asset('home/css/list.css')}}" type="text/css" rel="stylesheet" />
+    <link href="{{asset('home/css/details.css')}}" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="{{asset('home/js/jquery-3.1.0.min.js')}}"></script>
     <script src="{{asset('home/js/amazeui.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/jquery.SuperSlide.2.1.1.js')}}"></script>
@@ -57,7 +58,7 @@
 <header class="am-topbar header">
     <div class="content">
         <h1 class="am-topbar-brand header-logo-brand">
-            <a href="#" class="logo"></a>
+            <a href="{{ route('index') }}" class="logo"></a>
         </h1>
 
         <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
@@ -74,10 +75,10 @@
                     <a href="">游戏</a>
                 </li>-->
                 <li>
-                    <a href=""><em>/</em>视频</a>
+                    <a href="{{ url('/video') }}"><em>/</em>视频</a>
                 </li>
                 <li>
-                    <a href=""><em>/</em>图库</a>
+                    <a href="{{ route('galleries.index') }}"><em>/</em>图库</a>
                 </li>
                 <li>
                     <a href=""><em>/</em>天梯<em>/</em></a>
@@ -217,7 +218,7 @@
     </div>
 </div>
 <!--底部-->
-
+@yield('scripts')
 </body>
 
 </html>

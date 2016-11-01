@@ -28,7 +28,7 @@
 <header class="am-topbar header tab-header" style="height: auto;">
     <div class="content">
         <h1 class="am-topbar-brand header-logo-brand">
-            <a href="#" class="logo tab-logo"></a>
+            <a href="{{route('index')}}" class="logo tab-logo"></a>
         </h1>
 
         <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
