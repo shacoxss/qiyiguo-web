@@ -16,6 +16,11 @@
     <script type="text/javascript" src="{{asset('home/js/base.js')}}"></script>
     <script src="http://static.geetest.com/static/tools/gt.js"></script>
     <title></title>
+    <style>
+        .am-icon-search:hover{
+            cursor:pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -79,7 +84,7 @@
             </ul>
             <form class="am-topbar-form am-topbar-left am-form-inline tab-search" role="search">
                 <div class="am-form-group">
-                    <input type="text" class="am-form-field am-input-sm tab-header-input" style="width: 104px;background: #333;border: 0px;border-radius: 5px;" placeholder="搜索">
+                    <input type="text" class="am-form-field am-input-sm tab-header-input" style="width: 104px;background: #333;border: 0px;border-radius: 5px;" placeholder="搜索" id="key">
                     <i class="am-icon-search"></i>
                 </div>
             </form>
@@ -399,4 +404,30 @@
             location.href = "{{url('register')}}";
         });
     })
+    //搜索
+    $(function(){
+
+        $('.am-icon-search').click(function(){
+           var key = $('#key').val();
+            if(key.length==0){
+                layer.msg('请输入要搜索的内容！');
+            }else{
+                var token = "{{csrf_token()}}";
+                $.ajax({
+                    type:'post',
+                    url:"{{url('search')}}",
+                    data:{_token:token,key:key},
+                    success:function(data){
+                        if(data=='error'){
+                            layer.msg('错误！');
+                        }else if(data=='none'){
+                            layer.msg('对不起，没有找到相关内容！');
+                        }else{
+                            location.href = "{{url('search/result')}}"+'/'+data.key;
+                        }
+                    }
+                })
+            }
+        });
+    });
 </script>
