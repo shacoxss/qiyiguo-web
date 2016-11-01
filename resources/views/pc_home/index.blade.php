@@ -98,6 +98,7 @@
                     <a href="">优播&nbsp;·&nbsp;</a>
                 </li>
             </ul>
+            @if(isset($top[0]))
                 <div class="qyg-toutiao-content-l am-u-lg-6 qyg-toutiao-content">
                     <a href="{{ route('archive.show', [$top[0]->id]) }}">
                         <img src="{{ route('image', [$top[0]->cover, '582x321'])}}">
@@ -106,6 +107,7 @@
                         <label>{{ $top[0]->title }}</label>
                     </a>
                 </div>
+            @endif
             <div class="qyg-toutiao-content-r am-u-lg-6 qyg-toutiao-content">
                 @foreach($top as $item)
                     @if(!$loop->index) @continue @endif
@@ -743,6 +745,7 @@
                 <div class="tuku-title-t">图库</div>
             </div>
             <div class=" tuku-list tuku-list-1">
+                @if(isset($index_gallery[0]))
                 <div class="am-u-sm-6 tuku-item-big">
                     <a href="{{ route('archive.show', [$index_gallery[0]->id]) }}">
                         <img src="{{ route('image', [$index_gallery[0]->cover, '590x330']) }}" />
@@ -757,6 +760,7 @@
                     </a>
 
                 </div>
+                @endif
                 @for($i = 1; $i < 5&& $i<count($index_gallery); $i++)
                     <div class="am-u-sm-3 tuku-item-little">
                         <a href="{{ route('archive.show', [$index_gallery[$i]->id]) }}">
