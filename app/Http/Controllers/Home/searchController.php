@@ -14,13 +14,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 
-class articleController extends Controller
+class searchController extends Controller
 {
     public function index()
     {
-        $archives = Archive::where('archive_type_id',1)->where('news',0)->where('mode',8)->paginate(8);
+        if($input = Input::except('_token')){
 
-        return view('pc_home.article-list',compact('archives'));
+        }else{
+            return back();
+        }
     }
 
 
