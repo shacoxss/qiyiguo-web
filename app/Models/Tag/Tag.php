@@ -36,8 +36,10 @@ class Tag extends Model
     public function autoComputePinyin()
     {
         $pinyin = new Pinyin();
-        $this->pinyin = strtolower($pinyin->permalink($this->name, self::PINYIN_BREAK));
-        $this->abbr = strtolower($pinyin->abbr($this->name, self::PINYIN_BREAK));
+        $name = strtolower($this->name);
+
+        $this->pinyin = $pinyin->permalink($name, self::PINYIN_BREAK);
+        $this->abbr = $this->pinyin == $name ? $name : $pinyin->abbr($name, self::PINYIN_BREAK);
 
         //set the url unique
         while (self::where('pinyin', $this->pinyin)->first()) {

@@ -18,7 +18,7 @@ class videoController extends Controller
 {
     public function index()
     {
-        $videoList = Archive::where('archive_type_id',3)->where('mode',8)->paginate(9);
+        $videoList = Archive::where('archive_type_id',3)->ofPattern('review')->paginate(9);
 
         return view('pc_home.video-list',compact('videoList'));
     }

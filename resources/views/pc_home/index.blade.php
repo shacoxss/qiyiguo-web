@@ -673,13 +673,7 @@
         <div class="am-g index-tab-content">
             <span>热门标签</span>
             <div style="margin-top: 3px;display: inline-block;float: left;">
-                <dl class="tab-block-r-ul">
-                    <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                    <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                    <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                    <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-
-                </dl>
+                @include('inc.tags', ['tags' => $hot_tags])
             </div>
         </div>
     </div>

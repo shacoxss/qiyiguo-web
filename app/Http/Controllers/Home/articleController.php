@@ -18,7 +18,7 @@ class articleController extends Controller
 {
     public function index()
     {
-        $archives = Archive::where('archive_type_id',1)->where('mode',8)->paginate(9);
+        $archives = Archive::where('archive_type_id',1)->ofPattern('review')->paginate(9);
 
         return view('pc_home.article-list',compact('archives'));
     }

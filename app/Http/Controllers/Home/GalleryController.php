@@ -65,7 +65,6 @@ class GalleryController extends Controller
         return view('pc_home.gallery.show')
             ->with('archive', $archive)
             ->with('followed',$followed)
-            ->with('images',$archive->detail->images()->get())
             ->with('user',$user)
             ;
     }
