@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Home;
 use App\Model\Users;
 use App\Models\Archive\Archive;
 use App\Models\Tag\Tag;
+use App\Model\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
