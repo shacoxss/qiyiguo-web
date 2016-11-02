@@ -50,7 +50,7 @@ class searchController extends Controller
         ;
         //内容
 
-        $archives = Archive::where('mode',8)
+        $archives = Archive::ofPattern('review')
             ->where('title','like',"%".$key."%")
             ->orderBy('visit_count','desc')
             ->orderBy('updated_at','desc')
