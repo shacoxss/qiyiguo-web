@@ -90,41 +90,9 @@
 
             <!--描述：新闻-->
 
-            <div class="am-u-sm-8" style=" width: 793px;padding-left: 0;padding-right: 0;">
-                @foreach($archives as $archive)
-                <div class="am-u-sm-12 list-c">
-                    <div class="am-u-sm-4" style="padding: 0;margin-right: 30px;">
-                        <a href="{{route('archive.show', [$archive->id])}}">
-                            @if($archive->cover)
-                                <img class="am-thumbnail list-pic" src="{{route('image', [$archive->cover, '258x160'])}}" alt=""/>
-                            @else
-                                <img class="am-thumbnail list-pic" src="{{asset('img/200200.png')}}" alt=""/>
-                            @endif
-                        </a>
-                    </div>
-                    <div class="am-thumbnail-caption content-list">
-                        <a href="{{route('archive.show', [$archive->id])}}"> <h3>{{$archive->title}}</h3></a>
-                        <span>
-									<a href="#">{{ $archive->user->nickname }}</a>
-									&nbsp;{{date('n-d G:i', strtotime($archive->updated_at))}}
-								</span>
-                        <p>
-                            {{ mb_substr($archive->abstract, 0, 66) }}...
-                        </p>
-                        <dl class="tab-block-r-ul">
-                            @foreach($archive->tags()->get() as $tag)
-                                <dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
-                            @endforeach
-                        </dl>
-                        <p style="text-align: right;">
-                            <span><img src="{{asset('home/images/pinglun.png')}}">300</span>
-                            <span><img src="{{asset('home/images/shoucang.png')}}">{{$archive->like}}</span>
-                        </p>
-                    </div>
-                </div>
-                @endforeach
+            <div class="am-u-sm-8" style=" width: 793px;">
+                @each('inc.each.archive', $archives, 'archive')
                 {{ $archives->links() }}
-
             </div>
             <!---新闻-->
     <div class="am-u-sm-4" style="margin-top: -75px;">
