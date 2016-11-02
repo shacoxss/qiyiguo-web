@@ -168,58 +168,36 @@
 
                 <div class="am-g author-guess author-hot-tabs-block author-recommand">
                     <div class="author-guess-title">精彩推荐</div>
+                    @if($article_archives)
+                        @foreach($article_archives as $v)
                     <div class="am-u-sm-6 author-recommand-block">
                         <div class="author-recommand-img">
                             <a href="">
-                                <img src="images/banner-3.jpg" />
-                                <div class="author-recommand-img-shade "></div>
+                                <img src="{{route('image', [trim($v->cover, '/'), '175x98'])}}" />
+                                @if($v->archive_type_id==1)
+                                    <div class="author-recommand-article-shade "></div>
+                                @elseif($v->archive_type_id==2)
+                                    <div class="author-recommand-video-shade "></div>
+                                @elseif($v->archive_type_id==3)
+                                    <div class="author-recommand-img-shade "></div>
+                                @endif
                             </a>
                             <div class="author-recommand-img-tab-shade img-tab-shade-on">
                                 <span class="author-recommand-people"></span>
-                                <span>李雷</span>
+                                <span>{{$v->user->nickname}}</span>
                                 <dl class="tab-block-r-ul" style="float: right;margin-right: 10px;">
-                                    <dt style="background: #006633;"><a href="">守望先锋</a></dt>
+                                    @foreach($v->tags()->get() as $tag)
+                                        <dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
+                                        @break
+                                    @endforeach
                                 </dl>
                             </div>
 
                         </div>
-                        <p>再也不能随心所欲抓小精灵啦！《精灵宝可梦GO》</p>
+                        <p>{{$v->title}}</p>
                     </div>
-                    <div class="am-u-sm-6 author-recommand-block">
-                        <div class="author-recommand-img">
-                            <a href="">
-                                <img src="images/banner-3.jpg" />
-                                <div class="author-recommand-video-shade "></div>
-                            </a>
-                            <div class="author-recommand-img-tab-shade img-tab-shade-on">
-                                <span class="author-recommand-people"></span>
-                                <span>李雷</span>
-                                <dl class="tab-block-r-ul" style="float: right;margin-right: 10px;">
-                                    <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                                </dl>
-                            </div>
-
-                        </div>
-                        <p>再也不能随心所欲抓小精灵啦！《精灵宝可梦GO》</p>
-                    </div>
-                    <div class="am-u-sm-6 author-recommand-block">
-                        <div class="author-recommand-img">
-                            <a href="">
-                                <img src="images/banner-3.jpg" />
-                                <div class="author-recommand-article-shade "></div>
-                            </a>
-                            <div class="author-recommand-img-tab-shade img-tab-shade-on">
-                                <span class="author-recommand-people"></span>
-                                <span>李雷</span>
-                                <dl class="tab-block-r-ul" style="float: right;margin-right: 10px;">
-                                    <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                                </dl>
-                            </div>
-
-                        </div>
-                        <p>再也不能随心所欲抓小精灵啦！《精灵宝可梦GO》</p>
-                    </div>
-
+                    @endforeach
+                   @endif
                 </div>
 
             </div>
