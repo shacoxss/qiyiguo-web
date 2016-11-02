@@ -47,7 +47,6 @@ class GalleryController extends Controller
     public function show(Request $request, Archive $archive)
     {
         if (!$archive->hasPattern('review')) return response('没有通过审核', 404);
-
         $archive->visit($request);
         $user = session('user');
         if($user){
@@ -66,7 +65,8 @@ class GalleryController extends Controller
             ->with('archive', $archive)
             ->with('followed',$followed)
             ->with('user',$user)
-            ;
+            ->with('body_only', '')
+        ;
     }
 
     private function getType()

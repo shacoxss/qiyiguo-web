@@ -12,15 +12,17 @@
     </div>
     <div class="am-u-sm-6">
         <div class="news-d-about-author-r">
-            @if($user->nickname)
-                <h3 title="{{$user->nickname}}">{{mb_substr($user->nickname,0,4)}}
-                    @if(strlen($user->nickname)>5)
-                        ...
-                    @endif
-                </h3>
-            @else
-                <h3>{{mb_substr($user->phone, 0, 6)}}...</h3>
-            @endif
+            <a href="{{ route('author.index', [$user->id]) }}">
+                @if($user->nickname)
+                    <h3 title="{{$user->nickname}}">{{mb_substr($user->nickname,0,4)}}
+                        @if(strlen($user->nickname)>5)
+                            ...
+                        @endif
+                    </h3>
+                @else
+                    <h3>{{mb_substr($user->phone, 0, 6)}}...</h3>
+                @endif
+            </a>
             @if($followed==1)
                 <button class="news-d-about-author-r-add" data-follow="{{$followed}}" style="background:url('{{asset('home/images/tab/del.png')}}')center no-repeat;background-size: 24px 24px;"></button>
             @elseif($followed==-1)

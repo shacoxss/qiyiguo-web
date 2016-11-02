@@ -106,7 +106,7 @@ class ArchiveController extends Controller
 
 
         $input = $request->except('_token');
-        if($input['news']=='on'){
+        if(isset($input['news']) && $input['news']=='on'){
             $new['news'] = 1;
         }else{
             $new['news'] = 0;

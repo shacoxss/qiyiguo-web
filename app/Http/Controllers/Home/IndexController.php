@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Model\Users;
 use App\Models\Archive\Archive;
 use App\Models\Tag\Tag;
 use Illuminate\Http\Request;
@@ -44,5 +45,25 @@ class IndexController extends Controller
             ->take($take)
             ->orderBy('updated_at', 'desc')
         ;
+    }
+
+    public function author(Users $user)
+    {
+        $archives = Archive
+            ::select([
+                '*',
+                app('db')->raw('DATE_FORMAT(`created_at`,"%Y") as year'),
+                app('db')->raw('DATE_FORMAT(`created_at`,"%m") as month'),
+                app('db')->raw('DATE_FORMAT(`created_at`,"%d") as day')
+            ])
+            ->where('user_id', $user->id)
+            ->paginate(5)
+        ;
+        return view('pc_home.author', ['user' => $user, 'archives' => $archives]);
+    }
+
+    public function topSlide($view)
+    {
+        return $view->with('slides', Archive::orderBy('updated_at', 'desc')->take(6)->get());
     }
 }
