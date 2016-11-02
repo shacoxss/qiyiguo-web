@@ -92,7 +92,7 @@
 
             <div class="am-u-sm-8" style=" width: 793px;padding-left: 0;padding-right: 0;">
                 @foreach($archives as $archive)
-                <div class="am-u-sm-12 am-u-sm-centered list-box" style="padding-left: 0;background: #FFFFFF;margin-bottom: 20px;">
+                <div class="am-u-sm-12 list-c">
                     <div class="am-u-sm-4" style="padding: 0;margin-right: 30px;">
                         <a href="{{route('archive.show', [$archive->id])}}">
                             @if($archive->cover)
