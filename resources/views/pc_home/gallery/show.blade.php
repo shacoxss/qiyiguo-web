@@ -1,3 +1,4 @@
+@if(isset($body_only))
 <!DOCTYPE html>
 <html>
 
@@ -14,23 +15,20 @@
     <script type="text/javascript" src="{{asset('home/js/amazeui.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/base.js')}}"></script>
     <script src="http://static.geetest.com/static/tools/gt.js"></script>
-
     <link type="text/css" rel="stylesheet" href="{{asset('vendor/lightgallery/css/lightgallery.css')}}" />
     <script type="text/javascript" src="{{asset('vendor/lightgallery/js/lightgallery.js')}}"></script>
     <script type="text/javascript" src="{{asset('vendor/lightgallery/js/lg-thumbnail.js')}}"></script>
     <style>
-        #lightgallery a img {
-            margin-top: 6px;
-            width: 180px;
-            height: 120px;
-            border: 1px solid #ccc;
-        }
         .news-d-title {
             margin-top: 0;
         }
     </style>
 </head>
 <body>
+@extends('pc_home.'.(isset($body_only) ? 'empty' : 'commonIn'))
+@else
+    @section('content')
+@endif
     @include('inc.archive-header', ['tags' => $archive->tags()->get()])
     <div class="am-g news-detail-content">
         <div class="am-g width ">
@@ -53,10 +51,33 @@
         </div>
     </div>
     <!--底部-->
+@if(!isset($body_only))
+    @section('scripts')
+        <link type="text/css" rel="stylesheet" href="{{asset('vendor/lightgallery/css/lightgallery.css')}}" />
+        <script type="text/javascript" src="{{asset('vendor/lightgallery/js/lightgallery.js')}}"></script>
+        <script type="text/javascript" src="{{asset('vendor/lightgallery/js/lg-thumbnail.js')}}"></script>
+@endif
+    <style>
+        #lightgallery a img {
+            margin-top: 6px;
+            width: 180px;
+            height: 120px;
+            border: 1px solid #ccc;
+        }
+    </style>
     @include('inc.archive-scripts')
     <script>
         lightGallery(document.getElementById('lightgallery'), {
             thumbnail:true
         });
     </script>
+@if(!isset($body_only))
+    @endsection
+@endif
+
+@if(isset($body_only))
 ]</body>
+</html>
+@else
+    @endsection
+@endif
