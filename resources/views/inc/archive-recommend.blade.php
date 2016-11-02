@@ -1,129 +1,65 @@
 <div class="am-g author-guess">
     <div class="author-guess-title news-d-other">其他文章</div>
     <ul class="v-list-recommend author-guess-ul news-d-other-ul">
+@if($others)
+    @foreach($others as $v)
         <li>
-            <a href="">
+            <a href="{{route('archive.show', $v->id)}}">
                 <div class="am-u-sm-6 v-r-a-left author-guess-ul-left news-d-other-l">
-                    <img src="{{asset('home/images/video/v-recommend1.jpg')}}" />
+                    <img src="{{route('image', [trim($v->cover, '/'), '155x87.5'])}}" onerror="this.src='{{asset('home/images/video/v-recommend1.jpg')}}'" />
                 </div>
                 <div class="am-u-sm-6 v-r-a-right author-guess-ul-r news-d-other-r">
-                    <p>万物皆可手游 光荣特库摩《讨鬼传：武士》</p>
+                    <p>{{$v->title}}</p>
                     <div style="line-height: 19px;">
-                        <span>2016-10-11 09:00</span>
+                        <span>{{$v->updated_at}}</span>
 
                     </div>
 
                     <div style="margin-top: 5px;">
                         <dl class="tab-block-r-ul">
-                            <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                            <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-
+                            @foreach($v->tags()->get() as $tag)
+                                <dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
+                            @endforeach
                         </dl>
                     </div>
                 </div>
             </a>
         </li>
-        <li>
-            <a href="">
-                <div class="am-u-sm-6 v-r-a-left author-guess-ul-left news-d-other-l">
-                    <img src="{{asset('home/images/video/v-recommend1.jpg')}}" />
-                </div>
-                <div class="am-u-sm-6 v-r-a-right author-guess-ul-r news-d-other-r">
-                    <p>万物皆可手游 光荣特库摩《讨鬼传：武士》</p>
-                    <div style="line-height: 19px;">
-                        <span>2016-10-11 09:00</span>
-
-                    </div>
-
-                    <div style="margin-top: 5px;">
-                        <dl class="tab-block-r-ul">
-                            <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                            <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-
-                        </dl>
-                    </div>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <div class="am-u-sm-6 v-r-a-left author-guess-ul-left news-d-other-l">
-                    <img src="{{asset('home/images/video/v-recommend1.jpg')}}" />
-                </div>
-                <div class="am-u-sm-6 v-r-a-right author-guess-ul-r news-d-other-r">
-                    <p>万物皆可手游 光荣特库摩《讨鬼传：武士》</p>
-                    <div style="line-height: 19px;">
-                        <span>2016-10-11 09:00</span>
-
-                    </div>
-
-                    <div style="margin-top: 5px;">
-                        <dl class="tab-block-r-ul">
-                            <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                            <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-
-                        </dl>
-                    </div>
-                </div>
-            </a>
-        </li>
+            @endforeach
+@endif
     </ul>
 </div>
 <div class="am-g author-guess author-hot-tabs-block author-recommand news-d-recommand">
     <div class="author-guess-title news-d-other">精彩推荐</div>
+    @if($article_archives)
+        @foreach($article_archives as $v)
     <div class="am-u-sm-6 author-recommand-block">
         <div class="author-recommand-img">
-            <a href="">
-                <img src="{{asset('home/images/banner-3.jpg')}}" />
-                <div class="author-recommand-img-shade "></div>
+            <a href="{{route('archive.show', $v->id)}}">
+                <img src="{{route('image', [trim($v->cover, '/'), '161x90'])}}" onerror="this.src='{{asset('home/images/banner-3.jpg')}}'" />
 
+                @if($v->archive_type_id==1)
+                    <div class="author-recommand-article-shade "></div>
+                @elseif($v->archive_type_id==2)
+                    <div class="author-recommand-video-shade "></div>
+                @elseif($v->archive_type_id==3)
+                    <div class="author-recommand-img-shade "></div>
+                @endif
             </a>
             <div class="author-recommand-img-tab-shade img-tab-shade-on">
                 <span class="author-recommand-people"></span>
-                <span>李雷</span>
+                <span>{{$v->user()->nickname}}</span>
                 <dl class="tab-block-r-ul" style="float: right;margin-right: 10px;">
-                    <dt style="background: #006633;"><a href="">守望先锋</a></dt>
+                    @foreach($v->tags()->get() as $tag)
+                        <dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
+                        @break
+                    @endforeach
                 </dl>
             </div>
 
         </div>
-        <p>再也不能随心所欲抓小精灵啦！《精灵宝可梦GO》</p>
+        <p>{{$v->title}}</p>
     </div>
-    <div class="am-u-sm-6 author-recommand-block">
-        <div class="author-recommand-img">
-            <a href="">
-                <img src="{{asset('home/images/banner-3.jpg')}}" />
-                <div class="author-recommand-video-shade "></div>
-
-            </a>
-            <div class="author-recommand-img-tab-shade img-tab-shade-on">
-                <span class="author-recommand-people"></span>
-                <span>李雷</span>
-                <dl class="tab-block-r-ul" style="float: right;margin-right: 10px;">
-                    <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                </dl>
-            </div>
-
-        </div>
-        <p>再也不能随心所欲抓小精灵啦！《精灵宝可梦GO》</p>
-    </div>
-    <div class="am-u-sm-6 author-recommand-block">
-        <div class="author-recommand-img">
-            <a class='video-hover' href="">
-                <img src="{{asset('home/images/banner-3.jpg')}}" />
-                <div class="author-recommand-article-shade "></div>
-
-            </a>
-            <div class="author-recommand-img-tab-shade img-tab-shade-on">
-                <span class="author-recommand-people"></span>
-                <span>李雷</span>
-                <dl class="tab-block-r-ul" style="float: right;margin-right: 10px;">
-                    <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                </dl>
-            </div>
-
-        </div>
-        <p>再也不能随心所欲抓小精灵啦！《精灵宝可梦GO》</p>
-    </div>
-
+    @endforeach
+@endif
 </div>

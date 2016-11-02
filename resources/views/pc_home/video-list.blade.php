@@ -131,7 +131,7 @@
 								<li>
 									
 										<div class="am-g v-r-a-left">
-											<a href="">
+											<a href="{{route('archive.show', $v->id)}}">
 											<img src="{{route('image', [trim($v->cover, '/'), '124x70'])}}" onerror="this.src='{{asset('images/video/v-recommend1.jpg')}}'" />
 											</a>
 										</div>
@@ -193,7 +193,7 @@
 												</div>
 												<div class="am-u-sm-9 am-u-end list-gl-con">
 													<p>
-														<a href="">{{$v->title}}</a>
+														<a href="{{route('archive.show', $v->id)}}">{{$v->title}}</a>
 													</p>
 													<p>
 														<span><img src="{{asset('home/images/shoucang.png')}}">50</span>

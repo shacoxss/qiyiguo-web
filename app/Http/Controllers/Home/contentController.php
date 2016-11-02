@@ -107,11 +107,45 @@ class contentController extends Controller
         }else{
             $followed = -1;
         }
+        //其他文章
+        $author_id = $archive->user->id;
+        $others = Archive::where('user_id',$author_id)->orderBy('updated_at','desc')->where('mode',8)->take(4)->get();
+
+        //精彩推荐
+        $cate1 = Category::where('cate_name','精彩推荐')->first();
+        if($cate1){
+            $son = Category::where('cate_pid',$cate1->cate_id)->count();
+            if($son){
+                $cate_son = Category::where('cate_pid',$cate1->cate_id)->get();
+                $cate_arr1 = [];
+                foreach($cate_son as $v){
+                    $cate_arr1[] = $v->cate_id;
+                }
+                array_push($cate_arr1,$cate1->cate_id);
+                $cate_ids = implode(',',$cate_arr1);
+                $article_archives =   Archive::where('archive_type_id',1)
+                    ->whereIn('category_id',$cate_ids)
+                    ->orderBy('updated_at','desc')
+                    ->take(6)
+                    ->get()
+                ;
+            }else{
+                $article_archives =   Archive::where('archive_type_id',1)
+                    ->where('category_id',$cate1->cate_id)
+                    ->orderBy('updated_at','desc')
+                    ->take(6)
+                    ->get();
+            }
+        }else{
+            $article_archives = false;
+        }
 
         return view($archive->type->t_show)
             ->with('archive', $archive)
             ->with('followed',$followed)
             ->with('user',$user)
+            ->with('article_archives',$article_archives)
+            ->with('others',$others)
         ;
     }
 
