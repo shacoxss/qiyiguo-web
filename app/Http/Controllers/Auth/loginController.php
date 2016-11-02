@@ -126,7 +126,7 @@ class loginController extends Controller
         $data['binding_weixin'] = 1;
         $data['wx_open_id'] = $oauthUser->getId();
         $data['nickname'] = $oauthUser->getNickname();
-        $data['head_img'] = $oauthUser->avatar();
+        $data['head_img'] = $oauthUser->getAvatar();
         $user = User::where('wx_open_id',$oauthUser->getId())->first();
 
 
