@@ -108,8 +108,7 @@ class contentController extends Controller
             $followed = -1;
         }
         //其他文章
-        $author_id = $archive->user->id;
-        $others = Archive::where('user_id',$author_id)->orderBy('updated_at','desc')->where('mode',8)->take(4)->get();
+        $others = Archive::where('user_id',$archive->user_id)->orderBy('updated_at','desc')->where('mode',8)->take(4)->get();
 
         //精彩推荐
         $cate1 = Category::where('cate_name','精彩推荐')->first();
