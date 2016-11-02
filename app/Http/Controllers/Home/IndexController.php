@@ -81,6 +81,35 @@ class IndexController extends Controller
             $article_archives = false;
         }
 
+        //游戏攻略
+        $cate3 = Category::where('cate_name','游戏攻略')->first();
+        if($cate3){
+            $son = Category::where('cate_pid',$cate3->cate_id)->count();
+            if($son){
+                $cate_son = Category::where('cate_pid',$cate3->cate_id)->get();
+                $cate_arr3 = [];
+                foreach($cate_son as $v){
+                    $cate_arr3[] = $v->cate_id;
+                }
+                array_push($cate_arr3,$cate3->cate_id);
+                $cate_ids3 = implode(',',$cate_arr3);
+                $game_archives =   Archive::whereIn('category_id',$cate_ids3)
+                    ->orderBy('updated_at','desc')
+                    ->take(3)
+                    ->get()
+                ;
+            }else{
+                $game_archives =   Archive::where('category_id',$cate3->cate_id)
+                    ->orderBy('updated_at','desc')
+                    ->take(3)
+                    ->get()
+                ;
+            }
+
+        }else{
+            $game_archives = false;
+        }
+
         $archives = Archive
             ::select([
                 '*',
@@ -91,7 +120,7 @@ class IndexController extends Controller
             ->where('user_id', $user->id)
             ->paginate(5)
         ;
-        return view('pc_home.author', ['user' => $user, 'archives' => $archives,'article_archives'=>$article_archives]);
+        return view('pc_home.author', ['user' => $user, 'archives' => $archives,'article_archives'=>$article_archives, 'game_archives' => $game_archives]);
     }
 
     public function topSlide($view)
