@@ -125,6 +125,6 @@ class IndexController extends Controller
 
     public function topSlide($view)
     {
-        return $view->with('slides', Archive::orderBy('updated_at', 'desc')->take(6)->get());
+        return $view->with('slides', Archive::ofPattern('review')->orderBy('updated_at', 'desc')->take(6)->get());
     }
 }
