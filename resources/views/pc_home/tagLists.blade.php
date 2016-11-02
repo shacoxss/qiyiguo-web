@@ -106,13 +106,13 @@
                     @foreach($article_archives as $v)
                 <div class="am-u-sm-11 am-u-sm-centered r-news tab-block-recommand">
                     <div class="tab-block-recommand">
-                        <a href="" class="tab-block-a">
+                        <a href="{{route('archive.show', $v->id)}}" class="tab-block-a">
                             <img class="am-radius" alt="140*140" src="{{route('image', [trim($v->cover, '/'), '285x160'])}}" onerror="this.src='{{asset('home/images/banner-1.jpg')}}'" />
                             <div class="tab-block-a-shade tab-block-video-shade"></div>
                         </a>
                     </div>
                     <p>
-                        <a href="">{{$v->title}}</a>
+                        <a href="{{route('archive.show', $v->id)}}">{{$v->title}}</a>
                     </p>
                     <dl class="tab-block-r-ul">
                         @foreach($v->tags()->get() as $tag)
