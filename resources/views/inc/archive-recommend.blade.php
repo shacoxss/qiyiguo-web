@@ -48,7 +48,7 @@
             </a>
             <div class="author-recommand-img-tab-shade img-tab-shade-on">
                 <span class="author-recommand-people"></span>
-                <span>{{$v->user()->nickname}}</span>
+                <span>{{$v->user->nickname}}</span>
                 <dl class="tab-block-r-ul" style="float: right;margin-right: 10px;">
                     @foreach($v->tags()->get() as $tag)
                         <dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
