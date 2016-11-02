@@ -112,6 +112,7 @@ class contentController extends Controller
 
         //精彩推荐
         $cate1 = Category::where('cate_name','精彩推荐')->first();
+        $category_id = $cate1->cate_id;
         if($cate1){
             $son = Category::where('cate_pid',$cate1->cate_id)->count();
             if($son){
@@ -139,12 +140,44 @@ class contentController extends Controller
             $article_archives = false;
         }
 
+        $cate3 = Category::where('cate_name','游戏攻略')->first();
+        $category_id2 = $cate3->cate_id;
+        if($cate3){
+            $son = Category::where('cate_pid',$cate3->cate_id)->count();
+            if($son){
+                $cate_son = Category::where('cate_pid',$cate3->cate_id)->get();
+                $cate_arr3 = [];
+                foreach($cate_son as $v){
+                    $cate_arr3[] = $v->cate_id;
+                }
+                array_push($cate_arr3,$cate3->cate_id);
+                $cate_ids3 = implode(',',$cate_arr3);
+                $game_archives =   Archive::whereIn('category_id',$cate_ids3)
+                    ->orderBy('updated_at','desc')
+                    ->take(3)
+                    ->get()
+                ;
+            }else{
+                $game_archives =   Archive::where('category_id',$cate3->cate_id)
+                    ->orderBy('updated_at','desc')
+                    ->take(3)
+                    ->get()
+                ;
+            }
+
+        }else{
+            $game_archives = false;
+        }
+
         return view($archive->type->t_show)
             ->with('archive', $archive)
             ->with('followed',$followed)
             ->with('user',$user)
             ->with('article_archives',$article_archives)
+            ->with('game_archives',$game_archives)
             ->with('others',$others)
+            ->with('category_id',$category_id)
+            ->with('category_id2',$category_id2)
         ;
     }
 
