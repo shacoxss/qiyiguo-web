@@ -22,6 +22,8 @@ Route::group(['namespace'=>'Home'],function(){
     Route::any('article','articleController@index');
     Route::any('qyg/{cate?}','qygController@index');
     Route::get('qyg/detail/{id}','qygController@detail');
+    Route::post('search','searchController@index');
+    Route::get('search/result/{key}','searchController@result');
 });
 
 
