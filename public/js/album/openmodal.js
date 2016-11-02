@@ -28,7 +28,7 @@ $(function() {
                 '<div class="item masonry_brick">' +
                 '<div class="item_t">' +
                 '<div class="img">' +
-                '<a><img width="205" alt="' + item.title + '" src="' + item.cover + '/raw.jpeg" /></a>' +
+                '<a><img width="205" alt="' + item.title + '" src="' + item.cover + '/205.jpeg" /></a>' +
                 '</div>' +
                 '<div class="title">' +
                 '<span><a href=""></a>' + item.title + '</span>' +
