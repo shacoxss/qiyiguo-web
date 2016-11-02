@@ -108,7 +108,13 @@
                     <div class="tab-block-recommand">
                         <a href="{{route('archive.show', $v->id)}}" class="tab-block-a">
                             <img class="am-radius" alt="140*140" src="{{route('image', [trim($v->cover, '/'), '285x160'])}}" onerror="this.src='{{asset('home/images/banner-1.jpg')}}'" />
-                            <div class="tab-block-a-shade tab-block-video-shade"></div>
+                            @if($v->archive_type_id==1)
+                                <div class="tab-block-a-shade tab-block-article-shade"></div>
+                            @elseif($v->archive_type_id==2)
+                                <div class="tab-block-a-shade tab-block-video-shade"></div>
+                            @elseif($v->archive_type_id==3)
+                                <div class="tab-block-a-shade tab-block-img-shade"></div>
+                            @endif
                         </a>
                     </div>
                     <p>
