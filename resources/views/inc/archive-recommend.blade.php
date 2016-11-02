@@ -6,7 +6,7 @@
         <li>
             <a href="{{route('archive.show', $v->id)}}">
                 <div class="am-u-sm-6 v-r-a-left author-guess-ul-left news-d-other-l">
-                    <img src="{{route('image', [trim($v->cover, '/'), '155x87.5'])}}" onerror="this.src='{{asset('home/images/video/v-recommend1.jpg')}}'" />
+                    <img src="{{route('image', [$v->cover, '155x87.5'])}}" onerror="this.src='{{asset('home/images/video/v-recommend1.jpg')}}'" />
                 </div>
                 <div class="am-u-sm-6 v-r-a-right author-guess-ul-r news-d-other-r">
                     <p>{{$v->title}}</p>
@@ -36,7 +36,7 @@
     <div class="am-u-sm-6 author-recommand-block">
         <div class="author-recommand-img">
             <a href="{{route('archive.show', $v->id)}}">
-                <img src="{{route('image', [trim($v->cover, '/'), '161x90'])}}" onerror="this.src='{{asset('home/images/banner-3.jpg')}}'" />
+                <img src="{{route('image', [$v->cover, '161x90'])}}" onerror="this.src='{{asset('home/images/banner-3.jpg')}}'" />
 
                 @if($v->archive_type_id==1)
                     <div class="author-recommand-article-shade "></div>
