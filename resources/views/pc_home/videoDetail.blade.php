@@ -190,34 +190,25 @@
 							<div class="am-u-sm-6 am-u-sm-centered bg-url">
 								<h2>有点意思</h2>
 							</div>
+							@if($article_archives)
+								@foreach($article_archives as $v)
 							<div class="am-u-sm-11 am-u-sm-centered r-news">
 								<P>
-									<a href=""><img class="am-radius" alt="140*140" src="{{asset('home/images/banner-1.jpg')}}" /></a>
+									<a href="{{route('archive.show', $v->id)}}"><img class="am-radius" alt="140*140" src="{{route('image', [trim($v->cover, '/'), '230x130'])}}"onerror="this.src='{{asset('home/images/banner-1.jpg')}}'" /></a>
 								</P>
 								<p>
-									<a href="">再也不能随心所欲抓小精灵啦！《精 灵宝可梦GO》永久封号规定公布</a>
+									<a href="{{route('archive.show', $v->id)}}">{{$v->title}}</a>
 								</p>
 								<dl class="tab-block-r-ul">
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
+									@foreach($v->tags()->get() as $tag)
+										<dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
+									@endforeach
 								</dl>
 							</div>
-							<div class="am-u-sm-11 am-u-sm-centered r-news">
-								<P>
-									<a href=""><img class="am-radius" alt="140*140" src="{{asset('home/images/banner-1.jpg')}}" /></a>
-								</P>
-								<p>
-									<a href="">再也不能随心所欲抓小精灵啦！《精 灵宝可梦GO》永久封号规定公布</a>
-								</p>
-								<dl class="tab-block-r-ul">
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								</dl>
-							</div>
+								@endforeach
+							@endif
 							<div class="am-u-sm-6 am-u-sm-centered more">
-								<a href="">更多内容</a>
+								<a href="{{url('contentLists/'.$category_id)}}">更多内容</a>
 							</div>
 						</div>
 					</div>
@@ -228,34 +219,25 @@
 							<div class="am-u-sm-6 am-u-sm-centered bg-url">
 								<h2>技术宅</h2>
 							</div>
+							@if($game_archives)
+								@foreach($game_archives as $v)
 							<div class="am-u-sm-11 am-u-sm-centered r-news">
 								<P>
-									<a href=""><img class="am-radius" alt="140*140" src="{{asset('home/images/banner-1.jpg')}}" /></a>
+									<a href="{{route('archive.show', $v->id)}}"><img class="am-radius" alt="140*140" src="{{route('image', [trim($v->cover, '/'), '230x130'])}}"onerror="this.src='{{asset('home/images/banner-1.jpg')}}'" /></a>
 								</P>
 								<p>
-									<a href="">再也不能随心所欲抓小精灵啦！《精 灵宝可梦GO》永久封号规定公布</a>
+									<a href="{{route('archive.show', $v->id)}}">{{$v->title}}</a>
 								</p>
 								<dl class="tab-block-r-ul">
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
+									@foreach($v->tags()->get() as $tag)
+										<dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
+									@endforeach
 								</dl>
 							</div>
-							<div class="am-u-sm-11 am-u-sm-centered r-news">
-								<P>
-									<a href=""><img class="am-radius" alt="140*140" src="{{asset('home/images/banner-1.jpg')}}" /></a>
-								</P>
-								<p>
-									<a href="">再也不能随心所欲抓小精灵啦！《精 灵宝可梦GO》永久封号规定公布</a>
-								</p>
-								<dl class="tab-block-r-ul">
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-									<dt style="background: #006633;"><a href="">守望先锋</a></dt>
-								</dl>
-							</div>
+							@endforeach
+							@endif
 							<div class="am-u-sm-6 am-u-sm-centered more">
-								<a href="">更多内容</a>
+								<a href="{{url('contentLists/'.$category_id2)}}">更多内容</a>
 							</div>
 						</div>
 					</div>
