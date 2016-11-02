@@ -202,60 +202,19 @@
 					</div>
 					
 					<ul class="am-avg-sm-2 am-thumbnails"style="margin-top: 72px;">
-						<li class="p-thumbnail">
-							<a href="">
-								<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-								<div class="list-shade">
-									<span>游图有真相No.51</span>
-								</div>
-								<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-							</a>
-						</li>
-					<li class="p-thumbnail">
-						<a href="">
-							<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-							<div class="list-shade">
-								<span>游图有真相No.51</span>
-							</div>
-							<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-						</a>
-					</li>
-					<li class="p-thumbnail">
-						<a href="">
-							<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-							<div class="list-shade">
-								<span>游图有真相No.51</span>
-							</div>
-							<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-						</a>
-					</li>
-					<li class="p-thumbnail">
-						<a href="">
-							<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-							<div class="list-shade">
-								<span>游图有真相No.51</span>
-							</div>
-							<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-						</a>
-					</li>
-					<li class="p-thumbnail">
-						<a href="">
-							<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-							<div class="list-shade">
-								<span>游图有真相No.51</span>
-							</div>
-							<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-						</a>
-					</li>
-					<li class="p-thumbnail">
-						<a href="">
-							<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-							<div class="list-shade">
-								<span>游图有真相No.51</span>
-							</div>
-							<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-						</a>
-					</li>
+						@if($video_archives)
+							@foreach($video_archives as $v)
+								<li class="p-thumbnail">
+									<a href="{{route('archive.show', $v->id)}}">
+										<img src="{{route('image', [trim($v->cover, '/'), '180x101'])}}" onerror="this.src='{{asset('home/images/banner-3.jpg')}}'" class="am-thumbnail" />
+										<div class="list-shade">
+											<span>{{$v->title}}</span>
+										</div>
+										<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
+									</a>
+								</li>
+							@endforeach
+						@endif
 					</ul>
 				</div>
 				<div class="am-g" style="width: 370px;padding: 0;margin-left: 0;">
@@ -265,41 +224,28 @@
 					     	</div>
 						</div>
 						<div class="am-g">
-							<ul>																								
-								<li>
-									<div class="am-g list-gl">
-										<div class="am-u-sm-3 list-gl-h">
-											<h2>守望先锋</h2>
-											<span>7.5</span>
-					</div>
-					<div class="am-u-sm-9 am-u-end list-gl-con">
-						<p>
-							<a href="">还好你没放弃！Gameloft宣布狂野飙车系列新作《极限》</a>
-						</p>
-						<p>
-							<span><img src="{{asset('home/images/shoucang.png')}}">50</span>
-							<span><img src="{{asset('home/images/pinglun.png')}}">10</span>
-						</p>
-					</div>
-				</div>
-				</li>
-				<li>
-					<div class="am-g list-gl">
-						<div class="am-u-sm-3 list-gl-h">
-							<h2>守望先锋</h2>
-							<span>7.5</span>
-						</div>
-						<div class="am-u-sm-9 am-u-end list-gl-con">
-							<p>
-								<a href="">还好你没放弃！Gameloft宣布狂野飙车系列新作《极限》</a>
-							</p>
-							<p>
-								<span><img src="{{asset('home/images/shoucang.png')}}">50</span>
-								<span><img src="{{asset('home/images/pinglun.png')}}">10</span>
-							</p>
-						</div>
-					</div>
-				</li>
+							<ul>
+								@if($game_archives)
+									@foreach($game_archives as $v)
+										<li>
+											<div class="am-g list-gl">
+												<div class="am-u-sm-3 list-gl-h">
+													<h2>守望先锋</h2>
+													<span>7.5</span>
+												</div>
+												<div class="am-u-sm-9 am-u-end list-gl-con">
+													<p>
+														<a href="">{{$v->title}}</a>
+													</p>
+													<p>
+														<span><img src="{{asset('home/images/shoucang.png')}}">50</span>
+														<span><img src="{{asset('home/images/pinglun.png')}}">{{$v->visit_count}}</span>
+													</p>
+												</div>
+											</div>
+										</li>
+									@endforeach
+								@endif
 
 				</ul>
 			</div>

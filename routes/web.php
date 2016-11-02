@@ -24,6 +24,7 @@ Route::group(['namespace'=>'Home'],function(){
     Route::get('qyg/detail/{id}','qygController@detail');
     Route::post('search','searchController@index');
     Route::get('search/result/{key}','searchController@result');
+    Route::get('anchor','anchorController@index');
 });
 
 

@@ -42,9 +42,9 @@
 
             <form class="am-topbar-form  am-form-inline topic-form" role="search">
                 <div class="am-form-group ">
-                    <input type="text" class="am-form-field topic-search" placeholder="关键词">
+                    <input type="text" class="am-form-field topic-search" placeholder="关键词" id="key">
 							<span class="am-input-group-btn span-inline ">
-        						<button class="am-btn am-btn-default topic-button" type="button"><span class="am-icon-search"></span> </button>
+        						<button class="am-btn am-btn-default topic-button search" type="button"><span class="am-icon-search"></span> </button>
 							</span>
                 </div>
             </form>
@@ -66,10 +66,10 @@
         <div class="am-collapse am-topbar-collapse header-ul" id="doc-topbar-collapse">
             <ul class="am-nav am-nav-pills am-topbar-nav">
                 <li>
-                    <a href=""><em>/</em>首页</a>
+                    <a href="{{ url('/') }}"><em>/</em>首页</a>
                 </li>
                 <li>
-                    <a href=""><em>/</em>优播</a>
+                    <a href="{{ url('/anchor') }}"><em>/</em>优播</a>
                 </li>
                 <!--<li><em>/</em>
                     <a href="">游戏</a>
@@ -86,7 +86,7 @@
             </ul>
 @if(!session('user'))
             <div class="am-topbar-right am-topbar-right-regist">
-            <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm header-btn ">注册</button>
+            <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm header-btn reg">注册</button>
         </div>
 
         <div class="am-topbar-right">
@@ -155,17 +155,17 @@
             <div class="am-u-sm-2 foot-width">
                 <img src="{{asset('home/images/logo-footer.png')}}" />
             </div>
-            <div class="am-u-sm-2 foot-width">
-                <p class="block-title">奇异果资讯</p>
-                <ul class="block-item-ul">
+            <div class="am-u-sm-2 foot-width ">
+                <p class="block-title ">奇异果资讯</p>
+                <ul class="block-item-ul ">
                     <li>
-                        <a href="">行业新闻</a>
+                        <a href="{{url('qyg/news')}}">行业新闻</a>
                     </li>
                     <li>
-                        <a href="">奇异果公告</a>
+                        <a href="{{url('qyg/notice')}}">奇异果公告</a>
                     </li>
                     <li>
-                        <a href="">热门活动</a>
+                        <a href="{{url('qyg/active')}}">热门活动</a>
                     </li>
                 </ul>
             </div>
@@ -342,4 +342,49 @@
         login.init();
 
     })
+
+    //搜索
+    $(function(){
+        var key = $('#key').val();
+        if(key.length!=0){
+            document.onkeydown = function(e){
+                var ev = document.all ? window.event : e;
+                if(ev.keyCode==13) {
+                    search();
+                }
+            }
+        }
+
+        $('.search').click(function(){
+                search();
+        });
+    });
+    //注册
+    $(function(){
+        $('.reg').click(function(){
+            location.href = "{{url('register')}}";
+        });
+    })
+    function search(){
+        var key = $('#key').val();
+        if(key.length==0){
+            layer.msg('请输入要搜索的内容！');
+        }else{
+            var token = "{{csrf_token()}}";
+            $.ajax({
+                type:'post',
+                url:"{{url('search')}}",
+                data:{_token:token,key:key},
+                success:function(data){
+                    if(data=='error'){
+                        layer.msg('错误！');
+                    }else if(data=='none'){
+                        layer.msg('对不起，没有找到相关内容！');
+                    }else{
+                        location.href = "{{url('search/result')}}"+'/'+data.key;
+                    }
+                }
+            })
+        }
+    }
 </script>
