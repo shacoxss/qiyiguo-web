@@ -83,8 +83,8 @@
                 <div class="am-g author-guess" style="margin-top: 20px;">
                     <div class="author-guess-title" style="margin-top: 0;">游戏攻略</div>
                     <ul class="v-list-recommend author-guess-ul">
-                        @if($article_archives)
-                            @foreach($article_archives as $v)
+                        @if($game_archives)
+                            @foreach($game_archives as $v)
                                 <li>
                                     <a href="">
                                         <div class="am-g v-r-a-left author-guess-ul-left">
