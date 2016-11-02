@@ -81,89 +81,32 @@
                 </div>
 
                 <div class="am-g author-guess" style="margin-top: 20px;">
-                    <div class="author-guess-title" style="margin-top: 0;">猜你喜欢</div>
+                    <div class="author-guess-title" style="margin-top: 0;">游戏攻略</div>
                     <ul class="v-list-recommend author-guess-ul">
-                        <li>
-                            <a href="">
-                                <div class="am-g v-r-a-left author-guess-ul-left">
-                                    <img src="images/video/v-recommend1.jpg" />
-                                </div>
-                                <div class="am-g v-r-a-right author-guess-ul-r">
-                                    <p>万物皆可手游 光荣特库摩《讨鬼传：武士》宣传视频首曝传</p>
-                                    <div style="line-height: 19px;">
-                                        <span>2016-10-11 09:00</span>
-                                        <span class="hot-degree"></span>
-                                        <span>1000</span>
-                                    </div>
+                        @if($game_archives)
+                            @foreach($game_archives as $v)
+                                <li>
+                                    <a href="">
+                                        <div class="am-g v-r-a-left author-guess-ul-left">
+                                            <img src="{{ route('image', [$v->cover, '155x119']) }}" />
+                                        </div>
+                                        <div class="am-g v-r-a-right author-guess-ul-r">
+                                            <p>{{ $v->title }}</p>
+                                            <div style="line-height: 19px;">
+                                                <span>{{ $v->updated_at }}</span>
+                                                <span class="hot-degree"></span>
+                                                <span>{{ $v->visit_count }}</span>
+                                            </div>
 
-                                    <div style="">
-                                        <dl class="tab-block-r-ul">
-                                            <dt style="background: #006633;">守望先锋</dt>
-                                            <dt style="background: #006633;">守望先锋</dt>
-                                            <dt style="background: #006633;">守望先锋</dt>
-                                        </dl>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <div class="am-g v-r-a-left author-guess-ul-left">
-                                    <img src="images/video/v-recommend1.jpg" />
-                                </div>
-                                <div class="am-g v-r-a-right author-guess-ul-r">
-                                    <p>万物皆可手游 光荣特库摩《讨鬼传：武士》宣传视频首曝传</p>
-                                    <div style="line-height: 19px;">
-                                        <span>2016-10-11 09:00</span>
-                                        <span class="hot-degree"></span>
-                                        <span>1000</span>
-                                    </div>
-
-                                    <div style="">
-                                        <dl class="tab-block-r-ul">
-                                            <dt style="background: #006633;">守望先锋</dt>
-                                            <dt style="background: #006633;">守望先锋</dt>
-                                            <dt style="background: #006633;">守望先锋</dt>
-                                        </dl>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <div class="am-g v-r-a-left author-guess-ul-left">
-                                    <img src="images/video/v-recommend1.jpg" />
-                                </div>
-                                <div class="am-g v-r-a-right author-guess-ul-r">
-                                    <p>万物皆可手游 光荣特库摩《讨鬼传：武士》宣传视频首曝传</p>
-                                    <div style="line-height: 19px;">
-                                        <span>2016-10-11 09:00</span>
-                                        <span class="hot-degree"></span>
-                                        <span>1000</span>
-                                    </div>
-
-                                    <div style="">
-                                        <dl class="tab-block-r-ul">
-                                            <dt style="background: #006633;">守望先锋</dt>
-                                            <dt style="background: #006633;">守望先锋</dt>
-                                            <dt style="background: #006633;">守望先锋</dt>
-                                        </dl>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
+                                            <div style="">
+                                                @include('inc.tags', ['tags' => $v->tags()->get()])
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endif
                     </ul>
-                </div>
-
-                <div class="am-g author-guess author-hot-tabs-block">
-                    <div class="author-guess-title">热门标签</div>
-                    <div class="author-hot-tabs">
-                        <dl class="tab-block-r-ul">
-                            <dt style="background: #006633;">守望先锋</dt>
-                            <dt style="background: #006633;">守望先锋</dt>
-                            <dt style="background: #006633;">守望先锋</dt>
-                        </dl>
-                    </div>
                 </div>
 
                 <div class="am-g author-guess author-hot-tabs-block author-recommand">
