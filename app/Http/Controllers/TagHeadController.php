@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Category;
 use App\Models\Tag\Tag;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,6 @@ class TagHeadController extends Controller
     //
     public function index(Tag $tag)
     {
-
         //精彩推荐
         //精彩推荐
         $cate1 = Category::where('cate_name','精彩推荐')->first();
