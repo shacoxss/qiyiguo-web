@@ -5,7 +5,7 @@
 @section('content')
     @include('inc.top-slide')
     <div class="item_list infinite_scroll item-list-parent "></div>
-    <div id="page-info" data-page="0">没有更多了</div>
+    <div id="page-info" data-page="0" style="text-align: center;">没有更多了</div>
 @endsection
 
 @section('scripts')
