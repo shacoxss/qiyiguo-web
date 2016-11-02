@@ -91,7 +91,7 @@ class IndexController extends Controller
             ->where('user_id', $user->id)
             ->paginate(5)
         ;
-        return view('pc_home.author', ['user' => $user, 'archives' => $archives])-with('article_archives',$article_archives);
+        return view('pc_home.author', ['user' => $user, 'archives' => $archives,'article_archives'=>$article_archives]);
     }
 
     public function topSlide($view)
