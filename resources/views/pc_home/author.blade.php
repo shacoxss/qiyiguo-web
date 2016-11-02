@@ -51,7 +51,7 @@
                         @if(session('user') && session('user')->isFollowed($user))
                             <button class="news-d-about-author-r-add" data-follow="1" style="background-image: url({{asset('home/images/tab/del.png')}})"></button>
                         @else
-                            <button class="news-d-about-author-r-add"></button>
+                            <button class="news-d-about-author-r-add" data-follow="-1"></button>
                         @endif
                         <div class="author-image">
                             @if($user->head_img)

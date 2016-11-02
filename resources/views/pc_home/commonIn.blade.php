@@ -52,31 +52,12 @@
                 </li>
             </ul>
             <ul class="am-nav am-nav-pills am-topbar-nav tab-ul-nav tab-ul-nav-right">
+                @foreach($hot_tags as $tag)
                 <li>
-                    <a href="">守望先锋</a>
+                    <a href="{{$tag->url}}">{{ $tag->name }}</a>
                 </li>
-                <li>
-                    <a href="">英雄联盟</a>
-                </li>
-
-                <li>
-                    <a href="">娱乐</a>
-
-                </li>
-
-                <li>
-                    <a href="">段子</a>
-                </li>
-                <li>
-                    <a href="">盖伦</a>
-                </li>
-                <li>
-                    <a href="">美女主播</a>
-                </li>
-                <li>
-                    <a href="">cosplay</a>
-                </li>
-                <li class="am-dropdown tab-am-dropdown on" data-am-dropdown>
+                @endforeach
+                    <li class="am-dropdown tab-am-dropdown on" data-am-dropdown>
                     <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;" style="color: #FFFFFF;">
                         全部标签 <span class="am-icon-caret-down"></span>
                     </a>
