@@ -15,7 +15,8 @@
     <script type="text/javascript" src="{{asset('home/js/amazeui.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/base.js')}}"></script>
     <script src="http://static.geetest.com/static/tools/gt.js"></script>
-    <title></title>
+    @section('title')
+    @show
     <style>
         .am-icon-search:hover{
             cursor:pointer;

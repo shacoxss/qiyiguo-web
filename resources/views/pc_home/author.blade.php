@@ -155,17 +155,6 @@
                     </ul>
                 </div>
 
-                <div class="am-g author-guess author-hot-tabs-block">
-                    <div class="author-guess-title">热门标签</div>
-                    <div class="author-hot-tabs">
-                        <dl class="tab-block-r-ul">
-                            <dt style="background: #006633;">守望先锋</dt>
-                            <dt style="background: #006633;">守望先锋</dt>
-                            <dt style="background: #006633;">守望先锋</dt>
-                        </dl>
-                    </div>
-                </div>
-
                 <div class="am-g author-guess author-hot-tabs-block author-recommand">
                     <div class="author-guess-title">精彩推荐</div>
                     @if($article_archives)

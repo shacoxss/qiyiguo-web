@@ -17,7 +17,6 @@
 
     @section('title')
         @show
-    <title></title>
 </head>
 
 <body>
