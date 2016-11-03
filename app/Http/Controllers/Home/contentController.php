@@ -92,10 +92,10 @@ class contentController extends Controller
 
     public function detail(Request $request, Archive $archive)
     {
-        if (!$archive->hasPattern('review')) return response('没有通过审核', 404);
+        $user = session('user');
+        if (!$archive->hasPattern('review') && !($user->id == $archive->user_id || $user->master)) return response('没有通过审核', 404);
 
         $archive->visit($request);
-        $user = session('user');
         if($user){
             $author_id = $archive->user->id;
             $follow = FollowUser::where('user_id',$user->id)->first();
