@@ -59,7 +59,7 @@
 <link rel="stylesheet" href="{{asset('pulgin/layer/skin/layer.css')}}" media="all">
 <script type="text/javascript">
   $(function(){
-
+    var index = parent.layer.getFrameIndex(window.name);
     //第三方登陆
     $('#qq').click(function(){
       layer.open({
