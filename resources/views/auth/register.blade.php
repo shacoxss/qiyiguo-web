@@ -55,6 +55,8 @@
     </div>
   </div>
 </div>
+<script src="{{asset('pulgin/layer/layer.js?v=2.4')}}"></script>
+<link rel="stylesheet" href="{{asset('pulgin/layer/skin/layer.css')}}" media="all">
 <script type="text/javascript">
   $(function(){
 
