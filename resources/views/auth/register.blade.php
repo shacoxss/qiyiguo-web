@@ -45,9 +45,9 @@
           <div class="row">
             <div class="col-md-12  text-center">
               <a href="{{url('auth/loginMobile')}}" class="btn btn-circle btn-warning " title="手机号码登录"> <i class="fa fa-tablet"></i></a>
-              <a href="#" class="btn btn-circle btn-primary " title="QQ登录"> <i class="fa fa-qq"></i></a>
-              <a href="#" class="btn btn-circle btn-success " title="微信登录"> <i class="fa fa-weixin"></i></a>
-              <a href="#" class="btn btn-circle btn-danger " title="新浪微博登录"> <i class="fa fa-weibo"></i></a>
+              <a id="qq" href="javascript:void(0)" class="btn btn-circle btn-primary " title="QQ登录"> <i class="fa fa-qq"></i></a>
+              <a id="weixin" href="javascript:void(0)" class="btn btn-circle btn-success " title="微信登录"> <i class="fa fa-weixin"></i></a>
+              <a id="weibo" href="javascript:void(0)" class="btn btn-circle btn-danger " title="新浪微博登录"> <i class="fa fa-weibo"></i></a>
             </div>
           </div>
         </div>
@@ -57,6 +57,47 @@
 </div>
 <script type="text/javascript">
   $(function(){
+
+    //第三方登陆
+    $('#qq').click(function(){
+      layer.open({
+        type: 2,
+        border: [0],
+        title: false,
+        shadeClose: true,
+        closeBtn: true,
+        area: ['830px' , '400px'],
+        content: '{{url('auth/qq')}}'
+      });
+    });
+
+    $('#weixin').click(function(){
+      layer.open({
+        type: 2,
+        border: [0],
+        title: false,
+        shadeClose: true,
+        closeBtn: true,
+        area: ['830px' , '400px'],
+        content: '{{url('auth/weixinWeb')}}'
+      });
+      parent.layer.close(index);
+    });
+
+    $('#weibo').click(function(){
+      layer.open({
+        type: 2,
+        border: [0],
+        title: false,
+        shadeClose: true,
+        closeBtn: true,
+        area: ['830px' , '400px'],
+        content: '{{url('auth/weibo')}}'
+      });
+      parent.layer.close(index);
+    });
+//第三方登陆结束
+
     $('.alert-danger').hide();
     $("#phone").focus(function(){
       $('.alert-danger').hide();
@@ -209,6 +250,8 @@
         }
       });
     }
+
+
 
   });
 </script>
