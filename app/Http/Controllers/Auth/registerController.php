@@ -43,14 +43,37 @@ class RegisterController extends Controller
                 $user = session('user');
                 $data['phone'] = $input['phone'];
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
-                    if(Users::where('phone',$user->phone)->update($data)){
+                //如果手机号存在，合并
+                if(Users::where('phone',$data['phone'])->first()){
+                    if($user->binding_qq){
+                        $data['binding_qq'] = 1;
+                        $data['qq_open_id'] = $user->qq_open_id;
+                    }elseif($user->binding_weixin){
+                        $data['binding_weixin'] = 1;
+                        $data['wx_open_id'] = $user->wx_open_id;
+                    }elseif($user->binding_weibo){
+                        $data['binding_weibo'] = 1;
+                        $data['wb_open_id'] = $user->wb_open_id;
+                    }else{
+                        return response()->json('error');
+                    }
+                    if(Users::where('phone',$data['phone'])->update($data)){
+                        Users::where('id',$user->id)->delete();
+                        $user = Users::where('phone',$data['phone'])->first();
+                        session(['user'=>$user]);
+                        return response()->json('success');
+                    }else{
+                        return response()->json('error');
+                    }
+                }else{
+                    if(Users::where('id',$user->id)->update($data)){
                         $user = Users::where('id',$user->id)->first();
                         session(['user'=>$user]);
                         return response()->json('success');
                     }else{
                         return response()->json('error');
                     }
-
+                }
             }else{
                 return response()->json('验证码错误！');
             }

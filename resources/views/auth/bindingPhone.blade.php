@@ -53,21 +53,6 @@
         $("#get_code").attr('disabled','disabled');
         return;
       }
-      $.ajax({
-          type:"post",
-          url:"{{url('register/checkPhone')}}",
-          data:{phone:phone,_token:token},
-          success:function(data){
-            if(data==='success'){
-              $('.alert-danger').hide();
-              $("#get_code").attr('disabled',false);
-            }else{
-              $('.alert-danger').show();
-              $('.alert-danger').text(data);
-              $("#get_code").attr('disabled',true);
-            }
-          }
-        });
     });
 
     var handlerPopup = function (captchaObj) {
