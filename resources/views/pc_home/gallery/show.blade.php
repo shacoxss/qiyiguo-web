@@ -76,7 +76,7 @@
 @endif
 
 @if(isset($body_only))
-]</body>
+</body>
 </html>
 @else
     @endsection

@@ -2,7 +2,9 @@
 
 
 @section('content')
-	<h2 style="color:red;">该片内容尚未通过审核，现属于预览状态！</h2>
+    @if(!$review)
+        <h2 style="color:red;">该篇内容尚未通过审核，现属于预览状态！</h2>
+    @endif
 		<div class="am-g v-detail" style="margin-top:81px">
 			<div class="content">
 				<div class="am-g v-d-link">
