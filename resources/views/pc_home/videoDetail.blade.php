@@ -35,66 +35,25 @@
 
 					<div class="am-u-sm-3 v-detail-list">
 						<div class="am-g v-d-list-title">最新视频</div>
+						@if($new)
+							@foreach($new as $v)
 						<div class="am-g v-d-list-content">
 							<div class="am-u-sm-6">
-								<a href="">
-									<img src="{{asset('home/images/host/zb.jpg')}}" />
+								<a href="{{route('archive.show', $v->id)}}">
+									<img src="{{route('image', [trim($v->cover, '/'), '130x72'])}}" onerror="this.src='{{asset('home/images/host/zb.jpg')}}'" />
 								</a>
 
 							</div>
 							<div class="am-u-sm-6">
 								<p>
-									<a href="">就大声回答说好的好的技术的很好就是大红色的决定</a>
+									<a href="{{route('archive.show', $v->id)}}">{{$v->title}}</a>
 								</p>
 							</div>
 							<hr data-am-widget="divider" style="" class="am-divider am-divider-default am-video-divider" />
 
 						</div>
-						<div class="am-g v-d-list-content">
-							<div class="am-u-sm-6">
-								<a href="">
-									<img src="{{asset('home/images/host/zb.jpg')}}" />
-								</a>
-
-							</div>
-							<div class="am-u-sm-6">
-								<p>
-									<a href="">就大声回答说好的好的技术的很好就是大红色的决定</a>
-								</p>
-							</div>
-							<hr data-am-widget="divider" style="" class="am-divider am-divider-default am-video-divider" />
-
-						</div>
-						<div class="am-g v-d-list-content">
-							<div class="am-u-sm-6">
-								<a href="">
-									<img src="{{asset('home/images/host/zb.jpg')}}" />
-								</a>
-
-							</div>
-							<div class="am-u-sm-6">
-								<p>
-									<a href="">就大声回答说好的好的技术的很好就是大红色的决定</a>
-								</p>
-							</div>
-							<hr data-am-widget="divider" style="" class="am-divider am-divider-default am-video-divider" />
-
-						</div>
-						<div class="am-g v-d-list-content">
-							<div class="am-u-sm-6">
-								<a href="">
-									<img src="{{asset('home/images/host/zb.jpg')}}" />
-								</a>
-
-							</div>
-							<div class="am-u-sm-6">
-								<p>
-									<a href="">就大声回答说好的好的技术的很好就是大红色的决定</a>
-								</p>
-							</div>
-
-						</div>
-					</div>
+						@endforeach
+							@endif
 				</div>
 				<div class="am-g">
 					<div class="v-comment">

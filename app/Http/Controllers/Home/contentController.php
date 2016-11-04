@@ -107,8 +107,17 @@ class contentController extends Controller
         }else{
             $followed = -1;
         }
-        //其他文章
-        $others = Archive::where('user_id',$archive->user_id)->orderBy('updated_at','desc')->ofPattern('review')->take(4)->get();
+
+        $others = null;
+        $new = null;
+        if($archive->archive_type_id==1){
+            //其他文章
+            $others = Archive::where('user_id',$archive->user_id)->orderBy('updated_at','desc')->ofPattern('review')->take(4)->get();
+        }else if($archive->archive_type_id==3){
+            //最新视频
+            $new = Archive::where('id','<>',$archive->id)->where('archive_type_id',3)->ofPattern('review')->orderBy('updated_at','desc')->take(4)->get();
+        }
+
 
         //精彩推荐
         $cate1 = Category::where('cate_name','精彩推荐')->first();
@@ -176,6 +185,7 @@ class contentController extends Controller
             ->with('article_archives',$article_archives)
             ->with('game_archives',$game_archives)
             ->with('others',$others)
+            ->with('new',$new)
             ->with('category_id',$category_id)
             ->with('category_id2',$category_id2)
         ;
