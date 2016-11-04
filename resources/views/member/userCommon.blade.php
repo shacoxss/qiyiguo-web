@@ -107,10 +107,10 @@
                     <li class="dropdown"> <a class="dropdown-toggle userdd" data-toggle="dropdown" href="javascript:void(0)">
                             <div class="userprofile small "> <span class="userpic"> <img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'" alt="" class="userpicimg"> </span>
                                 <div class="textcontainer">
-                                    @if(session('user')->phone)
-                                    <h3 class="username">{{session('user')->phone}}</h3>
-                                    @else
+                                    @if(session('user')->nickname)
                                     <h3 class="username">{{session('user')->nickname}}</h3>
+                                    @else
+                                    <h3 class="username">{{session('user')->phone}}</h3>
                                     @endif
                                     <p>用户组</p>
                                 </div>
