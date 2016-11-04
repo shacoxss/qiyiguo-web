@@ -162,7 +162,7 @@
         data:{phone:phone,code:code,_token:token},
         type:"post",
         success:function(data){
-          console.log(date);
+          console.log(data);
           if(data == 'success'){
 
           }else{
