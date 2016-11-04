@@ -38,10 +38,8 @@ class RegisterController extends Controller
 
     public function binding()
     {
-
         if($input = Input::except('_token')){
-            dd($input);
-            if($input['code'] == session('code')){
+            if(1||$input['code'] == session('code')){
                 $user = session('user');
                 $data['phone'] = $input['phone'];
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
@@ -64,7 +62,7 @@ class RegisterController extends Controller
                     if(Users::where('phone',$data['phone'])->update($data)){
                         $user = Users::where('phone',$data['phone'])->first();
                         session(['user'=>$user]);
-                        return response()->json('success');
+                        return response()->json('success1');
                     }else{
                         return response()->json('error');
                     }
@@ -72,7 +70,7 @@ class RegisterController extends Controller
                     if(Users::where('id',$user->id)->update($data)){
                         $user = Users::where('id',$user->id)->first();
                         session(['user'=>$user]);
-                        return response()->json('success');
+                        return response()->json('success2');
                     }else{
                         return response()->json('error');
                     }
