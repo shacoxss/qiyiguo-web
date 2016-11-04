@@ -28,7 +28,7 @@ class RegisterController extends Controller
                     }
                 }
             }else{
-                return response()->json('验证码错误！');
+                return response()->json('验证码错误1！');
             }
 
         }else{
