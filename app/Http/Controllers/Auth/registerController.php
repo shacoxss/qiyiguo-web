@@ -43,7 +43,7 @@ class RegisterController extends Controller
                 $user = session('user');
                 $data['phone'] = $input['phone'];
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
-                    if(Users::where('id',$user->id)->update($data)){
+                    if(Users::where('phone',$user->phone)->update($data)){
                         $user = Users::where('id',$user->id)->first();
                         session(['user'=>$user]);
                         return response()->json('success');
