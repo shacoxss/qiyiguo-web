@@ -89,7 +89,7 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::post('resetPassword','userProfileController@resetPassword');
     Route::post('resetNickname','userProfileController@resetNickname');
     Route::post('resetPhone','userProfileController@resetPhone');
-    //Route::post('bindingPhone','userProfileController@bindingPhone');
+    Route::post('bindingPhone','userProfileController@bindingPhone');
     Route::post('resetIntro','userProfileController@resetIntro');
     Route::resource('userManage','userManageController');
     Route::post('saveNickname','userManageController@saveNickname')->middleware('userManageAuth');
