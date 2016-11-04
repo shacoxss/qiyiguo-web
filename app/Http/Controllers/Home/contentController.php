@@ -93,7 +93,8 @@ class contentController extends Controller
     public function detail(Request $request, Archive $archive)
     {
         $user = session('user');
-        if (!$archive->hasPattern('review') && !($user->id == $archive->user_id || $user->master)) return response('没有通过审核', 404);
+        $review = $archive->hasPattern('review') ? true : false;
+        if (!$review && !($user->id == $archive->user_id || $user->master)) return response('没有通过审核', 403);
 
         $archive->visit($request);
         if($user){
@@ -121,7 +122,7 @@ class contentController extends Controller
 
         //精彩推荐
         $cate1 = Category::where('cate_name','精彩推荐')->first();
-        $category_id = $cate1->cate_id;
+        $category_id = $cate1 ? $cate1->cate_id : null;
         if($cate1){
             $son = Category::where('cate_pid',$cate1->cate_id)->count();
             if($son){
@@ -150,7 +151,7 @@ class contentController extends Controller
         }
 
         $cate3 = Category::where('cate_name','游戏攻略')->first();
-        $category_id2 = $cate3->cate_id;
+        $category_id2 = $cate3 ? $cate3->cate_id : null;
         if($cate3){
             $son = Category::where('cate_pid',$cate3->cate_id)->count();
             if($son){
@@ -188,6 +189,7 @@ class contentController extends Controller
             ->with('new',$new)
             ->with('category_id',$category_id)
             ->with('category_id2',$category_id2)
+            ->with('review', $review)
         ;
     }
 
