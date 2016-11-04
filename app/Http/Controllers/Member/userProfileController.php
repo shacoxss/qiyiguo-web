@@ -202,7 +202,7 @@ class userProfileController extends Controller
         if($input = Input::except('_token')){
 
             $rules = [
-                'intro'=>'required|between:3,255',
+                'intro'=>'required|between:6,255',
             ];
             $message = [
                 'phone.required' => '简介不能为空！',
