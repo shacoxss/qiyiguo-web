@@ -202,11 +202,12 @@ class userProfileController extends Controller
         if($input = Input::except('_token')){
 
             $rules = [
-                'intro'=>'required|between:3,255',
+                'intro'=>'required|min:6|max:255',
             ];
             $message = [
                 'phone.required' => '简介不能为空！',
-                'phone.between' => '简介长度在6到255个字！',
+                'phone.min' => '简介长度在6到255个字！',
+                'phone.max' => '简介长度在6到255个字！',
             ];
             $validator = Validator::make($input,$rules,$message);
             if($validator->passes()){
