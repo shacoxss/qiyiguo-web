@@ -1,5 +1,5 @@
 <div class="news-detail-content-left-p">
-    @if(!$review)
+    @if(isset($review) && (!$review))
     <h2 style="color:red;">该篇内容尚未通过审核，现属于预览状态！</h2>
     @endif
     {!! $archive->detail->content !!}
