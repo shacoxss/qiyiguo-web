@@ -125,8 +125,12 @@ class loginController extends Controller
         //登陆成功处理
         $data['binding_weixin'] = 1;
         $data['wx_open_id'] = $oauthUser->getId();
-        $data['nickname'] = $oauthUser->getNickname();
-        $data['head_img'] = $oauthUser->getAvatar();
+        if(!isset(session('user')->nickname)){
+            $data['nickname'] = $oauthUser->getNickname();
+        }
+        if(!isset(session('user')->head_img)){
+            $data['head_img'] = $oauthUser->getAvatar();
+        }
         $user = User::where('wx_open_id',$oauthUser->getId())->first();
 
 
@@ -175,8 +179,12 @@ class loginController extends Controller
         //登陆成功处理
         $data['binding_qq'] = 1;
         $data['qq_open_id'] = $oauthUser->getId();
-        $data['nickname'] = $oauthUser->getNickname();
-        $data['head_img'] = $oauthUser->getAvatar();
+        if(!isset(session('user')->nickname)){
+            $data['nickname'] = $oauthUser->getNickname();
+        }
+        if(!isset(session('user')->head_img)){
+            $data['head_img'] = $oauthUser->getAvatar();
+        }
         $user = User::where('qq_open_id',$oauthUser->getId())->first();
 
         //绑定
@@ -224,8 +232,12 @@ class loginController extends Controller
         //登陆成功处理
         $data['binding_weibo'] = 1;
         $data['wb_open_id'] = $oauthUser->getId();
-        $data['nickname'] = $oauthUser->getNickname();
-        $data['head_img'] = $oauthUser->getAvatar();
+        if(!isset(session('user')->nickname)){
+            $data['nickname'] = $oauthUser->getNickname();
+        }
+        if(!isset(session('user')->head_img)){
+            $data['head_img'] = $oauthUser->getAvatar();
+        }
         $user = User::where('wb_open_id',$oauthUser->getId())->first();
 
 

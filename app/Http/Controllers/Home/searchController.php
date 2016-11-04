@@ -39,23 +39,56 @@ class searchController extends Controller
         }
     }
 
-    public function result($key)
+    public function result($key,$way='all')
     {
         $key = trim($key);
+        if(empty($key)){
+            return back();
+        }
         //标签
         $tags = Tag::where('status',2)
             ->where('name','like',"%".$key."%")
             ->orderBy('updated_at','desc')
-            ->paginate(10)
+            ->take(10)
+            ->get()
         ;
-        //内容
 
-        $archives = Archive::ofPattern('review')
-            ->where('title','like',"%".$key."%")
-            ->orderBy('visit_count','desc')
-            ->orderBy('updated_at','desc')
-            ->paginate(10);
-        return view('pc_home.search',compact('tags','archives'));
+        //内容
+        if($way=='video'){
+            $archives = Archive::ofPattern('review')
+                ->where('archive_type_id',2)
+                ->where('title','like',"%".$key."%")
+                ->orderBy('visit_count','desc')
+                ->orderBy('updated_at','desc')
+                ->paginate(10);
+        }else if($way=='news'){
+            $archives = Archive::ofPattern('review')
+                ->where('archive_type_id',1)
+                ->where('title','like',"%".$key."%")
+                ->orderBy('visit_count','desc')
+                ->orderBy('updated_at','desc')
+                ->paginate(10);
+        }else if($way=='gallery'){
+            $archives = Archive::ofPattern('review')
+                ->where('archive_type_id',3)
+                ->where('title','like',"%".$key."%")
+                ->orderBy('visit_count','desc')
+                ->orderBy('updated_at','desc')
+                ->paginate(10);
+        }else{
+            $archives = Archive::ofPattern('review')
+                ->where('title','like',"%".$key."%")
+                ->orderBy('visit_count','desc')
+                ->orderBy('updated_at','desc')
+                ->paginate(10);
+        }
+
+
+
+
+
+
+        return view('pc_home.search',compact('tags','archives','key','way'));
     }
 
 }

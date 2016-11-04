@@ -131,7 +131,7 @@
                         </td>
                         <td class="center">
                             <a href="{{route('archives.edit', [$a->id, $is_master ? 'master' : 'user'])}}" class="btn btn-circle btn-primary ">编辑</a>
-                            <a href="{{route('archive.show', [$a->id])}}" class="btn btn-circle btn-success ">预览</a>
+                            <a href="{{route('archive.show', [$a->id])}}" class="btn btn-circle btn-success " target="_blank">预览</a>
                             <a href="javascript:void(0)" class="btn btn-circle btn-danger delete-archives" data-id="{{$a->id}}">删除</a>
                             @if(session('user')->master && $is_master)
                                 @if($a->hasPattern('review'))
