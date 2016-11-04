@@ -39,7 +39,7 @@ class RegisterController extends Controller
     public function binding()
     {
         if($input = Input::except('_token')){
-            if(1||$input['code'] == session('code')){
+            if(true){
                 $user = session('user');
                 $data['phone'] = $input['phone'];
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
