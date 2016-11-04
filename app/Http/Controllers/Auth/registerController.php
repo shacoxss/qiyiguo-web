@@ -44,8 +44,10 @@ class RegisterController extends Controller
                 $data['phone'] = $input['phone'];
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 //如果手机号存在，合并
-                if(Users::where('phone',$data['phone'])->first()){
-                    dd($user);
+                $phone = Users::where('phone',$data['phone'])->first();
+                dd($phone);
+                if($phone){
+
                     Users::where('id',$user->id)->delete();
                     if($user->binding_qq){
                         $data['binding_qq'] = 1;
