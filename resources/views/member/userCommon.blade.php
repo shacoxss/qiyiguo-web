@@ -62,10 +62,10 @@
                     @endif
                     <!-- 判断是否有后台权限，有后台权限显示此按钮后可互相切换 -->
                 </div>
-                @if(session('user')->phone)
-                    <h3 class="username">{{session('user')->phone}}</h3>
-                @else
+                @if(session('user')->nickname)
                     <h3 class="username">{{session('user')->nickname}}</h3>
+                @else
+                    <h3 class="username">{{session('user')->phone}}</h3>
                 @endif
                 <p>用户组</p>
             </div>
