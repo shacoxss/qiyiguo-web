@@ -38,6 +38,7 @@ class RegisterController extends Controller
 
     public function binding()
     {
+        return 'ok';
         if($input = Input::except('_token')){
             if($input['code'] == session('code')){
                 $user = session('user');
@@ -45,9 +46,7 @@ class RegisterController extends Controller
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 //如果手机号存在，合并
                 $phone = Users::where('phone',$data['phone'])->first();
-                dd($phone);
                 if($phone){
-
                     Users::where('id',$user->id)->delete();
                     if($user->binding_qq){
                         $data['binding_qq'] = 1;
