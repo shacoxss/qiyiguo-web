@@ -158,12 +158,13 @@
       return false;
     }else{
       $.ajax({
-        url:"{{url('auth/bindingPhone')}}",
+        url:"{{url('register/bindingPhone')}}",
         data:{phone:phone,code:code,_token:token},
         type:"post",
         success:function(data){
+          console.log(date);
           if(data == 'success'){
-            location.href = "{{url('register/success')}}";
+
           }else{
             $('.alert-danger').show();
             $('.alert-danger').text(data);

@@ -38,7 +38,6 @@ class RegisterController extends Controller
 
     public function binding()
     {
-        return 'error';
         if($input = Input::except('_token')){
             if($input['code'] == session('code')){
                 $user = session('user');
