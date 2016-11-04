@@ -158,7 +158,7 @@
       return false;
     }else{
       $.ajax({
-        url:"{{url('register/bindingPhone')}}",
+        url:"{{url('auth/bindingPhone')}}",
         data:{phone:phone,code:code,_token:token},
         type:"post",
         success:function(data){
