@@ -45,6 +45,7 @@ class RegisterController extends Controller
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 //如果手机号存在，合并
                 if(Users::where('phone',$data['phone'])->first()){
+                    Users::where('id',$user->id)->delete();
                     if($user->binding_qq){
                         $data['binding_qq'] = 1;
                         $data['qq_open_id'] = $user->qq_open_id;
@@ -58,7 +59,6 @@ class RegisterController extends Controller
                         return response()->json('error');
                     }
                     if(Users::where('phone',$data['phone'])->update($data)){
-                        Users::where('id',$user->id)->delete();
                         $user = Users::where('phone',$data['phone'])->first();
                         session(['user'=>$user]);
                         return response()->json('success');
