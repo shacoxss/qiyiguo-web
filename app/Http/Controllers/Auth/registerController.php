@@ -39,7 +39,7 @@ class RegisterController extends Controller
     public function binding()
     {
         if($input = Input::except('_token')){
-            if(1||$input['code'] == session('code')){
+            /*if($input['code'] == session('code')){*/
                 $user = session('user');
                 $data['phone'] = $input['phone'];
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
@@ -75,9 +75,9 @@ class RegisterController extends Controller
                         return response()->json('error');
                     }
                 }
-            }else{
+/*            }else{
                 return response()->json('验证码错误！');
-            }
+            }*/
 
         }else{
             if(!session('user')){
