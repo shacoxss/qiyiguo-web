@@ -278,7 +278,9 @@ class ArchiveController extends Controller
     {
         $user = session('user');
         if($archive->user_id == $user->id || $this->checkMaster()) {
-            $archive->detail->delete();
+            if ($archive->detail) {
+                $archive->detail->delete();
+            }
             $archive->delete();
             echo 'success';
         }
