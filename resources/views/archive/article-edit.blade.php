@@ -37,13 +37,18 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <!-- Nav tabs -->
+                        @if(!isset($archive))
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="{{url('member/archives/create/article')}}" > <span class="fa fa-file-word-o icon"></span>新增文章</a> </li>
                             <li ><a href="{{url('member/archives/create/gallery')}}" > <span class="fa fa-file-image-o icon"></span>新增图集</a> </li>
                             <li ><a href="{{url('member/archives/create/video')}}" > <span class="fa fa-file-video-o icon"></span>新增视频</a> </li>
                             <!-- <li><a href="#content" data-toggle="tab"> <span class="fa fa-save icon"></span>正文内容</a> </li> -->
                         </ul>
-
+                        @else
+                            <ul class="nav nav-tabs">
+                               <li class="active"><a href="#content" data-toggle="tab"> <span class="fa fa-save icon"></span>编辑文章</a> </li>
+                            </ul>
+                        @endif
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div class="tab-pane fade padding in active" id="normal">
