@@ -15,17 +15,12 @@ class TestController extends Controller
     //
     public function index(Request $request)
     {
-        $text = '<table><tr><td><p>111</p></td></tr></table>';
 
-        $match = [];
-
-        return preg_replace('#(<table>.*)(<p>(.*)</p>)(.*</table>)#', '$1$3<br>$4', $text);
-
-        $content = Archive::find(72)->detail->content;
+        $content = Archive::find(74)->detail->content;
 
         $content = new ContentCut($content);
 
-        echo($content->cut());
+        dd($content->cut());
     }
 
     public function anyData(Request $request)
