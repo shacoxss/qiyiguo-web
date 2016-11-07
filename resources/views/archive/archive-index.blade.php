@@ -249,8 +249,7 @@
     });
 
     $(document).ready(function () {
-        var checks = $('input[type=checkbox]')
-        checks.on('click', function (event) {
+        $('input[type=checkbox]').on('click', function (event) {
             if ($(event.target).hasClass('checked_all')) return ;
             $('.checked_all').prop('checked', false)}
         )
@@ -260,7 +259,7 @@
                 $(this).prop('checked', !$(this).prop('checked'))
             }
 
-            checks.prop('checked', $(this).prop('checked'))
+            $('input[type=checkbox]').prop('checked', $(this).prop('checked'))
         })
 
         $('.delete_archives').on('click', function () {
