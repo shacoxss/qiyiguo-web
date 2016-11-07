@@ -10,7 +10,7 @@
     </div>
     <!-- /.row -->
     <ol class="breadcrumb">
-        <li><a href="masterArchivesList.php">内容管理</a></li>
+        <li><a href="{{url('member/archives')}}">全部文档</a></li>
         <li class="active">文档列表</li>
     </ol>
     <!-- /.row -->
