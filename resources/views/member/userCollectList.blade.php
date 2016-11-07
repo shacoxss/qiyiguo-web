@@ -30,7 +30,7 @@
               <td>
                 <a href="#">
                     @if($v->archive->cover)
-                  <img src="{{$v->archive->cover}}" class="gridpic">
+                  <img src="{{route('image', [trim($v->cover, '/'), '30x30'])}}" class="gridpic">
                     @endif
                   {{$v->archive->title}}
                 </a>
