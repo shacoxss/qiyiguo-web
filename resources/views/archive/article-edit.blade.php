@@ -7,15 +7,25 @@
 </style>
     <div class="row">
     <div class="col-md-12  header-wrapper" >
-        <h1 class="page-header">编辑文档</h1>
-        <p class="page-subtitle">您可以修改、增加文档的内容</p>
+        @if(isset($archive))
+        <h1 class="page-header">编辑文章</h1>
+        <p class="page-subtitle">编辑文章内容</p>
+        @else
+        <h1 class="page-header">新增文章</h1>
+        <p class="page-subtitle">添加一篇文章</p>
+        @endif
+
     </div>
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
 <ol class="breadcrumb">
-    <li><a href="masterArchivesList.php">内容管理</a></li>
-    <li class="active">编辑文档</li>
+    <li><a href="{{url('member/archives?type=article')}}">全部文章</a></li>
+    @if(isset($archive))
+    <li class="active">编辑文章</li>
+    @else
+    <li class="active">新增文章</li>
+    @endif
 </ol>
 
 <!-- /.row -->
@@ -27,11 +37,18 @@
                     <!-- /.panel-heading -->
                     <div class="panel-body">
                         <!-- Nav tabs -->
+                        @if(!isset($archive))
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#normal" data-toggle="tab"> <span class="fa fa-file-text-o icon"></span>常规信息</a> </li>
+                            <li class="active"><a href="{{url('member/archives/create/article')}}" > <span class="fa fa-file-word-o icon"></span>新增文章</a> </li>
+                            <li ><a href="{{url('member/archives/create/gallery')}}" > <span class="fa fa-file-image-o icon"></span>新增图集</a> </li>
+                            <li ><a href="{{url('member/archives/create/video')}}" > <span class="fa fa-file-video-o icon"></span>新增视频</a> </li>
                             <!-- <li><a href="#content" data-toggle="tab"> <span class="fa fa-save icon"></span>正文内容</a> </li> -->
                         </ul>
-
+                        @else
+                            <ul class="nav nav-tabs">
+                               <li class="active"><a href="#content" data-toggle="tab"> <span class="fa fa-save icon"></span>编辑文章</a> </li>
+                            </ul>
+                        @endif
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div class="tab-pane fade padding in active" id="normal">
@@ -44,7 +61,7 @@
                                         <div class="col-lg-9">
                                             <div class="form-group">
                                                 <label>文章标题：</label>
-                                                <input class="form-control" name="title" placeholder="文章标题：" value="{{$archive->title or ''}}">
+                                                <input class="form-control" name="title" placeholder="文章标题" value="{{$archive->title or ''}}" style="font-size: 20px">
                                             </div>
                                             <div class="form-group">
                                                 <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
@@ -77,6 +94,7 @@
                                                     </div>
                                                 </div>
                                                 @endforeach
+                                                @if(session('user')->master)
                                                 <div class="form-group col-md-3">
                                                     <div class="list-group-item withswitch">
                                                         <h5 class="list-group-item-heading">奇异果资讯</h5>
@@ -92,6 +110,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @endif
                                                 <!-- 单属性控制 -->
                                                 <div class="form-group col-md-12">
                                                     <label>关联系统栏目</label>

@@ -2,15 +2,25 @@
 @section('content')
     <div class="row">
         <div class="col-md-12  header-wrapper" >
-            <h1 class="page-header">新增图集</h1>
-            <p class="page-subtitle">添加一个图集作品</p>
+            @if(isset($archive))
+                <h1 class="page-header">编辑图集</h1>
+                <p class="page-subtitle">编辑图集作品</p>
+            @else
+                <h1 class="page-header">新增图集</h1>
+                <p class="page-subtitle">添加一个图集作品</p>
+            @endif
         </div>
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
     <ol class="breadcrumb">
-        <li><a href="addIndex.php">内容管理</a></li>
-        <li class="active">新增图集</li>
+        <li><a href="{{url('member/archives?type=gallery')}}">全部图集</a></li>
+
+        @if(isset($archive))
+            <li class="active">编辑图集</li>
+        @else
+            <li class="active">新增图集</li>
+        @endif
     </ol>
 
     <!-- /.row -->
@@ -22,11 +32,18 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             <!-- Nav tabs -->
+                            @if(!isset($archive))
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#normal" data-toggle="tab"> <span class="fa fa-file-text-o icon"></span>常规信息</a> </li>
+                                <li ><a href="{{url('member/archives/create/article')}}" > <span class="fa fa-file-word-o icon"></span>新增文章</a> </li>
+                                <li class="active"><a href="{{url('member/archives/create/gallery')}}" > <span class="fa fa-file-image-o icon"></span>新增图集</a> </li>
+                                <li ><a href="{{url('member/archives/create/video')}}" > <span class="fa fa-file-video-o icon"></span>新增视频</a> </li>
                                 <!-- <li><a href="#content" data-toggle="tab"> <span class="fa fa-save icon"></span>正文内容</a> </li> -->
                             </ul>
-
+                            @else
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#content" data-toggle="tab"> <span class="fa fa-save icon"></span>编辑图集</a> </li>
+                                </ul>
+                            @endif
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <div class="tab-pane fade padding in active" id="normal">
@@ -80,7 +97,7 @@
                                                                             <div class="image-box">
                                                                                 <div> <img src="{{ route('image', [$img->url, '300x300']) }}" width="100%"> </div>
                                                                             </div>
-                                                                            <input class="form-control " placeholder="图片标题" value="{{$img->title}}">
+                                                                            <input class="form-control " placeholder="图片标题" value="{{$img->title}}" >
                                                                             <textarea class="form-control" rows="5">{!! $img->description !!}</textarea>
                                                                             <input type="hidden" value="{{$img->url}}" class="img_url" >
                                                                         </div>

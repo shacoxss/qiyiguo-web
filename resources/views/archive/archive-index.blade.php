@@ -11,6 +11,7 @@
     <!-- /.row -->
     <ol class="breadcrumb">
         <li>内容管理</li>
+        <li><a href="{{url('member/archives')}}">全部文档</a></li>
         <li class="active">文档列表</li>
     </ol>
     <!-- /.row -->

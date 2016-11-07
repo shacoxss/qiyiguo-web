@@ -48,7 +48,7 @@
     <div class="navbar-default sidebar">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" title="伸缩导航" > <span class="sr-only">伸缩导航</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-            <a class="navbar-brand" href="http://www.qiyiguo.tv" target="_blank">奇异果聚合</a> </div>
+            <a class="navbar-brand" href="{{'/'}}" target="_blank">奇异果聚合</a> </div>
         <div class="clearfix"></div>
         <div class="sidebar-nav navbar-collapse">
 
@@ -88,7 +88,7 @@
                 <li>
                     <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-save"></i> 内容管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="{{route('userAddIndex')}}">发布</a></li>
+                        <li><a href="{{url('member/archives/create/article')}}">发布</a></li>
                         <li><a href="{{route('archives.index')}}">列表</a></li>
                     </ul>
                     <!-- /.nav-second-level -->

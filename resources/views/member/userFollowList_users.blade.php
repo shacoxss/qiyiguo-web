@@ -42,7 +42,7 @@
 			          <div class="panel-body text-center">
 			            <div class="userprofile">
 			              <div class="userpic">
-			              	<a href="#" target="_blank" title="TA的主页"><img src="{{asset('img/200200.png')}}" alt="" class="userpicimg"></a>
+			              	<a href="{{url('author').'/'.$v->users->id}}" target="_blank" title="TA的主页"><img src="{{$v->users->head_img}}"  onerror="this.src='{{asset('img/200200.png')}}'"  alt="" class="userpicimg"></a>
 			              </div>
 			              <h3 class="username">{{$v->users->nickname}}</h3>
 			            </div>
@@ -52,7 +52,7 @@
 							  <p>作者很懒，什么也没留下~</p>
 						  @endif
 			            <div class="socials tex-center">
-				            <a href="" class="btn btn-circle btn-warning" title="TA的主页"><i class="fa fa-home"></i></a>
+				            <a href="{{url('author').'/'.$v->users->id}}" class="btn btn-circle btn-warning" title="TA的主页"><i class="fa fa-home"></i></a>
 				            <a href="" class="btn btn-circle btn-primary" title="粉丝QQ群"><i class="fa fa-qq"></i></a>
 				            <a href="" class="btn btn-circle btn-success" title="微信号"><i class="fa fa-weixin"></i></a>
 				            <a href="" class="btn btn-circle btn-danger" title="TA的微博"><i class="fa fa-weibo"></i></a>
