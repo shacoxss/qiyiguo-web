@@ -28,7 +28,9 @@
                     <div class="panel-body">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#normal" data-toggle="tab"> <span class="fa fa-file-text-o icon"></span>常规信息</a> </li>
+                            <li class="active"><a href="{{url('member/archives/create/article')}}" > <span class="fa fa-file-word-o icon"></span>发布文章</a> </li>
+                            <li ><a href="{{url('member/archives/create/gallery')}}" > <span class="fa fa-file-image-o icon"></span>发布图集</a> </li>
+                            <li ><a href="{{url('member/archives/create/video')}}" > <span class="fa fa-file-video-o icon"></span>发布视频</a> </li>
                             <!-- <li><a href="#content" data-toggle="tab"> <span class="fa fa-save icon"></span>正文内容</a> </li> -->
                         </ul>
 
