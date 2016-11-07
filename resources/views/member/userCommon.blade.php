@@ -48,7 +48,7 @@
     <div class="navbar-default sidebar">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" title="伸缩导航" > <span class="sr-only">伸缩导航</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-            <a class="navbar-brand" href="http://www.qiyiguo.tv" target="_blank">奇异果聚合</a> </div>
+            <a class="navbar-brand" href="{{'/'}}" target="_blank">奇异果聚合</a> </div>
         <div class="clearfix"></div>
         <div class="sidebar-nav navbar-collapse">
 
