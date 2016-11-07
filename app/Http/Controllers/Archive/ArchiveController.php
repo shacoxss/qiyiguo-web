@@ -274,16 +274,40 @@ class ArchiveController extends Controller
         return response()->json(['msg' => '操作成功！']);
     }
 
-    public function destroy(Archive $archive)
+    public function toggles($archives, $name)
+    {
+        $this->checkMaster();
+
+        $pattern = \DB::table('patterns')->where('name' ,$name)->value('pattern');
+
+        foreach(explode(',', $archives) as $archive) {
+            $archive = Archive::find($archive);
+
+            if (!$archive) continue;
+
+            $archive->mode = $archive->mode | $pattern;
+
+            $archive->save();
+        }
+
+        return response()->json(['msg' => '操作成功']);
+    }
+
+    public function destroy($archives)
     {
         $user = session('user');
-        if($archive->user_id == $user->id || $this->checkMaster()) {
-            if ($archive->detail) {
-                $archive->detail->delete();
+        $archives = (explode(',', $archives));
+        $archives = Archive::whereIn('id', $archives)->get();
+
+        foreach ($archives as $archive) {
+            if($archive->user_id == $user->id || $this->checkMaster()) {
+                if ($archive->detail) {
+                    $archive->detail->delete();
+                }
+                $archive->delete();
             }
-            $archive->delete();
-            echo 'success';
         }
+        echo 'success';
     }
 
     private function checkMaster()

@@ -33,9 +33,9 @@ class IndexController extends Controller
             })
         ;
 
-        $view->with('index_video', Archive::where('archive_type_id', 3)->take(8)->orderBy('updated_at', 'desc')->get())
-            ->with('index_gallery', Archive::where('archive_type_id', 2)->take(9)->orderBy('updated_at', 'desc')->get())
-            ->with('hot_tags', Tag::orderBy('weight', 'desc')->orderBy('updated_at', 'desc')->take(8)->get())
+        $view->with('index_video', Archive::where('archive_type_id', 3)->ofPattern('review')->take(8)->orderBy('updated_at', 'desc')->get())
+            ->with('index_gallery', Archive::where('archive_type_id', 2)->ofPattern('review')->take(9)->orderBy('updated_at', 'desc')->get())
+            ->with('hot_tags', Tag::where('status', 2)->orderBy('weight', 'desc')->orderBy('updated_at', 'desc')->take(8)->get())
         ;
         return $view;
     }
