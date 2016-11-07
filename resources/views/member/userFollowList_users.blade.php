@@ -52,7 +52,7 @@
 							  <p>作者很懒，什么也没留下~</p>
 						  @endif
 			            <div class="socials tex-center">
-				            <a href="" class="btn btn-circle btn-warning" title="TA的主页"><i class="fa fa-home"></i></a>
+				            <a href="{{url('author/').$v->users->id}}" class="btn btn-circle btn-warning" title="TA的主页"><i class="fa fa-home"></i></a>
 				            <a href="" class="btn btn-circle btn-primary" title="粉丝QQ群"><i class="fa fa-qq"></i></a>
 				            <a href="" class="btn btn-circle btn-success" title="微信号"><i class="fa fa-weixin"></i></a>
 				            <a href="" class="btn btn-circle btn-danger" title="TA的微博"><i class="fa fa-weibo"></i></a>
