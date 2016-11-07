@@ -66,15 +66,28 @@
                             <p>作者很懒，什么也没有留下~</p>
                         @endif
                         <div class="am-u-sm-4 author-d-bar">
-                            <div class="author-d-bar-top">粉丝</div>
+                            @if(!empty(session('user')) && session('user')->id==$user->id)
+                            <div class="author-d-bar-top"> <a href="{{url('member/userFans')}}">粉丝</a></div>
+                            @else
+                            <div class="author-d-bar-top"> 粉丝</div>
+                            @endif
                             <div class="author-d-bar-bott">{{ $user->followUser()->count() }}</div>
                         </div>
                         <div class="am-u-sm-4 author-d-bar">
+                            @if(!empty(session('user')) && session('user')->id==$user->id)
+                            <div class="author-d-bar-top"><a href="{{url('member/userFollow_users')}}">关注</a></div>
+                            @else
                             <div class="author-d-bar-top">关注</div>
+                            @endif
                             <div class="author-d-bar-bott">{{ $user->followUser()->count() }}</div>
                         </div>
                         <div class="am-u-sm-4 author-d-bar">
-                            <div class="author-d-bar-top">帖子</div>
+
+                            @if(!empty(session('user')) && session('user')->id==$user->id)
+                                <div class="author-d-bar-top"><a href="{{url('member/archives')}}">帖子</a></div>
+                            @else
+                                <div class="author-d-bar-top">帖子</div>
+                            @endif
                             <div class="author-d-bar-bott">{{ $user->archives()->count() }}</div>
                         </div>
                     </div>
