@@ -8,14 +8,20 @@
     <link href="{{asset('home/js/skin/layer.css')}}" type="text/css" rel="stylesheet" />
     <link href="{{asset('home/css/all.css')}}" type="text/css" rel="stylesheet" />
     <link href="{{asset('home/css/details.css')}}" type="text/css" rel="stylesheet" />
-
+    <link href="{{asset('home/css/list.css')}}" type="text/css" rel="stylesheet" />
     <script type="text/javascript" src="{{asset('home/js/jquery-3.1.0.min.js')}}"></script>
 
     <script type="text/javascript" src="{{asset('pulgin/layer/layer.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/amazeui.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('home/js/base.js')}}"></script>
     <script src="http://static.geetest.com/static/tools/gt.js"></script>
-    <title></title>
+    @section('title')
+    @show
+    <style>
+        .am-icon-search:hover{
+            cursor:pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,7 +34,7 @@
 <header class="am-topbar header tab-header" style="height: auto;">
     <div class="content">
         <h1 class="am-topbar-brand header-logo-brand">
-            <a href="#" class="logo tab-logo"></a>
+            <a href="{{route('index')}}" class="logo tab-logo"></a>
         </h1>
 
         <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
@@ -36,43 +42,23 @@
         <div class="am-collapse am-topbar-collapse header-ul tab-header-ul" id="doc-topbar-collapse">
             <ul class="am-nav am-nav-pills am-topbar-nav tab-ul-nav">
                 <li>
-                    <a href="">文章</a>
+                    <a href="{{url('article')}}">文章</a>
                 </li>
                 <li>
-                    <a href="">视频</a>
+                    <a href="{{url('video')}}">视频</a>
                 </li>
 
                 <li class="tab-divider">
-                    <a href="">图库</a>
-
+                    <a href="{{route('galleries.index')}}">图库</a>
                 </li>
             </ul>
             <ul class="am-nav am-nav-pills am-topbar-nav tab-ul-nav tab-ul-nav-right">
+                @foreach($hot_tags as $tag)
                 <li>
-                    <a href="">守望先锋</a>
+                    <a href="{{$tag->url}}">{{ $tag->name }}</a>
                 </li>
-                <li>
-                    <a href="">英雄联盟</a>
-                </li>
-
-                <li>
-                    <a href="">娱乐</a>
-
-                </li>
-
-                <li>
-                    <a href="">段子</a>
-                </li>
-                <li>
-                    <a href="">盖伦</a>
-                </li>
-                <li>
-                    <a href="">美女主播</a>
-                </li>
-                <li>
-                    <a href="">cosplay</a>
-                </li>
-                <li class="am-dropdown tab-am-dropdown on" data-am-dropdown>
+                @endforeach
+                    <li class="am-dropdown tab-am-dropdown on" data-am-dropdown>
                     <a class="am-dropdown-toggle" data-am-dropdown-toggle href="javascript:;" style="color: #FFFFFF;">
                         全部标签 <span class="am-icon-caret-down"></span>
                     </a>
@@ -80,7 +66,7 @@
             </ul>
             <form class="am-topbar-form am-topbar-left am-form-inline tab-search" role="search">
                 <div class="am-form-group">
-                    <input type="text" class="am-form-field am-input-sm tab-header-input" style="width: 104px;background: #333;border: 0px;border-radius: 5px;" placeholder="搜索">
+                    <input type="text" class="am-form-field am-input-sm tab-header-input" style="width: 104px;background: #333;border: 0px;border-radius: 5px;" placeholder="搜索" id="key">
                     <i class="am-icon-search"></i>
                 </div>
             </form>
@@ -95,12 +81,12 @@
 @else
             <div class="am-topbar-right already-l" style="margin-top:30px">
                 <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
-                    <a href="{{url('member/index')}}"><span class="l-pic"><img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'"></span>
+                    <a href=""><span class="l-pic"><img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'"></span>
 
                         @if(session('user')->nickname)
 
                             <span class="l-txt" title="{{session('user')->nickname}}">{{mb_substr(session('user')->nickname,0,4)}}
-                                @if(strlen(session('user')->nickname)>5)
+                                @if(strlen(session('user')->nickname)>15)
                                     ...
                                 @endif
                         </span><span class="am-icon-caret-down"></span></a>
@@ -116,7 +102,7 @@
                         </li>
                         <li>
 
-                            <a href="{{url('member/userArchivesList')}}" target="_blank"><span class="menu-span menu-span2"></span>我的稿件</a>
+                            <a href="{{url('member/archives')}}" target="_blank"><span class="menu-span menu-span2"></span>我的稿件</a>
 
                         </li>
                         <li>
@@ -168,13 +154,13 @@
                 <p class="block-title ">奇异果资讯</p>
                 <ul class="block-item-ul ">
                     <li>
-                        <a href=" ">行业新闻</a>
+                        <a href="{{url('qyg/news')}}">行业新闻</a>
                     </li>
                     <li>
-                        <a href=" ">奇异果公告</a>
+                        <a href="{{url('qyg/notice')}}">奇异果公告</a>
                     </li>
                     <li>
-                        <a href=" ">热门活动</a>
+                        <a href="{{url('qyg/active')}}">热门活动</a>
                     </li>
                 </ul>
             </div>
@@ -240,6 +226,7 @@
         var forget_url = "{{url('forget')}}";
         var qq_login = "{{url('auth/qq')}}";
         var wx_login = "{{url('auth/weixinWeb')}}";
+        var wb_login = "{{url('auth/weibo')}}";
         var login = {
             init: function() {
 
@@ -248,10 +235,12 @@
                         layer.open({
                         type: 1,
                         title: false,
+                        area: ['auto', 'auto'],
+                        shift: 'left', //从左动画弹出
                         closeBtn: 0,
                         shadeClose: true,
                         zIndex:899990,
-                            content: '<div class="login-pop"data-point="dlk"><div class="login-pop-close"></div><div class="login-pop-tab"><ul><li><a href="#" class="t-login current">登录</a></li><li><a href="'+reg_url+'" target="_blank">注册</a></li></ul></div><div class="login-pop-cont clearfix"><div class="c-item clearfix popLogin"><form method="post" action=""><input type="hidden" name="name" value="login"><input type="hidden" name="dopost" value="login"><input type="hidden" name="gourl" value=""><p><input class="ipt" type="text" name="userid" id="phone" placeholder="电话号码"></p><p><input class="ipt" type="password" name="pwd" id="password" placeholder="密码"></p><div class="toreg clearfix"><input class="btn-sub"type="button"value="登录" id="popup-submit"><p>没有账号？<a href="'+reg_url+'" title="马上注册" target="_blank">马上注册</a></p></div></form></div><div class="c-oth"><p>用第三方账号直接登录</p><div><a href="'+qq_login+'" class="btn-qq" title="QQ账号登录"data-point-2="qq"><span class="dy-icon dy-sina"></span><span>QQ账号登录</span></a></div><div><a href="'+wx_login+'" class="btn-wx" title="微信登录" data-point-2="qq"><span class="dy-icon dy-wx"></span><span>微信登录</span></a></div><p class="forget-pass"><a href="'+forget_url+'" target="_blank">忘记密码？</a></p></div></div></div>'
+                            content: '<div class="login-pop"data-point="dlk"><div class="login-pop-close"></div><div class="login-pop-tab"><ul><li><a href="#" class="t-login current">登录</a></li><li><a href="'+reg_url+'" target="_blank">注册</a></li></ul></div><div class="login-pop-cont clearfix"><div class="c-item clearfix popLogin"><form method="post" action=""><input type="hidden" name="name" value="login"><input type="hidden" name="dopost" value="login"><input type="hidden" name="gourl" value=""><p><input class="ipt" type="text" name="userid" id="phone" placeholder="电话号码"></p><p><input class="ipt" type="password" name="pwd" id="password" placeholder="密码"></p><div class="toreg clearfix"><input class="btn-sub"type="button"value="登录" id="popup-submit"><p>没有账号？<a href="'+reg_url+'" title="马上注册" target="_blank">马上注册</a></p></div></form></div><div class="c-oth"><p>用第三方账号直接登录</p><div><a href="'+qq_login+'" class="btn-qq" title="QQ账号登录"data-point-2="qq"><span class="dy-icon dy-sina"></span><span>QQ账号登录</span></a></div><div><a href="'+wx_login+'" class="btn-wx" title="微信登录"data-point-2="qq"><span class="dy-icon dy-wx"></span><span>微信登录</span></a></div><div><a href="'+wb_login+'" class="btn-sina" title="微博登录"data-point-2="sina"><span class="dy-icon dy-qq"></span><span>微博登录</span></a></div><p class="forget-pass"><a href="'+forget_url+'" target="_blank">忘记密码？</a></p></div></div></div>'
                     })
                     $(".t-login").on("click", function() {
                         $(".t-login").addClass("current");
@@ -392,4 +381,35 @@
             $(".all-tabs").data('hide',1);
         })
     })
+    $(function(){
+        $('.tab-regist').click(function(){
+            location.href = "{{url('register')}}";
+        });
+    })
+    //搜索
+    $(function(){
+
+        $('.am-icon-search').click(function(){
+           var key = $('#key').val();
+            if(key.length==0){
+                layer.msg('请输入要搜索的内容！');
+            }else{
+                var token = "{{csrf_token()}}";
+                $.ajax({
+                    type:'post',
+                    url:"{{url('search')}}",
+                    data:{_token:token,key:key},
+                    success:function(data){
+                        if(data=='error'){
+                            layer.msg('错误！');
+                        }else if(data=='none'){
+                            layer.msg('对不起，没有找到相关内容！');
+                        }else{
+                            location.href = "{{url('search/result')}}"+'/'+data.key;
+                        }
+                    }
+                })
+            }
+        });
+    });
 </script>

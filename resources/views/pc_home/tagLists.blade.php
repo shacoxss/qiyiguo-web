@@ -29,16 +29,13 @@
                                 </ul>
                             </div>
                             <div class="h-t-d-bottom">
-                                <div class="tab-view-avatar">
-                                    <a href="">
-                                        <img src="{{asset('home/images/tx1.jpg')}}" />
-                                    </a>
-                                </div>
-                                <div class="tab-view-avatar">
-                                    <a href="">
-                                        <img src="{{asset('home/images/tx1.jpg')}}" />
-                                    </a>
-                                </div>
+                                @foreach($tag->attributes()->get() as $attribute))
+                                    <div class="tab-view-avatar">
+                                        <a href="{{ $attribute->link }}" target="_blank" rel="nofollow">
+                                            <img src="{{ asset($attribute->icon) }}" alt="{{ $attribute->name }}" />
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                         <div class="h-t-d-right">
@@ -90,41 +87,9 @@
 
             <!--描述：新闻-->
 
-            <div class="am-u-sm-8" style=" width: 793px;padding-left: 0;padding-right: 0;">
-                @foreach($archives as $archive)
-                <div class="am-u-sm-12 am-u-sm-centered list-box" style="padding-left: 0;background: #FFFFFF;margin-bottom: 20px;">
-                    <div class="am-u-sm-4" style="padding: 0;margin-right: 30px;">
-                        <a href="{{route('archive.show', [$archive->id])}}">
-                            @if($archive->cover)
-                                <img class="am-thumbnail list-pic" src="{{route('image', [$archive->cover, '258x160'])}}" alt=""/>
-                            @else
-                                <img class="am-thumbnail list-pic" src="{{asset('img/200200.png')}}" alt=""/>
-                            @endif
-                        </a>
-                    </div>
-                    <div class="am-thumbnail-caption content-list">
-                        <a href="{{route('archive.show', [$archive->id])}}"> <h3>{{$archive->title}}</h3></a>
-                        <span>
-									<a href="#">{{ $archive->user->nickname }}</a>
-									&nbsp;{{date('n-d G:i', strtotime($archive->updated_at))}}
-								</span>
-                        <p>
-                            {{ mb_substr($archive->abstract, 0, 66) }}...
-                        </p>
-                        <dl class="tab-block-r-ul">
-                            @foreach($archive->tags()->get() as $tag)
-                                <dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
-                            @endforeach
-                        </dl>
-                        <p style="text-align: right;">
-                            <span><img src="{{asset('home/images/pinglun.png')}}">300</span>
-                            <span><img src="{{asset('home/images/shoucang.png')}}">{{$archive->like}}</span>
-                        </p>
-                    </div>
-                </div>
-                @endforeach
+            <div class="am-u-sm-8" style=" width: 793px;">
+                @each('inc.each.archive', $archives, 'archive')
                 {{ $archives->links() }}
-
             </div>
             <!---新闻-->
     <div class="am-u-sm-4" style="margin-top: -75px;">
@@ -134,42 +99,34 @@
                 <div class="am-u-sm-6 am-u-sm-centered bg-url">
                     <h2>有点意思</h2>
                 </div>
+                @if($article_archives)
+                    @foreach($article_archives as $v)
                 <div class="am-u-sm-11 am-u-sm-centered r-news tab-block-recommand">
                     <div class="tab-block-recommand">
-                        <a href="" class="tab-block-a">
-                            <img class="am-radius" alt="140*140" src="{{asset('home/images/banner-1.jpg')}}" />
-                            <div class="tab-block-a-shade "></div>
+                        <a href="{{route('archive.show', $v->id)}}" class="tab-block-a">
+                            <img class="am-radius" alt="140*140" src="{{route('image', [trim($v->cover, '/'), '285x160'])}}" onerror="this.src='{{asset('home/images/banner-1.jpg')}}'" />
+                            @if($v->archive_type_id==1)
+                                <div class="tab-block-a-shade tab-block-article-shade"></div>
+                            @elseif($v->archive_type_id==2)
+                                <div class="tab-block-a-shade tab-block-video-shade"></div>
+                            @elseif($v->archive_type_id==3)
+                                <div class="tab-block-a-shade tab-block-img-shade"></div>
+                            @endif
                         </a>
                     </div>
                     <p>
-                        <a href="">再也不能随心所欲抓小精灵啦！《精 灵宝可梦GO》永久封号规定公布</a>
+                        <a href="{{route('archive.show', $v->id)}}">{{$v->title}}</a>
                     </p>
                     <dl class="tab-block-r-ul">
-                        <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                        <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                        <dt style="background: #006633;"><a href="">守望先锋</a></dt>
+                        @foreach($v->tags()->get() as $tag)
+                            <dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
+                        @endforeach
                     </dl>
-
                 </div>
-                <div class="am-u-sm-11 am-u-sm-centered r-news tab-block-recommand">
-                    <div class="tab-block-recommand">
-                        <a href="" class="tab-block-a">
-                            <img class="am-radius" alt="140*140" src="{{asset('home/images/banner-1.jpg')}}" />
-                            <div class="tab-block-a-shade tab-block-video-shade"></div>
-                        </a>
-                    </div>
-                    <p>
-                        <a href="">再也不能随心所欲抓小精灵啦！《精 灵宝可梦GO》永久封号规定公布</a>
-                    </p>
-                    <dl class="tab-block-r-ul">
-                        <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                        <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                        <dt style="background: #006633;"><a href="">守望先锋</a></dt>
-                    </dl>
-
-                </div>
+                @endforeach
+                @endif
                 <div class="am-u-sm-6 am-u-sm-centered more">
-                    <a href="">更多内容</a>
+                    <a href="{{url('contentLists/'.$category_id)}}">更多内容</a>
                 </div>
             </div>
         </div>

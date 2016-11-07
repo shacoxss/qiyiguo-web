@@ -1,4 +1,4 @@
-@extends('pc_home.commonOut')
+@extends('pc_home.commonIn')
 @section('title')
 		<title>{{$cate->cate_name}}</title>
 		<meta name="Keywords" content="{{$cate->seo_key}}">
@@ -7,85 +7,7 @@
 
 @section('content')
 		<!--轮播图-->
-		<div class="am-g">
-			<div class="slider">
-				<div class="bd">
-					<ul>
-						<li>
-							<a target="_blank" href="">
-								<img src="{{asset('home/images/banner-1.jpg')}}">
-								<div class="title"><span>2016.6.12</span>
-									<P>是的撒的服务的发</P>
-								</div>
-							</a>
-							<a target="_blank" href=""><img src="{{asset('home/images/banner-2.jpg')}}">
-								<div class="title"><span>2016.6.12</span>
-									<P>是的撒的服务的发</P>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a target="_blank" href=""><img src="{{asset('home/images/banner-2.jpg')}}">
-								<div class="title"><span>2016.6.12</span>
-									<P>是的撒的服务的发</P>
-								</div>
-							</a>
-							<a target="_blank" href=""><img src="{{asset('home/images/banner-1.jpg')}}">
-								<div class="title"><span>2016.6.12</span>
-									<P>是的撒的服务的发</P>
-								</div>
-							</a>
-						</li>
-						<li>
-							<a target="_blank" href=""><img src="{{asset('home/images/banner-1.jpg')}}">
-								<div class="title"><span>2016.6.12</span>
-									<P>是的撒的服务的发</P>
-								</div>
-							</a>
-							<a target="_blank" href=""><img src="{{asset('home/images/banner-2.jpg')}}">
-								<div class="title"><span>2016.6.12</span>
-									<P>是的撒的服务的发</P>
-								</div>
-							</a>
-						</li>
-					</ul>
-				</div>
-				<div class="hd">
-					<ul>
-						<li class="on">1</li>
-						<li class="">2</li>
-						<li class="">3</li>
-					</ul>
-				</div>
-				<div class="pnBtn prev"> <span class="blackBg-l"></span>
-					<a class="arrow" href="javascript:void(0)" style="display: none;"></a>
-				</div>
-				<div class="pnBtn next"> <span class="blackBg-r"></span>
-					<a class="arrow" href="javascript:void(0)" style="display: none;"></a>
-				</div>
-			</div>
-			<script type="text/javascript" src="{{asset('home/js/jquery.SuperSlide.2.1.1.js')}}"></script>
-			<script type="text/javascript">
-				jQuery(".slider .bd li").first().before(jQuery(".slider .bd li").last());
-				jQuery(".slider").hover(function() {
-					jQuery(this).find(".arrow").stop(true, true).fadeIn(300)
-				}, function() {
-					jQuery(this).find(".arrow").fadeOut(300)
-				});
-				jQuery(".slider").slide({
-					titCell: ".hd ul",
-					mainCell: ".bd ul",
-					effect: "leftLoop",
-					autoPlay: true,
-					vis: 1,
-					autoPage: true,
-					trigger: "click",
-					scroll: "1",
-					delayTime: "600"
-						//mouseOverStop: "false"
-				});
-			</script>
-		</div>
+		@include('inc.top-slide')
 		<!--轮播图-->
 		<div class="am-g nl-bg">
 			<div class="am-u-sm-12 am-u-sm-centered nl-width">
@@ -174,7 +96,7 @@
 								<a href="{{route('archive.show', [$archive->id])}}"> <h3>{{$archive->title}}</h3></a>
 								<span>
 									<a href="#">{{ $archive->user->nickname }}</a>
-									&nbsp;{{date('n-d G:i', strtotime($archive->updated_at))}}
+									&nbsp;{{worldTime(strtotime($archive->updated_at))}}
 								</span>
 								<p>
 									{{ mb_substr($archive->abstract, 0, 66) }}...
@@ -202,60 +124,19 @@
 					</div>
 					
 					<ul class="am-avg-sm-2 am-thumbnails"style="margin-top: 72px;">
-						<li class="p-thumbnail">
-							<a href="">
-								<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-								<div class="list-shade">
-									<span>游图有真相No.51</span>
-								</div>
-								<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-							</a>
-						</li>
-					<li class="p-thumbnail">
-						<a href="">
-							<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-							<div class="list-shade">
-								<span>游图有真相No.51</span>
-							</div>
-							<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-						</a>
-					</li>
-					<li class="p-thumbnail">
-						<a href="">
-							<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-							<div class="list-shade">
-								<span>游图有真相No.51</span>
-							</div>
-							<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-						</a>
-					</li>
-					<li class="p-thumbnail">
-						<a href="">
-							<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-							<div class="list-shade">
-								<span>游图有真相No.51</span>
-							</div>
-							<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-						</a>
-					</li>
-					<li class="p-thumbnail">
-						<a href="">
-							<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-							<div class="list-shade">
-								<span>游图有真相No.51</span>
-							</div>
-							<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-						</a>
-					</li>
-					<li class="p-thumbnail">
-						<a href="">
-							<img src="{{asset('home/images/banner-3.jpg')}}" class="am-thumbnail" />
-							<div class="list-shade">
-								<span>游图有真相No.51</span>
-							</div>
-							<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
-						</a>
-					</li>
+						@if($video_archives)
+							@foreach($video_archives as $v)
+								<li class="p-thumbnail">
+									<a href="{{route('archive.show', $v->id)}}">
+										<img src="{{route('image', [trim($v->cover, '/'), '180x101'])}}" onerror="this.src='{{asset('home/images/banner-3.jpg')}}'" class="am-thumbnail" />
+										<div class="list-shade">
+											<span>{{$v->title}}</span>
+										</div>
+										<div class="v-gbtn"><img src="{{asset('home/images/tab/img-shade.png')}}" style=" width: 30px; height: 30px;"></div>
+									</a>
+								</li>
+							@endforeach
+						@endif
 					</ul>
 				</div>
 				<div class="am-g" style="width: 370px;padding: 0;margin-left: 0;">
@@ -265,41 +146,28 @@
 					     	</div>
 						</div>
 						<div class="am-g">
-							<ul>																								
-								<li>
-									<div class="am-g list-gl">
-										<div class="am-u-sm-3 list-gl-h">
-											<h2>守望先锋</h2>
-											<span>7.5</span>
-					</div>
-					<div class="am-u-sm-9 am-u-end list-gl-con">
-						<p>
-							<a href="">还好你没放弃！Gameloft宣布狂野飙车系列新作《极限》</a>
-						</p>
-						<p>
-							<span><img src="{{asset('home/images/shoucang.png')}}">50</span>
-							<span><img src="{{asset('home/images/pinglun.png')}}">10</span>
-						</p>
-					</div>
-				</div>
-				</li>
-				<li>
-					<div class="am-g list-gl">
-						<div class="am-u-sm-3 list-gl-h">
-							<h2>守望先锋</h2>
-							<span>7.5</span>
-						</div>
-						<div class="am-u-sm-9 am-u-end list-gl-con">
-							<p>
-								<a href="">还好你没放弃！Gameloft宣布狂野飙车系列新作《极限》</a>
-							</p>
-							<p>
-								<span><img src="{{asset('home/images/shoucang.png')}}">50</span>
-								<span><img src="{{asset('home/images/pinglun.png')}}">10</span>
-							</p>
-						</div>
-					</div>
-				</li>
+							<ul>
+								@if($game_archives)
+									@foreach($game_archives as $v)
+										<li>
+											<div class="am-g list-gl">
+												<div class="am-u-sm-3 list-gl-h">
+													<h2>守望先锋</h2>
+													<span>7.5</span>
+												</div>
+												<div class="am-u-sm-9 am-u-end list-gl-con">
+													<p>
+														<a href="{{route('archive.show', $v->id)}}">{{$v->title}}</a>
+													</p>
+													<p>
+														<span><img src="{{asset('home/images/shoucang.png')}}">50</span>
+														<span><img src="{{asset('home/images/pinglun.png')}}">{{$v->visit_count}}</span>
+													</p>
+												</div>
+											</div>
+										</li>
+									@endforeach
+								@endif
 
 				</ul>
 			</div>

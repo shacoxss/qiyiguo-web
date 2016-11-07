@@ -58,7 +58,7 @@
                     </td>
                     <td class="center">
                         <a href="{{route('tag.edit', [$tag->name])}}" class="btn btn-circle btn-primary ">编辑</a>
-                        <a href="{{route('tag.edit', [$tag->name])}}" class="btn btn-circle btn-success ">预览</a>
+                        <a href="{{ $tag->url }}" class="btn btn-circle btn-success ">预览</a>
                         @if($tag->status == 2)
                             <a data-href="{{route('tag.status', [$tag->pinyin, 4])}}" data-pinyin="{{$tag->pinyin}}" class="ajax-request btn btn-circle btn-danger ">停用</a>
                         @else

@@ -11,7 +11,8 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
 
 
     Route::get('/tags', 'Tag\TagController@index')->name('tag.index');
-
+    Route::get('/tag/create', 'Tag\TagController@create')->name('tag.create');
+    Route::post('/tag/store', 'Tag\TagController@store')->name('tag.store');
     Route::get('/tag/{tag_name}/edit', 'Tag\TagController@edit')->name('tag.edit');
     Route::get('/tag/{tag_name}/status/{code}', 'Tag\TagController@status')->name('tag.status');
 
@@ -37,8 +38,11 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
     Route::get('archives/create/{archive_type}', 'Archive\ArchiveController@create')->name('archives.create');
     Route::post('archives/{archive_type}', 'Archive\ArchiveController@store')->name('archives.store');
     Route::put('archives/{archive}', 'Archive\ArchiveController@update')->name('archives.update');
+
     Route::get('archives/{archive}/toggle/{name}', 'Archive\ArchiveController@toggle')->name('archives.toggle');
-    Route::get('archives/destroy/{archive}', 'Archive\ArchiveController@destroy')->name('archives.destroy');
+    Route::get('archives/{archives}/set/{name}', 'Archive\ArchiveController@setPattern')->name('archives.set.pattern');
+
+    Route::get('archives/destroy/{archives}', 'Archive\ArchiveController@destroy')->name('archives.destroy');
     Route::get('archives/{archive}/{user_type}/edit', 'Archive\ArchiveController@edit')->name('archives.edit');
     Route::get('/plupload', function (){
         return view('archive.plupload');
@@ -55,7 +59,6 @@ Route::group(['prefix'=>'member','middleware'=>'loginAuth'],function(){
     });
 });
 
-Route::get('/image/{uri}/{size}.jpeg', '\App\Helpers\UploadFile@read')->name('image')->where(['uri' => '.+']);
 
 Route::get('/tag/{tag}', 'TagHeadController@index')->name('tag.list');
 
@@ -66,6 +69,13 @@ Route::bind('tag', function ($name) {
 
 Route::get('/archive/like/{archive}', 'Home\contentController@like')->name('archive.like');
 
+Route::get('/galleries', 'Home\GalleryController@index')->name('galleries.index');
+Route::get('/gallery/{archive}', 'Home\GalleryController@show')->name('galleries.show');
+
+Route::get('/author/{user}', 'Home\IndexController@author')->name('author.index');
+
+
+Route::get('/{uri}/{size}.jpeg', '\App\Helpers\UploadFile@read')->name('image')->where(['uri' => '.+']);
 Route::get('/{defined}', function (\Illuminate\Http\Request $request, $url) {
 
     $tag = \App\Models\Tag\Tag::where('current_url', '/'.$request->path())->first();

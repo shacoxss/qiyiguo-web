@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ContentCut;
 use App\Models\Archive\Archive;
 use App\Models\Tag\Tag;
 use App\Models\Tag\TagFinder;
@@ -12,10 +13,14 @@ use Yajra\Datatables\Datatables;
 class TestController extends Controller
 {
     //
-
     public function index(Request $request)
     {
-        dd(Archive::find(42));
+
+        $content = Archive::find(74)->detail->content;
+
+        $content = new ContentCut($content);
+
+        dd($content->cut());
     }
 
     public function anyData(Request $request)

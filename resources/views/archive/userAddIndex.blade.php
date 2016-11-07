@@ -53,7 +53,7 @@
                     <div class="col-xs-3"> <i class="fa fa-file-video-o fa-3x"></i> </div>
                 </div>
             </div>
-            <a href="#">
+            <a href="{{ route('archives.create', ['video']) }}">
                 <div class="panel-footer"> <span class="pull-left"><i class="fa fa-plus"></i> 发布视频</span> <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                     <div class="clearfix"></div>
                 </div>

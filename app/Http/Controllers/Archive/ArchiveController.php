@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
 class ArchiveController extends Controller
@@ -25,7 +26,14 @@ class ArchiveController extends Controller
         $user = session('user');
         $query = Archive::orderBy('created_at', 'desc');
 
+        if ($request->has('type')) {
+            $query->where('archive_type_id', ArchiveType::where('name', $request->input('type'))->value('id'));
+        }
+
         if ($left == 'master' && $this->checkMaster()) {
+            if ($request->has('user')) {
+                $query->where('user_id', $request->input('user'));
+            }
             $archives = $query->get();
             if($request->has('mode')) {
                 $archives = $archives->filter(function ($a) use($request) {
@@ -33,17 +41,25 @@ class ArchiveController extends Controller
                 });
             }
             $is_master = true;
-        } else {
+            $counter = [
+                'article' => Archive::where('archive_type_id', 1)->count(),
+                'gallery' => Archive::where('archive_type_id', 2)->count(),
+                'video' => Archive::where('archive_type_id', 3)->count()
+            ];
+        }else{
             $archives = $query->where('user_id', $user->id)->get();
             $is_master = false;
+            $counter = [
+                'article' => Archive::where('archive_type_id', 1)->where('user_id', $user->id)->count(),
+                'gallery' => Archive::where('archive_type_id', 2)->where('user_id', $user->id)->count(),
+                'video' => Archive::where('archive_type_id', 3)->where('user_id', $user->id)->count()
+            ];
         }
-        $counter = [
-            'article' => Archive::where('archive_type_id', 1)->count()
-        ];
         return view('archive.archive-index')
             ->with('archives', $archives)
             ->with('counter', $counter)
             ->with('is_master', $is_master)
+            ->with('left', $left)
         ;
     }
 
@@ -57,6 +73,7 @@ class ArchiveController extends Controller
             ->with('patterns', $patterns)
             ->with('cate', $cate)
             ->with('left', 'user')
+            ->with('type', $type)
         ;
     }
     public function edit(Request $request, Archive $archive, $user_type)
@@ -79,6 +96,7 @@ class ArchiveController extends Controller
             ->with('cate', $cate)
             ->with('tags', implode(',', $archive->tags()->get()->pluck('name')->all()))
             ->with('left', $left)
+            ->with('type', $archive->type)
         ;
     }
 
@@ -95,11 +113,48 @@ class ArchiveController extends Controller
         $new['user_id'] = session('user')->id;
 
 
+        $input = $request->except('_token');
+        if(isset($input['news']) && $input['news']=='on'){
+            $new['news'] = 1;
+        }else{
+            $new['news'] = 0;
+        }
+        $rules = [
+            'title'=>'required|between:3,30|unique:archives,title',
+            'tags'=>'required',
+            //'category_id'=>'required',
+            'content'=>'required',
+        ];
+        $message = [
+            'title.required' => '标题不能为空',
+            'title.between' => '标题长度4~30个字',
+            'title.unique' => '标题已存在',
+            'tags.required' => '标签不能为空',
+            'category_id.required' => '请选择栏目',
+            'content.required' => '内容或简介不能为空',
+        ];
+
+        if($new['archive_type_id']==2){
+            $rules['images'] = 'required';
+            $message['images.required'] = '请上传图片！';
+        }elseif($new['archive_type_id']==3){
+            $rules['link'] = 'required';
+            $message['link.required'] = '请填写url！';
+        }
+
+
+
         if ($request->hasFile('cover')) {
             $new['cover'] = UploadFile::save($request->file('cover'));
         }
 
-        $archive = Archive::create($new);
+        $validator = Validator::make($input,$rules,$message);
+        if($validator->passes()){
+            $archive = Archive::create($new);
+        }else{
+            return response()->json(['error'=>1,'msg'=>$validator->errors()]);
+        }
+
 
         $tags = explode(',', $request->tags);
         $tags = array_slice($tags, 0, 3);
@@ -108,7 +163,6 @@ class ArchiveController extends Controller
             $tags = Tag::convertToPrimaries($tags);
             $archive->tags()->attach($tags->all());
         }
-
         $detail = $request->only(explode(',', $type->fields));
         $model = $type->model;
         $model::saveDetail($archive, $detail);
@@ -123,19 +177,47 @@ class ArchiveController extends Controller
         $user = session('user');
         ($archive->user_id == $user->id) || $this->checkMaster();
 
-        $archive->detachPattern(7);
-        $archive->mode = $this->calcMode($request, $archive->mode);
+        $input = $request->except('_token');
+        $rules = [
+            //'title'=>'required|between:3,30|unique:archives,title',
+            'tags'=>'required',
+            //'category_id'=>'required',
+            'content'=>'required',
+        ];
+        $message = [
+            'title.required' => '标题不能为空',
+            'title.between' => '标题长度4~30个字',
+            'title.unique' => '标题已存在',
+            'tags.required' => '标签不能为空',
+            'category_id.required' => '请选择栏目',
+            'content.required' => '内容或简介不能为空',
+        ];
 
-        $input = $request->only($this->fields);
-        $archive->fill($input);
+        if($archive->type->id==2){
+            $rules['images'] = 'required';
+            $message['images.required'] = '请上传图片！';
+        }elseif($archive->type->id==3){
+            $rules['link'] = 'required';
+            $message['link.required'] = '请填写url！';
+        }
 
         if ($request->hasFile('cover')) {
             $archive->cover = UploadFile::save($request->file('cover'));
         }
 
-        $archive->save();
+        $validator = Validator::make($input,$rules,$message);
+        if($validator->passes()){
+            $archive->detachPattern(7);
+            $archive->mode = $this->calcMode($request, $archive->mode);
+            $input = $request->only($this->fields);
+            $archive->fill($input);
+            $archive->save();
+        }else{
+            return response()->json(['error'=>1,'msg'=>$validator->errors()]);
+        }
+
         $detail = $request->only(explode(',', $archive->type->fields));
-        $model = $archive->type;
+        $model = $archive->type->model;
         $model::saveDetail($archive, $detail);
 
 
@@ -195,14 +277,40 @@ class ArchiveController extends Controller
         return response()->json(['msg' => '操作成功！']);
     }
 
-    public function destroy(Archive $archive)
+    public function toggles($archives, $name)
+    {
+        $this->checkMaster();
+
+        $pattern = \DB::table('patterns')->where('name' ,$name)->value('pattern');
+
+        foreach(explode(',', $archives) as $archive) {
+            $archive = Archive::find($archive);
+
+            if (!$archive) continue;
+
+            $archive->mode = $archive->mode | $pattern;
+
+            $archive->save();
+        }
+
+        return response()->json(['msg' => '操作成功']);
+    }
+
+    public function destroy($archives)
     {
         $user = session('user');
-        if($archive->user_id == $user->id || $this->checkMaster()) {
-            $archive->detail->delete();
-            $archive->delete();
-            echo 'success';
+        $archives = (explode(',', $archives));
+        $archives = Archive::whereIn('id', $archives)->get();
+
+        foreach ($archives as $archive) {
+            if($archive->user_id == $user->id || $this->checkMaster()) {
+                if ($archive->detail) {
+                    $archive->detail->delete();
+                }
+                $archive->delete();
+            }
         }
+        echo 'success';
     }
 
     private function checkMaster()

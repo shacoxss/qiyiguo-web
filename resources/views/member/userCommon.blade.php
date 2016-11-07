@@ -48,7 +48,7 @@
     <div class="navbar-default sidebar">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" title="伸缩导航" > <span class="sr-only">伸缩导航</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-            <a class="navbar-brand" href="http://www.qiyiguo.tv" target="_blank">奇异果聚合</a> </div>
+            <a class="navbar-brand" href="{{'/'}}" target="_blank">奇异果聚合</a> </div>
         <div class="clearfix"></div>
         <div class="sidebar-nav navbar-collapse">
 
@@ -62,10 +62,10 @@
                     @endif
                     <!-- 判断是否有后台权限，有后台权限显示此按钮后可互相切换 -->
                 </div>
-                @if(session('user')->phone)
-                    <h3 class="username">{{session('user')->phone}}</h3>
-                @else
+                @if(session('user')->nickname)
                     <h3 class="username">{{session('user')->nickname}}</h3>
+                @else
+                    <h3 class="username">{{session('user')->phone}}</h3>
                 @endif
                 <p>用户组</p>
             </div>
@@ -88,7 +88,7 @@
                 <li>
                     <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-save"></i> 内容管理 <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="{{route('userAddIndex')}}">发布</a></li>
+                        <li><a href="{{url('member/archives/create/article')}}">发布</a></li>
                         <li><a href="{{route('archives.index')}}">列表</a></li>
                     </ul>
                     <!-- /.nav-second-level -->
@@ -107,10 +107,10 @@
                     <li class="dropdown"> <a class="dropdown-toggle userdd" data-toggle="dropdown" href="javascript:void(0)">
                             <div class="userprofile small "> <span class="userpic"> <img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'" alt="" class="userpicimg"> </span>
                                 <div class="textcontainer">
-                                    @if(session('user')->phone)
-                                    <h3 class="username">{{session('user')->phone}}</h3>
-                                    @else
+                                    @if(session('user')->nickname)
                                     <h3 class="username">{{session('user')->nickname}}</h3>
+                                    @else
+                                    <h3 class="username">{{session('user')->phone}}</h3>
                                     @endif
                                     <p>用户组</p>
                                 </div>

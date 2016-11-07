@@ -18,6 +18,64 @@ class contentController extends Controller
 {
     public function contentLists(Request $request, $cate_id)
     {
+
+        //获取栏目及其子栏目
+        $cate2 = Category::where('cate_name','视频游戏')->first();
+        if($cate2){
+            $son = Category::where('cate_pid',$cate2->cate_id)->count();
+            if($son){
+                $cate_son = Category::where('cate_pid',$cate2->cate_id)->get();
+                $cate_arr2 = [];
+                foreach($cate_son as $v){
+                    $cate_arr2[] = $v->cate_id;
+                }
+                array_push($cate_arr2,$cate2->cate_id);
+                $cate_ids2 = implode(',',$cate_arr2);
+                $video_archives =   Archive::where('archive_type_id',1)
+                    ->whereIn('category_id',$cate_ids2)
+                    ->orderBy('updated_at','desc')
+                    ->take(6)
+                    ->get()
+                ;
+            }else{
+                $video_archives =   Archive::where('archive_type_id',1)
+                    ->where('category_id',$cate2->cate_id)
+                    ->orderBy('updated_at','desc')
+                    ->take(6)
+                    ->get();
+            }
+        }else{
+            $video_archives = false;
+        }
+
+        //游戏攻略
+        $cate3 = Category::where('cate_name','游戏攻略')->first();
+        if($cate3){
+            $son = Category::where('cate_pid',$cate3->cate_id)->count();
+            if($son){
+                $cate_son = Category::where('cate_pid',$cate3->cate_id)->get();
+                $cate_arr3 = [];
+                foreach($cate_son as $v){
+                    $cate_arr3[] = $v->cate_id;
+                }
+                array_push($cate_arr3,$cate3->cate_id);
+                $cate_ids3 = implode(',',$cate_arr3);
+                $game_archives =   Archive::whereIn('category_id',$cate_ids3)
+                    ->orderBy('updated_at','desc')
+                    ->take(3)
+                    ->get()
+                ;
+            }else{
+                $game_archives =   Archive::where('category_id',$cate3->cate_id)
+                    ->orderBy('updated_at','desc')
+                    ->take(3)
+                    ->get()
+                ;
+            }
+
+        }else{
+            $game_archives = false;
+        }
         $cate = Category::where('cate_id',$cate_id)->first();
         $archives = Archive::ofPattern('review')
             ->where('category_id', $cate_id)
@@ -27,15 +85,18 @@ class contentController extends Controller
         return view('pc_home.newsList')
             ->with('archives', $archives)
             ->with('cate',$cate)
+            ->with('video_archives',$video_archives)
+            ->with('game_archives',$game_archives)
         ;
     }
 
     public function detail(Request $request, Archive $archive)
     {
-        if (!$archive->hasPattern('review')) return response('没有通过审核', 404);
+        $user = session('user');
+        $review = $archive->hasPattern('review') ? true : false;
+        if (!$review && (!$user || !($user->id == $archive->user_id || $user->master))) return abort(301);
 
         $archive->visit($request);
-        $user = session('user');
         if($user){
             $author_id = $archive->user->id;
             $follow = FollowUser::where('user_id',$user->id)->first();
@@ -48,10 +109,87 @@ class contentController extends Controller
             $followed = -1;
         }
 
-        return view('pc_home.newsDetail')
+        $others = null;
+        $new = null;
+        if($archive->archive_type_id==1){
+            //其他文章
+            $others = Archive::where('user_id',$archive->user_id)->orderBy('updated_at','desc')->ofPattern('review')->take(4)->get();
+        }else if($archive->archive_type_id==3){
+            //最新视频
+            $new = Archive::where('id','<>',$archive->id)->where('archive_type_id',3)->ofPattern('review')->orderBy('updated_at','desc')->take(4)->get();
+        }
+
+
+        //精彩推荐
+        $cate1 = Category::where('cate_name','精彩推荐')->first();
+        $category_id = $cate1 ? $cate1->cate_id : null;
+        if($cate1){
+            $son = Category::where('cate_pid',$cate1->cate_id)->count();
+            if($son){
+                $cate_son = Category::where('cate_pid',$cate1->cate_id)->get();
+                $cate_arr1 = [];
+                foreach($cate_son as $v){
+                    $cate_arr1[] = $v->cate_id;
+                }
+                array_push($cate_arr1,$cate1->cate_id);
+                $cate_ids = implode(',',$cate_arr1);
+                $article_archives =   Archive::where('archive_type_id',1)
+                    ->whereIn('category_id',$cate_ids)
+                    ->orderBy('updated_at','desc')
+                    ->take(6)
+                    ->get()
+                ;
+            }else{
+                $article_archives =   Archive::where('archive_type_id',1)
+                    ->where('category_id',$cate1->cate_id)
+                    ->orderBy('updated_at','desc')
+                    ->take(6)
+                    ->get();
+            }
+        }else{
+            $article_archives = false;
+        }
+
+        $cate3 = Category::where('cate_name','游戏攻略')->first();
+        $category_id2 = $cate3 ? $cate3->cate_id : null;
+        if($cate3){
+            $son = Category::where('cate_pid',$cate3->cate_id)->count();
+            if($son){
+                $cate_son = Category::where('cate_pid',$cate3->cate_id)->get();
+                $cate_arr3 = [];
+                foreach($cate_son as $v){
+                    $cate_arr3[] = $v->cate_id;
+                }
+                array_push($cate_arr3,$cate3->cate_id);
+                $cate_ids3 = implode(',',$cate_arr3);
+                $game_archives =   Archive::whereIn('category_id',$cate_ids3)
+                    ->orderBy('updated_at','desc')
+                    ->take(3)
+                    ->get()
+                ;
+            }else{
+                $game_archives =   Archive::where('category_id',$cate3->cate_id)
+                    ->orderBy('updated_at','desc')
+                    ->take(3)
+                    ->get()
+                ;
+            }
+
+        }else{
+            $game_archives = false;
+        }
+
+        return view($archive->type->t_show)
             ->with('archive', $archive)
             ->with('followed',$followed)
             ->with('user',$user)
+            ->with('article_archives',$article_archives)
+            ->with('game_archives',$game_archives)
+            ->with('others',$others)
+            ->with('new',$new)
+            ->with('category_id',$category_id)
+            ->with('category_id2',$category_id2)
+            ->with('review', $review)
         ;
     }
 

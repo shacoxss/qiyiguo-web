@@ -11,15 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 //home
 Route::group(['namespace'=>'Home'],function(){
     Route::get('contentLists/{cate_id}','contentController@contentLists')->name('archive.index');
     Route::get('archive/{archive}','contentController@detail')->name('archive.show');
     Route::post('archive/follow','contentController@changeFollow');
+    Route::any('video','videoController@index');
+    Route::get('/', 'IndexController@index')->name('index');
+    Route::any('article','articleController@index');
+    Route::any('qyg/{cate?}','qygController@index');
+    Route::get('qyg/detail/{id}','qygController@detail');
+    Route::post('search','searchController@index');
+    Route::get('search/result/{key}/{cat?}','searchController@result');
+    Route::get('anchor','anchorController@index');
 });
 
 
@@ -51,7 +56,7 @@ Route::group(['prefix'=>'auth','namespace'=>'Auth'],function(){
 
     Route::get('weibo', 'loginController@weibo');
     Route::get('weiboCallback', 'loginController@weiboCallback');
-    Route::any('bindingPhone','RegisterController@binding');
+    Route::any('bindingPhone','registerController@binding');
 });
 Route::group(['prefix'=>'register','namespace'=>'Auth'],function(){
     Route::any('/','RegisterController@reg');
@@ -59,7 +64,7 @@ Route::group(['prefix'=>'register','namespace'=>'Auth'],function(){
     Route::post('verifyLogin','RegisterController@verifyLogin');
     Route::post('checkPhone','RegisterController@checkPhone');
     Route::get('success','RegisterController@regSuccess');
-    Route::any('bindingPhone','RegisterController@binding');
+    Route::any('bindingPhone','registerController@binding');
 });
 Route::group(['prefix'=>'forget','namespace'=>'Auth'],function(){
     Route::any('/','ForgotPasswordController@forget');
