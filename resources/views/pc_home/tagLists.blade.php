@@ -29,16 +29,13 @@
                                 </ul>
                             </div>
                             <div class="h-t-d-bottom">
-                                <div class="tab-view-avatar">
-                                    <a href="">
-                                        <img src="{{asset('home/images/tx1.jpg')}}" />
-                                    </a>
-                                </div>
-                                <div class="tab-view-avatar">
-                                    <a href="">
-                                        <img src="{{asset('home/images/tx1.jpg')}}" />
-                                    </a>
-                                </div>
+                                @foreach($tag->attributes()->get() as $attribute))
+                                    <div class="tab-view-avatar">
+                                        <a href="{{ $attribute->link }}" target="_blank" rel="nofollow">
+                                            <img src="{{ asset($attribute->icon) }}" alt="{{ $attribute->name }}" />
+                                        </a>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                         <div class="h-t-d-right">

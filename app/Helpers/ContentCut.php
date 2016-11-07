@@ -22,8 +22,9 @@ class ContentCut
 
     public function cut($page = 1)
     {
-        $this->content = preg_replace('#<table>.*(<p>(.*)</p>)</table>#ims', '', $this->content);
-        return preg_replace('#.{'.self::MIN_LEN.',}?(</table>|</p>)#ims', '$0<h1 style="color:red">[--page--]</h1>', $this->content);
+        $result = [];
+        $this->content = preg_match_all('#<([a-z0-9]+)[^>]*>([^<>]|(?R))*</\\1>#is', $this->content, $result);
+        return $result;
     }
 
     private function getOffset($page)

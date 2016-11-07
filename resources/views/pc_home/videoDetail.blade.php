@@ -2,17 +2,17 @@
 
 
 @section('content')
-    @if(!$review)
-        <h2 style="color:red;">该篇内容尚未通过审核，现属于预览状态！</h2>
-    @endif
 		<div class="am-g v-detail" style="margin-top:81px">
 			<div class="content">
-				<div class="am-g v-d-link">
-					<a href="">首页></a>
-					<a href="">首页></a>
-					<a href="">首页></a>
-				</div>
+				{{--<div class="am-g v-d-link">--}}
+					{{--<a href="">首页></a>--}}
+					{{--<a href="">首页></a>--}}
+					{{--<a href="">首页></a>--}}
+				{{--</div>--}}
 				<div class="am-g v-d-title">
+					@if(!$review)
+						<h2 style="color:red;">该篇内容尚未通过审核，现属于预览状态！</h2>
+					@endif
 					<div class="am-u-sm-6">
 
 						<h2>{{$archive->title}}</h2>

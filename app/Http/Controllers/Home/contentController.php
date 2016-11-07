@@ -94,7 +94,7 @@ class contentController extends Controller
     {
         $user = session('user');
         $review = $archive->hasPattern('review') ? true : false;
-        if (!$review && !($user->id == $archive->user_id || $user->master)) return response('没有通过审核', 403);
+        if (!$review && (!$user || !($user->id == $archive->user_id || $user->master))) return abort(301);
 
         $archive->visit($request);
         if($user){

@@ -17,8 +17,8 @@ class TagHeadController extends Controller
         //精彩推荐
         //精彩推荐
         $cate1 = Category::where('cate_name','精彩推荐')->first();
+        $category_id = $cate1 ? $cate1->cate_id : null;
         if($cate1){
-            $category_id = $cate1->cate_id;
             $son = Category::where('cate_pid',$cate1->cate_id)->count();
             if($son){
                 $cate_son = Category::where('cate_pid',$cate1->cate_id)->get();
