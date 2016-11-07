@@ -9,7 +9,7 @@
     </div>
     <!-- /.row -->
     <ol class="breadcrumb">
-        <li><a href="addIndex.php">内容管理</a></li>
+        <li><a href="{{url('member/archives?type=gallery')}}">全部图集</a></li>
         <li class="active">新增图集</li>
     </ol>
 

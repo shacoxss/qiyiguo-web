@@ -9,7 +9,7 @@
     </div>
     <!-- /.row -->
     <ol class="breadcrumb">
-        <li><a href="addIndex.php">内容管理</a></li>
+        <li><a href="{{url('member/archives?type=video')}}">全部视频</a></li>
         <li class="active">新增视频</li>
     </ol>
 

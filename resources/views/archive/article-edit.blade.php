@@ -14,7 +14,7 @@
 </div>
 <!-- /.row -->
 <ol class="breadcrumb">
-    <li><a href="masterArchivesList.php">内容管理</a></li>
+    <li><a href="{{url('member/archives?type=article')}}">全部文章</a></li>
     <li class="active">编辑文档</li>
 </ol>
 
