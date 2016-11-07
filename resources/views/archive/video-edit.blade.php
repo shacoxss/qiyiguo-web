@@ -2,15 +2,24 @@
 @section('content')
     <div class="row">
         <div class="col-md-12  header-wrapper" >
-            <h1 class="page-header">新增视频</h1>
-            <p class="page-subtitle">添加一个视频作品</p>
+            @if(isset($archive))
+                <h1 class="page-header">编辑视频</h1>
+                <p class="page-subtitle">编辑视频作品</p>
+            @else
+                <h1 class="page-header">新增视频</h1>
+                <p class="page-subtitle">添加一个视频作品</p>
+            @endif
         </div>
     <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
     <ol class="breadcrumb">
-        <li><a href="{{url('member/archives?type=video')}}">全部视频</a></li>
-        <li class="active">新增视频</li>
+        <li><a href="{{'member/archives?type=video'}}">全部视频</a></li>
+        @if(isset($archive))
+            <li class="active">编辑视频</li>
+        @else
+            <li class="active">新增视频</li>
+        @endif
     </ol>
 
     <!-- /.row -->
@@ -23,9 +32,9 @@
                         <div class="panel-body">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs">
-                                <li ><a href="{{url('member/archives/create/article')}}" > <span class="fa fa-file-word-o icon"></span>发布文章</a> </li>
-                                <li ><a href="{{url('member/archives/create/gallery')}}" > <span class="fa fa-file-image-o icon"></span>发布图集</a> </li>
-                                <li class="active"><a href="{{url('member/archives/create/video')}}" > <span class="fa fa-file-video-o icon"></span>发布视频</a> </li>
+                                <li ><a href="{{url('member/archives/create/article')}}" > <span class="fa fa-file-word-o icon"></span>新增文章</a> </li>
+                                <li ><a href="{{url('member/archives/create/gallery')}}" > <span class="fa fa-file-image-o icon"></span>新增图集</a> </li>
+                                <li class="active"><a href="{{url('member/archives/create/video')}}" > <span class="fa fa-file-video-o icon"></span>新增视频</a> </li>
                                <!-- <li><a href="#content" data-toggle="tab"> <span class="fa fa-save icon"></span>正文内容</a> </li> -->
                             </ul>
 

@@ -7,15 +7,25 @@
 </style>
     <div class="row">
     <div class="col-md-12  header-wrapper" >
-        <h1 class="page-header">编辑文档</h1>
-        <p class="page-subtitle">您可以修改、增加文档的内容</p>
+        @if(isset($archive))
+        <h1 class="page-header">编辑文章</h1>
+        <p class="page-subtitle">编辑文章内容</p>
+        @else
+        <h1 class="page-header">新增文章</h1>
+        <p class="page-subtitle">添加一篇文章</p>
+        @endif
+
     </div>
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
 <ol class="breadcrumb">
     <li><a href="{{url('member/archives?type=article')}}">全部文章</a></li>
-    <li class="active">编辑文档</li>
+    @if(isset($archive))
+    <li class="active">编辑文章</li>
+    @else
+    <li class="active">新增文章</li>
+    @endif
 </ol>
 
 <!-- /.row -->
@@ -28,9 +38,9 @@
                     <div class="panel-body">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="{{url('member/archives/create/article')}}" > <span class="fa fa-file-word-o icon"></span>发布文章</a> </li>
-                            <li ><a href="{{url('member/archives/create/gallery')}}" > <span class="fa fa-file-image-o icon"></span>发布图集</a> </li>
-                            <li ><a href="{{url('member/archives/create/video')}}" > <span class="fa fa-file-video-o icon"></span>发布视频</a> </li>
+                            <li class="active"><a href="{{url('member/archives/create/article')}}" > <span class="fa fa-file-word-o icon"></span>新增文章</a> </li>
+                            <li ><a href="{{url('member/archives/create/gallery')}}" > <span class="fa fa-file-image-o icon"></span>新增图集</a> </li>
+                            <li ><a href="{{url('member/archives/create/video')}}" > <span class="fa fa-file-video-o icon"></span>新增视频</a> </li>
                             <!-- <li><a href="#content" data-toggle="tab"> <span class="fa fa-save icon"></span>正文内容</a> </li> -->
                         </ul>
 
@@ -46,7 +56,7 @@
                                         <div class="col-lg-9">
                                             <div class="form-group">
                                                 <label>文章标题：</label>
-                                                <input class="form-control" name="title" placeholder="文章标题" value="{{$archive->title or ''}}" style="font-size: 21px">
+                                                <input class="form-control" name="title" placeholder="文章标题" value="{{$archive->title or ''}}" style="font-size: 20px">
                                             </div>
                                             <div class="form-group">
                                                 <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
