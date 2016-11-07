@@ -82,7 +82,7 @@
                                                                             <div class="image-box">
                                                                                 <div> <img src="{{ route('image', [$img->url, '300x300']) }}" width="100%"> </div>
                                                                             </div>
-                                                                            <input class="form-control " placeholder="图片标题" value="{{$img->title}}">
+                                                                            <input class="form-control " placeholder="图片标题" value="{{$img->title}}" >
                                                                             <textarea class="form-control" rows="5">{!! $img->description !!}</textarea>
                                                                             <input type="hidden" value="{{$img->url}}" class="img_url" >
                                                                         </div>

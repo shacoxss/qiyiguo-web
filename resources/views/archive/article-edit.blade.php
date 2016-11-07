@@ -46,7 +46,7 @@
                                         <div class="col-lg-9">
                                             <div class="form-group">
                                                 <label>文章标题：</label>
-                                                <input class="form-control" name="title" placeholder="文章标题：" value="{{$archive->title or ''}}">
+                                                <input class="form-control" name="title" placeholder="文章标题" value="{{$archive->title or ''}}" style="font-size: 21px">
                                             </div>
                                             <div class="form-group">
                                                 <label>标签(数量不可超过三个，选择好标签有助提升阅读量，<a href="#">点此学习如何写好标签</a>)</label>
