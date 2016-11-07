@@ -42,7 +42,7 @@
 			          <div class="panel-body text-center">
 			            <div class="userprofile">
 			              <div class="userpic">
-			              	<a href="#" target="_blank" title="TA的主页"><img src="{{asset('img/200200.png')}}" alt="" class="userpicimg"></a>
+			              	<a href="{{url('author').'/'.$v->users->id}}" target="_blank" title="TA的主页"><img src="{{route('image', [$v->users->head_img, '100x100'])}}" onerror="this.src='{{asset('img/200200.png')}}'" alt="" class="userpicimg"></a>
 			              </div>
 			              <h3 class="username">{{$v->users->nickname}}</h3>
 			            </div>
