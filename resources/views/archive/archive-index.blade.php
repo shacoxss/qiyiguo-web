@@ -117,7 +117,15 @@
                             @endforeach
                         </td>
                         <td>{{$a->created_at}}</td>
-                        <td>{{ !empty($a->user->nickname) ? $a->user->nickname : $a->user->phone}}</td>
+                        <td>
+                            @if ($is_master)
+                                <a href="{{route('archives.index', ['master', 'user' => $a->user_id])}}">
+                                    {{ !empty($a->user->nickname) ? $a->user->nickname : $a->user->phone}}
+                                </a>
+                            @else
+                                {{ !empty($a->user->nickname) ? $a->user->nickname : $a->user->phone}}
+                            @endif
+                        </td>
                         <td class="center">{{$a->type->display_name}}</td>
                         <td class="center">
                             @foreach($a->tags()->get() as $tag)

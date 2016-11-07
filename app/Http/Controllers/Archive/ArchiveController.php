@@ -31,6 +31,9 @@ class ArchiveController extends Controller
         }
 
         if ($left == 'master' && $this->checkMaster()) {
+            if ($request->has('user')) {
+                $query->where('user_id', $request->input('user'));
+            }
             $archives = $query->get();
             if($request->has('mode')) {
                 $archives = $archives->filter(function ($a) use($request) {
