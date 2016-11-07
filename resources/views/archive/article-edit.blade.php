@@ -94,6 +94,7 @@
                                                     </div>
                                                 </div>
                                                 @endforeach
+                                                @if(session('user')->master)
                                                 <div class="form-group col-md-3">
                                                     <div class="list-group-item withswitch">
                                                         <h5 class="list-group-item-heading">奇异果资讯</h5>
@@ -109,6 +110,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                @endif
                                                 <!-- 单属性控制 -->
                                                 <div class="form-group col-md-12">
                                                     <label>关联系统栏目</label>

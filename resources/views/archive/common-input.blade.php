@@ -32,6 +32,23 @@
                 </div>
             </div>
     @endforeach
+        @if(session('user')->master)
+            <div class="form-group col-md-3">
+                <div class="list-group-item withswitch">
+                    <h5 class="list-group-item-heading">奇异果资讯</h5>
+                    <p class="list-group-item-text">news</p>
+                    <div class="switch">
+                        <input id="cmn-toggle-news" class="cmn-toggle
+                                                            cmn-toggle-round" type="checkbox" name="news"
+                               @if(isset($archive) && $archive->news)
+                               checked="checked"
+                                @endif
+                        >
+                        <label for="cmn-toggle-news" style="border:none;"></label>
+                    </div>
+                </div>
+            </div>
+            @endif
     <!-- 单属性控制 -->
         <div class="form-group col-md-12">
             <label>关联系统栏目</label>
