@@ -113,7 +113,7 @@
                 @endif
 
                 @if(session('user')->admin)
-                    <li> <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-file"></i> 友情链接 <span class="fa arrow"></span></a>
+                    <li> <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-link"></i> 友情链接 <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li><a href="{{url('member/links/create')}}">新增链接</a></li>
                             <li><a href="{{url('member/links')}}">链接列表</a></li>
