@@ -131,11 +131,7 @@
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                             <div class="col-lg-3">
-                                                <h3>缩略图上传</h3>
-                                                @if(isset($archive) && $archive->cover)
-                                                    <img style="max-width:250px;" src="{{route('image', [$archive->cover, '250'])}}" />
-                                                @endif
-                                                <input type="file" name="cover">
+                                                @include('inc.scripts.archive-cover')
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                         </div>
