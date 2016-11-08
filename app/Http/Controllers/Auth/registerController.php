@@ -19,6 +19,8 @@ class RegisterController extends Controller
                 $data['lastlogin_at'] = date('Y-m-d H:i:s',time());
                 if(strlen($input['password'])<6||strlen($input['password'])>16){
                     return response()->json('密码长度在6~16位！');
+                }elseif(!preg_match('/^[A-Za-z]+[0-9]+[A-Za-z0-9]*|[0-9]+[A-Za-z]+[A-Za-z0-9]*$/',$input['password'])){
+                    return response()->json('密码必须包含数字和字母！');
                 }else{
                     if($user = Users::create($data)){
                         session(['user'=>$user]);

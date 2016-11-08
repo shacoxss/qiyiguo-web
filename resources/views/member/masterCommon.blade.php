@@ -111,6 +111,16 @@
                 @if(session('user')->global_manage)
                 <li> <a href="{{url('member/masterGlobal')}}"><i class="fa fa-gear fa-fw"></i> 全局变量</a> </li>
                 @endif
+
+                @if(session('user')->admin)
+                    <li> <a href="javascript:void(0)" class="menudropdown"><i class="fa fa-file"></i> 友情链接 <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="{{url('member/links/create')}}">新增链接</a></li>
+                            <li><a href="{{url('member/links')}}">链接列表</a></li>
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                @endif
                 <li> <a href="{{url('auth/logout')}}"><i class="fa fa-sign-out fa-fw"></i> 注销</a> </li>
             </ul>
         </div>
