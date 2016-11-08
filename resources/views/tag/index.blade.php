@@ -76,11 +76,7 @@
 
 @section('scripts')
     <script src="{{asset('js/vue.js')}}"></script>
-    <!-- DataTables JavaScript -->
-    <script src={{asset("vendor/datatables/js/jquery.dataTables.min.js")}}></script>
-    <script src={{asset("vendor/datatables-plugins/dataTables.bootstrap.min.js")}}></script>
-    <script src={{asset("vendor/datatables-responsive/dataTables.responsive.js")}}></script>
-
+    @include('inc.scripts.require-datatables')
     <!-- Custom Theme JavaScript -->
     <script>
         var $status_4 = [
@@ -91,41 +87,20 @@
             'btn-success', 'btn-danger', '启用', 2,
             '<span class="status inactive">已停用</span>'
         ];
-        $(document).ready(function() {
-            $('#dataTables-userlist').DataTable({
-                responsive: true,
-                pageLength:10,
-                sPaginationType: "full_numbers",
-                oLanguage: {
-                    oPaginate: {
-                        sFirst: "<<",
-                        sPrevious: "<",
-                        sNext: ">",
-                        sLast: ">>"
-                    }
-                }
-            });
-            function gen_status () {
-                $('.ajax-request').on('click', function () {
-                    var $this = $(this)
-                    $.getJSON($this.data('href'), function (response) {
-                        var node = $this.hasClass('btn-success') ? $status_4 : $status_2
-                        $this[0].dataset.href = "/member/tag/"+$this[0].dataset.pinyin+"/status/" + node[3]
-                        $this
-                                .addClass(node[0])
-                                .removeClass(node[1])
-                                .text(node[2]).parents('tr')
-                                .find('.tag-status')
-                                .html(node[4])
-                        layer.msg(response.msg, {icon: 1})
-                    })
-                })
-            }
-
-            gen_status()
-
-            $('.paginate_button').on('click' , gen_status)
-        });
+        $('.ajax-request').on('click', function () {
+            var $this = $(this)
+            $.getJSON($this.data('href'), function (response) {
+                var node = $this.hasClass('btn-success') ? $status_4 : $status_2
+                $this[0].dataset.href = "/member/tag/"+$this[0].dataset.pinyin+"/status/" + node[3]
+                $this
+                        .addClass(node[0])
+                        .removeClass(node[1])
+                        .text(node[2]).parents('tr')
+                        .find('.tag-status')
+                        .html(node[4])
+                layer.msg(response.msg, {icon: 1})
+            })
+        })
 
         $('input[type=checkbox]').on('click', function (event) {
             if ($(event.target).hasClass('checked_all')) return ;

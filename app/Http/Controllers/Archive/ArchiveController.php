@@ -326,7 +326,7 @@ class ArchiveController extends Controller
     //过滤掉标签首的空白
     private function genContent($content)
     {
-        return preg_replace('#(<(?:[a-z]|h[1-6])[^>]*>)(?:&nbsp;|\s)+#is', '$1', $content);
+        return preg_replace('#(<(?:[a-z]|h[1-6])[^>]*>)(?:&nbsp;|\s)+#is', '$1', clean($content));
     }
 
 }

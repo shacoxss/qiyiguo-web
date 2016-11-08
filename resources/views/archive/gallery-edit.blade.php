@@ -112,13 +112,14 @@
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                             <div class="col-lg-3">
-                                                @if(isset($archive) && $archive->cover)
-                                                    <img style="max-width:250px;" src="{{route('image', [$archive->cover, '250'])}}" />
-                                                @endif
-                                                <a href="javascript:;" class="uploadImgGroup btn btn-primary btn-xl"><i class="fa fa-plus"></i> 点击上传封面
+                                                <div class="form-group">
+                                                    @if(isset($archive) && $archive->cover)
+                                                        <img style="max-width:250px;" src="{{route('image', [$archive->cover, '250'])}}" />
+                                                    @endif
+                                                    <a href="javascript:;" class="cover btn btn-primary btn-xl"><i class="fa fa-plus"></i>点击上传封面</a>
                                                     <input type="file" name="cover" style="display: none;">
-                                                </a>
-                                                <label>默认使用图集第一张图片作为封面</label>
+                                                </div>
+                                                    <p>默认使用图集第一张图片作为封面</p>
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                         </div>
@@ -196,6 +197,9 @@
         $('.uploadImgGroup').click(function(){
             $('#gallery').click();
         });
+        $('.cover').click(function () {
+            $('input[name=cover]').click();
+        })
 
 
         $('#gallery').on('change', function (event) {
@@ -266,14 +270,6 @@
                         window.location.reload()
                     })
                 }
-                layer.confirm(response[0], {
-                    title: '信息',
-                    btn: ['确定', response[1]] //按钮
-                }, function () {
-                    window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'
-                }, function () {
-                    window.location.reload()
-                })
             })
             .fail(function (response) {
                 layer.msg("失败", {icon: 2})
