@@ -81,19 +81,24 @@
 
     var token = "{{csrf_token()}}";
     var method = "delete";
-    $.ajax({
-      url:"{{url('member/links')}}"+"/"+id,
-      type:"post",
-      data:{_token:token,id:id,_method:method},
-      success:function(data){
-        if(data=='success'){
-          layer.msg('删除成功！');
-          location.reload();
-        }else{
-          layer.msg('删除失败！');
+    layer.confirm('确认删除链接?', {
+      title: '删除确认',
+      btn: ['确认','取消'] //按钮
+    }, function(){
+      $.ajax({
+        url: "{{url('member/links')}}" + "/" + id,
+        type: "post",
+        data: {_token: token, id: id, _method: method},
+        success: function (data) {
+          if (data == 'success') {
+            layer.msg('删除成功！');
+            location.reload();
+          } else {
+            layer.msg('删除失败！');
+          }
         }
-      }
-    })
+      });
+    });
   }
 
   $(function(){
