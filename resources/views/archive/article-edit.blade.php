@@ -170,7 +170,7 @@
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">提 交</button>
-                                        <button type="reset" class="btn btn-default">重 置</button>
+                                        <button onclick="preview()" class="btn btn-default">预 览</button>
                                     </div>
                                 </form>
                                 <!--Tab End-->
@@ -204,6 +204,10 @@
                 if ($('#extract a.btn-xss').length == 1) $(this).parents('p').css('display', 'none')
                 $(this).remove()
             })
+        }
+
+        function preview() {
+            return false
         }
 
         $('#archive').on('submit', function () {
@@ -295,7 +299,6 @@
                     lock_response = false;
                 })
             }
-
         }
     </script>
     <!--wangEditor js-->

@@ -164,6 +164,7 @@ class ArchiveController extends Controller
             $archive->tags()->attach($tags->all());
         }
         $detail = $request->only(explode(',', $type->fields));
+        $detail['content'] = $this->genContent($detail['content']);
         $model = $type->model;
         $model::saveDetail($archive, $detail);
 
@@ -217,6 +218,7 @@ class ArchiveController extends Controller
         }
 
         $detail = $request->only(explode(',', $archive->type->fields));
+        $detail['content'] = $this->genContent($detail['content']);
         $model = $archive->type->model;
         $model::saveDetail($archive, $detail);
 
@@ -319,6 +321,12 @@ class ArchiveController extends Controller
             abort(403, '禁止访问');
         }
         return true;
+    }
+
+    //过滤掉标签首的空白
+    private function genContent($content)
+    {
+        return preg_replace('#(<(?:[a-z]|h[1-6])[^>]*>)(?:&nbsp;|\s)+#is', '$1', $content);
     }
 
 }

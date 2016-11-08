@@ -124,7 +124,7 @@
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary">提 交</button>
-                                            <button type="reset" class="btn btn-default">重 置</button>
+                                            <button class="btn btn-default">预 览</button>
                                         </div>
                                     </form>
                                     <!--Tab End-->
