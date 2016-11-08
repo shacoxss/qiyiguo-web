@@ -30,7 +30,7 @@ class TagController extends Controller
 
     public function edit(Request $request,Tag $tag)
     {
-        
+
         $data = $tag->toArray();
         $data['aliases'] = $tag->getAliases();
         $data['similars'] = $tag->getSimilars();

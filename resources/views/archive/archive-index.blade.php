@@ -10,6 +10,7 @@
     </div>
     <!-- /.row -->
     <ol class="breadcrumb">
+        <li>内容管理</li>
         <li><a href="{{url('member/archives')}}">全部文档</a></li>
         <li class="active">文档列表</li>
     </ol>
@@ -74,17 +75,19 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-md-12">
+            <div class="row">
+                <p>
+                    <button type="button" class="btn btn-success btn-xs checked_all"><i class="fa fa-arrows"></i> 全选</button>
+                    @if($is_master)
+                    <button type="button" class="btn btn-warning btn-xs set_review"><i class="fa fa-pencil"></i> 审核</button>
+                    @endif
+                    <button type="button" class="btn btn-danger btn-xs delete_archives"><i class="fa fa-times"></i> 删除</button>
+                </p>
+            </div>
             <table class="table table-bordered table-hover" id="dataTables-userlist">
                 <thead>
-                <div class="row">
-                    <p>
-                        <button type="button" class="btn btn-success btn-xs"><i class="fa fa-arrows"></i> 全选</button>
-                        <button type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> 审核</button>
-                        <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> 删除</button>
-                    </p>
-                </div>
                 <tr>
-                    <th><input type="checkbox" /> </th>
+                    <th><input type="checkbox" class="checked_all"/> </th>
                     <th>ID </th>
                     <th>标题 </th>
                     <th>时间</th>
@@ -99,7 +102,7 @@
                 <tbody>
                 @foreach($archives as $a)
                     <tr>
-                        <td><input type="checkbox" /></td>
+                        <td><input type="checkbox" name="check" data-id="{{ $a->id }}" /></td>
                         <td>{{$a->id}}</td>
                         <td>
                             @if($a->cover)
@@ -114,11 +117,19 @@
                             @endforeach
                         </td>
                         <td>{{$a->created_at}}</td>
-                        <td>{{ !empty($a->user->nickname) ? $a->user->nickname : $a->user->phone}}</td>
+                        <td>
+                            @if ($is_master)
+                                <a href="{{route('archives.index', ['master', 'user' => $a->user_id])}}">
+                                    {{ !empty($a->user->nickname) ? $a->user->nickname : $a->user->phone}}
+                                </a>
+                            @else
+                                {{ !empty($a->user->nickname) ? $a->user->nickname : $a->user->phone}}
+                            @endif
+                        </td>
                         <td class="center">{{$a->type->display_name}}</td>
                         <td class="center">
                             @foreach($a->tags()->get() as $tag)
-                            <a href="{{ $tag->url }}" class="btn btn-primary btn-xss">{{$tag->name}}</a>
+                            <a href="{{ $tag->url }}" target="_blank" class="btn btn-primary btn-xss">{{$tag->name}}</a>
                             @endforeach
                         </td>
                         <td class="center">{{$a->visit_count}}</td>
@@ -169,7 +180,7 @@
         }, function(){
             $.ajax({
                 url:$destory_url + '/' + id,
-                data:{id:id,_token:token},
+                data:{_token:token},
                 type:'get',
                 success:function(data){
                     if(data=='success'){
@@ -183,7 +194,7 @@
 
         });
     });
-    @if(session('user')->master)
+    @if($is_master)
         var $status_4 = [
             'btn-danger', 'btn-success', '不准看', '',
             '<span class="status active">开放浏览</span>'
@@ -206,10 +217,31 @@
                 layer.msg(response.msg, {icon: 1})
             })
         })
+
+        $('.set_review').on('click', function () {
+            var url = '{{ url('member/archives') }}/'
+
+            url += $('input[type=checkbox]:checked')
+                .filter('input[name]')
+                .filter(function () {
+                    return $(this).parents('tr').find('.inactive').length
+                })
+                .each(function () {
+                    $(this).parents('tr').find('.ajax-request').click()
+                })
+//                .map(function (index, item) {
+//                    return $(item).data('id')
+//                })
+//                .toArray().join() + '/set/review'
+//            console.log(url)
+        })
     @endif
 
     $(document).ready(function() {
         $('#dataTables-userlist').DataTable({
+            columnDefs: [
+                {orderable : false, targets: [0,9]}
+            ],
             responsive: true,
             pageLength:10,
             sPaginationType: "full_numbers",
@@ -223,6 +255,55 @@
             }
         });
     });
+
+    $(document).ready(function () {
+        $('input[type=checkbox]').on('click', function (event) {
+            if ($(event.target).hasClass('checked_all')) return ;
+            $('.checked_all').prop('checked', false)}
+        )
+        $('.checked_all').on('click', function (event) {
+
+            if (event.target.tagName != 'INPUT') {
+                $(this).prop('checked', !$(this).prop('checked'))
+            }
+
+            $('input[type=checkbox]').prop('checked', $(this).prop('checked'))
+        })
+
+        $('.delete_archives').on('click', function () {
+            var id = $('input[type=checkbox]:checked')
+            .filter('input[name]')
+            .map(function (index, item) {
+                return $(item).data('id')
+            })
+            .toArray().join()
+
+            var token = "{{csrf_token()}}";
+            layer.confirm('确认删除文章?', {
+                title: '删除确认',
+                btn: ['确认','取消'] //按钮
+            }, function(){
+                $.ajax({
+                    url:$destory_url + '/' + id,
+                    data:{_token:token},
+                    type:'get',
+                    success:function(data){
+                        if(data=='success'){
+                            layer.msg('删除成功!', {icon: 1});
+                            $('input[type=checkbox]:checked')
+                            .filter('input[name]')
+                            .map(function (index, item) {
+                                return $(item).parents('tr').remove()
+                            })
+                        }else{
+                            layer.msg('删除失败!', {icon: 2});
+                        }
+                    }
+                });
+
+            });
+        })
+    })
 
 </script>
 @endsection

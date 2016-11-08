@@ -17,18 +17,18 @@
 <!-- /.row -->
 <div class="row">
     <div class="col-md-12">
+        <div class="row">
+            <p>
+                <button type="button" class="btn btn-primary btn-xs" onclick="window.open('{{ route('tag.create') }}','_self')"><i class="fa fa-plus"></i> 新增</button>
+                <button type="button" class="btn btn-success btn-xs checked_all"><i class="fa fa-arrows"></i> 全选</button>
+                <button type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> 审核</button>
+                <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> 停用</button>
+            </p>
+        </div>
         <table class="table table-bordered table-hover" id="dataTables-userlist">
             <thead>
-            <div class="row">
-                <p>
-                    <button type="button" class="btn btn-primary btn-xs" onclick="window.open('masterTagAdd.php','_self')"><i class="fa fa-plus"></i> 新增</button>
-                    <button type="button" class="btn btn-success btn-xs"><i class="fa fa-arrows"></i> 全选</button>
-                    <button type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> 审核</button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> 停用</button>
-                </p>
-            </div>
             <tr>
-                <th width="100"><input type="checkbox" /> </th>
+                <th width="100"><input type="checkbox" class="checked_all" /> </th>
                 <th width="100">ID</th>
                 <th>标签名</th>
                 <th>文档数</th>
@@ -126,5 +126,20 @@
 
             $('.paginate_button').on('click' , gen_status)
         });
+
+        $('input[type=checkbox]').on('click', function (event) {
+            if ($(event.target).hasClass('checked_all')) return ;
+            $('.checked_all').prop('checked', false)}
+        )
+
+        $('.checked_all').on('click', function (event) {
+
+            if (event.target.tagName != 'INPUT') {
+                $(this).prop('checked', !$(this).prop('checked'))
+            }
+
+            $('input[type=checkbox]').prop('checked', $(this).prop('checked'))
+        })
+
     </script>
 @endsection

@@ -31,6 +31,9 @@ class ArchiveController extends Controller
         }
 
         if ($left == 'master' && $this->checkMaster()) {
+            if ($request->has('user')) {
+                $query->where('user_id', $request->input('user'));
+            }
             $archives = $query->get();
             if($request->has('mode')) {
                 $archives = $archives->filter(function ($a) use($request) {
@@ -161,6 +164,7 @@ class ArchiveController extends Controller
             $archive->tags()->attach($tags->all());
         }
         $detail = $request->only(explode(',', $type->fields));
+        $detail['content'] = $this->genContent($detail['content']);
         $model = $type->model;
         $model::saveDetail($archive, $detail);
 
@@ -214,6 +218,7 @@ class ArchiveController extends Controller
         }
 
         $detail = $request->only(explode(',', $archive->type->fields));
+        $detail['content'] = $this->genContent($detail['content']);
         $model = $archive->type->model;
         $model::saveDetail($archive, $detail);
 
@@ -274,16 +279,40 @@ class ArchiveController extends Controller
         return response()->json(['msg' => '操作成功！']);
     }
 
-    public function destroy(Archive $archive)
+    public function toggles($archives, $name)
+    {
+        $this->checkMaster();
+
+        $pattern = \DB::table('patterns')->where('name' ,$name)->value('pattern');
+
+        foreach(explode(',', $archives) as $archive) {
+            $archive = Archive::find($archive);
+
+            if (!$archive) continue;
+
+            $archive->mode = $archive->mode | $pattern;
+
+            $archive->save();
+        }
+
+        return response()->json(['msg' => '操作成功']);
+    }
+
+    public function destroy($archives)
     {
         $user = session('user');
-        if($archive->user_id == $user->id || $this->checkMaster()) {
-            if ($archive->detail) {
-                $archive->detail->delete();
+        $archives = (explode(',', $archives));
+        $archives = Archive::whereIn('id', $archives)->get();
+
+        foreach ($archives as $archive) {
+            if($archive->user_id == $user->id || $this->checkMaster()) {
+                if ($archive->detail) {
+                    $archive->detail->delete();
+                }
+                $archive->delete();
             }
-            $archive->delete();
-            echo 'success';
         }
+        echo 'success';
     }
 
     private function checkMaster()
@@ -292,6 +321,12 @@ class ArchiveController extends Controller
             abort(403, '禁止访问');
         }
         return true;
+    }
+
+    //过滤掉标签首的空白
+    private function genContent($content)
+    {
+        return preg_replace('#(<(?:[a-z]|h[1-6])[^>]*>)(?:&nbsp;|\s)+#is', '$1', $content);
     }
 
 }

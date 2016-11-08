@@ -141,7 +141,7 @@
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary">提 交</button>
-                                            <button type="reset" class="btn btn-default">重 置</button>
+                                            <button onclick="preview()" class="btn btn-default">预 览</button>
                                         </div>
                                     </form>
                                     <!--Tab End-->
@@ -163,7 +163,6 @@
 
 @section('scripts')
     <script>
-
         $('#archive').on('submit', function () {
             var data =  new FormData($('#archive')[0]);
             var html = editor.$txt.html().replace(/\s\s/g, '');
@@ -179,7 +178,6 @@
                 contentType: false
             })
                     .done(function (response) {
-                        console.log(response);
                         if(response.error){
                             if(typeof(response.msg.title)!='undefined'){
                                 layer.msg(response.msg.title[0]);
@@ -229,7 +227,7 @@
                 var text = editor.$txt.text().replace(/\s\s/g, '');
 
                 lock_count = Math.abs(text.length - $content_length) < 20
-                        ? true : false
+                        ? true : false;
 
 
 
