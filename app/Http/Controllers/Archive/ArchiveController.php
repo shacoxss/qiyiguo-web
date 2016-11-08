@@ -275,6 +275,9 @@ class ArchiveController extends Controller
     public function toggle(Archive $archive, $name)
     {
         $this->checkMaster();
+        if ($name == 'review') {
+            $archive->tags()->update(['status' => 2]);
+        }
         $archive->togglePattern($name);
         return response()->json(['msg' => '操作成功！']);
     }
