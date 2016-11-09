@@ -9,22 +9,28 @@
 namespace App\Helpers;
 
 
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class Content
 {
     const PAGE_FLAG = '<!--[#page#]-->';
     private $content;
-    private $page = 0;
+    private $page;
 
     public function __construct($content)
     {
         $this->content = explode(self::PAGE_FLAG, $content);
-        $page = isset($_REQUEST['page']) ? (int)$_REQUEST['page'] : 1;
 
-        $this->page = is_integer($page) && $page > 0 ? $page : 1;
+        $this->page = new LengthAwarePaginator($this->content, count($this->content), 1, null, ['path' => url()->current()]);
     }
 
     public function __toString()
     {
-        return isset($this->content[$this->page]) ? (string)$this->content[$this->page-1] : '';
+        return isset($this->content[$this->page->currentPage()-1]) ? (string)$this->content[$this->page->currentPage()-1] : '';
+    }
+
+    public function links()
+    {
+        return $this->page->links();
     }
 }

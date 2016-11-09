@@ -182,15 +182,11 @@ class contentController extends Controller
         }else{
             $game_archives = false;
         }
-
-//        $content = Archive::find(141)->detail->content;
-//        $content = explode(HTML::PAGE_FLAG, $content);
-//        $page = new Paginator($content, 4, null, ['path' => '/archive/', '']);
-//        $content = new Content($archive->detail->content);
+        $content = new Content($archive->detail->content);
 
         return view($archive->type->t_show)
             ->with('archive', $archive)
-//            ->with('content', $page->links())
+            ->with('content', $content)
             ->with('followed',$followed)
             ->with('user',$user)
             ->with('article_archives',$article_archives)
