@@ -176,7 +176,9 @@
                 contentType: false
             })
                     .done(function (response) {
-                        if(response.error){
+                        if(response.error==2){
+                            layer.msg(response.msg);
+                        }else if(response.error==1){
                             if(typeof(response.msg.title)!='undefined'){
                                 layer.msg(response.msg.title[0]);
                                 return false;

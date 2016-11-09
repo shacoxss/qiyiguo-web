@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
@@ -108,6 +109,8 @@ class ArchiveController extends Controller
      */
     public function store(Request $request, ArchiveType $type)
     {
+        //基本信息
+        DB::beginTransaction();
         $new = $request->only($this->fields);
         $new['archive_type_id'] = $type->id;
         $new['mode'] = $this->calcMode($request);
@@ -151,25 +154,62 @@ class ArchiveController extends Controller
 
         $validator = Validator::make($input,$rules,$message);
         if($validator->passes()){
-            $archive = Archive::create($new);
+            if($archive = Archive::create($new)){
+
+                $tags = explode(',', $request->tags);
+                $tags = array_slice($tags, 0, 3);
+                if (!empty($tags[0])) {
+                    $tags = Tag::wrapToIds($tags, true, true);
+                    $tags = Tag::convertToPrimaries($tags);
+                    $archive->tags()->attach($tags->all());
+                }
+                //详情信息
+                $detail = $request->only(explode(',', $type->fields));
+                if(isset($detail['link'])){
+                    //优酷
+                    if(preg_match('/<embed(.*)<\/embed>/',$detail['link'])||preg_match('/<object(.*)<\/object>/',$detail['link'])){
+
+                    }else{
+                        if(preg_match('/v.youku.com/',$detail['link'])){
+                            $content = file_get_contents("compress.zlib://".$detail['link']);
+                            if(preg_match('/<embed(.*)<\/embed>/',$content,$link)){
+                                $detail['link'] = $link[0];
+                            }else{
+                                return response()->json(['链接有误！', '重新发布']);
+                            }
+                        }elseif(preg_match('/v.qq.com/',$detail['link'])){
+                            //腾讯
+                            $content = file_get_contents("compress.zlib://".$detail['link']);
+                            preg_match('/vid:(\s*)"(.*)",/', $content, $match);
+                            $link = $match[2];
+                            $detail['link'] = '<embed src="http://static.video.qq.com/TPout.swf?vid='.$link.'&auto=0" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>';
+                        }elseif(preg_match('/sohu.com/',$detail['link'])){
+                            //搜狐
+                            $content = file_get_contents("compress.zlib://".$detail['link']);
+                            preg_match('/(var)(\s*)vid(\s*)=(\s*)"(.*)";/', $content, $match);
+                            $vid = $match[5];
+                            preg_match('/(var)(\s*)playlistId(\s*)=(\s*)"(.*)";/', $content, $matches);
+                            $pid = $matches[5];
+                            $detail['link'] = '<object width=1460 height=639><param name="movie" value="http://share.vrs.sohu.com/'.$vid.'/v.swf&topBar=1&autoplay=false&plid='.$pid.'&pub_catecode=0&from=page"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><param name="wmode" value="Transparent"></param><embed width=1460 height=639 wmode="Transparent" allowfullscreen="true" allowscriptaccess="always" quality="high" src="http://share.vrs.sohu.com/'.$vid.'/v.swf&topBar=1&autoplay=false&plid='.$pid.'&pub_catecode=0&from=page" type="application/x-shockwave-flash"/></embed></object>';
+                        }else{
+                            DB::rollback();
+                            return response()->json(['error'=>2,'msg'=>'视频链接错误，仅支持腾讯，优酷，搜狐视频或html视频代码！']);
+                        }
+                    }
+                }
+                $detail['content'] = $this->genContent($detail['content']);
+                $model = $type->model;
+                if(!$model::saveDetail($archive, $detail)){
+                    DB::rollback();
+                }
+                if(!$archive->generateTagUrl()){
+                    DB::rollback();
+                }
+                DB::commit();
+            }
         }else{
             return response()->json(['error'=>1,'msg'=>$validator->errors()]);
         }
-
-
-        $tags = explode(',', $request->tags);
-        $tags = array_slice($tags, 0, 3);
-        if (!empty($tags[0])) {
-            $tags = Tag::wrapToIds($tags, true, true);
-            $tags = Tag::convertToPrimaries($tags);
-            $archive->tags()->attach($tags->all());
-        }
-        $detail = $request->only(explode(',', $type->fields));
-        $detail['content'] = $this->genContent($detail['content']);
-        $model = $type->model;
-        $model::saveDetail($archive, $detail);
-
-        $archive->generateTagUrl();
 
         return response()->json(['发布成功！', '继续发布']);
     }
