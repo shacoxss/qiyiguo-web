@@ -175,17 +175,25 @@ class ArchiveController extends Controller
                             if(preg_match('/<embed(.*)<\/embed>/',$content,$link)){
                                 $detail['link'] = $link[0];
                             }else{
-                                return response()->json(['链接有误！', '重新发布']);
+                                return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
                             }
                         }elseif(preg_match('/v.qq.com/',$detail['link'])){
                             //腾讯
                             $content = file_get_contents("compress.zlib://".$detail['link']);
+                            if(!$content){
+                                DB::rollback();
+                                return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                            }
                             preg_match('/vid:(\s*)"(.*)",/', $content, $match);
                             $link = $match[2];
                             $detail['link'] = '<embed src="http://static.video.qq.com/TPout.swf?vid='.$link.'&auto=0" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>';
                         }elseif(preg_match('/sohu.com/',$detail['link'])){
                             //搜狐
                             $content = file_get_contents("compress.zlib://".$detail['link']);
+                            if(!$content){
+                                DB::rollback();
+                                return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                            }
                             preg_match('/(var)(\s*)vid(\s*)=(\s*)"(.*)";/', $content, $match);
                             $vid = $match[5];
                             preg_match('/(var)(\s*)playlistId(\s*)=(\s*)"(.*)";/', $content, $matches);
@@ -216,6 +224,7 @@ class ArchiveController extends Controller
 
     public function update(Request $request, Archive $archive)
     {
+        DB::beginTransaction();
         $user = session('user');
         ($archive->user_id == $user->id) || $this->checkMaster();
 
@@ -253,31 +262,78 @@ class ArchiveController extends Controller
             $archive->mode = $this->calcMode($request, $archive->mode);
             $input = $request->only($this->fields);
             $archive->fill($input);
-            $archive->save();
+            $result = $archive->save();
         }else{
             return response()->json(['error'=>1,'msg'=>$validator->errors()]);
         }
+        if($result){
+            $detail = $request->only(explode(',', $archive->type->fields));
+            if(isset($detail['link'])){
+                //优酷
+                if(preg_match('/<embed(.*)<\/embed>/',$detail['link'])||preg_match('/<object(.*)<\/object>/',$detail['link'])){
 
-        $detail = $request->only(explode(',', $archive->type->fields));
-        $detail['content'] = $this->genContent($detail['content']);
-        $model = $archive->type->model;
-        $model::saveDetail($archive, $detail);
+                }else{
+                    if(preg_match('/v.youku.com/',$detail['link'])){
+                        $content = file_get_contents("compress.zlib://".$detail['link']);
+                        if(preg_match('/<embed(.*)<\/embed>/',$content,$link)){
+                            $detail['link'] = $link[0];
+                        }else{
+                            return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                        }
+                    }elseif(preg_match('/v.qq.com/',$detail['link'])){
+                        //腾讯
+                        $content = file_get_contents("compress.zlib://".$detail['link']);
+                        if(!$content){
+                            DB::rollback();
+                            return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                        }
+                        preg_match('/vid:(\s*)"(.*)",/', $content, $match);
+                        $link = $match[2];
+                        $detail['link'] = '<embed src="http://static.video.qq.com/TPout.swf?vid='.$link.'&auto=0" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>';
+                    }elseif(preg_match('/sohu.com/',$detail['link'])){
+                        //搜狐
+                        $content = file_get_contents("compress.zlib://".$detail['link']);
+                        if(!$content){
+                            DB::rollback();
+                            return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                        }
+                        preg_match('/(var)(\s*)vid(\s*)=(\s*)"(.*)";/', $content, $match);
+                        $vid = $match[5];
+                        preg_match('/(var)(\s*)playlistId(\s*)=(\s*)"(.*)";/', $content, $matches);
+                        $pid = $matches[5];
+                        $detail['link'] = '<object width=1460 height=639><param name="movie" value="http://share.vrs.sohu.com/'.$vid.'/v.swf&topBar=1&autoplay=false&plid='.$pid.'&pub_catecode=0&from=page"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><param name="wmode" value="Transparent"></param><embed width=1460 height=639 wmode="Transparent" allowfullscreen="true" allowscriptaccess="always" quality="high" src="http://share.vrs.sohu.com/'.$vid.'/v.swf&topBar=1&autoplay=false&plid='.$pid.'&pub_catecode=0&from=page" type="application/x-shockwave-flash"/></embed></object>';
+                    }else{
+                        DB::rollback();
+                        return response()->json(['error'=>2,'msg'=>'视频链接错误，仅支持腾讯，优酷，搜狐视频或html视频代码！']);
+                    }
+                }
+            }
+            $tags = $archive->tags()->get()->pluck('id')->all();
+            if (!empty($tags)) {
+                $archive->tags()->detach($tags);
+            }
 
+            $tags = explode(',', $request->tags);
+            if (!empty($tags[0])) {
+                $tags = array_slice($tags, 0, 3);
+                $tags = Tag::wrapToIds($tags, true, true);
+                $tags = Tag::convertToPrimaries($tags);
+                $archive->tags()->attach($tags->all());
+            }
 
-        $tags = $archive->tags()->get()->pluck('id')->all();
-        if (!empty($tags)) {
-            $archive->tags()->detach($tags);
+            $detail['content'] = $this->genContent($detail['content']);
+            $model = $archive->type->model;
+            if(!$model::saveDetail($archive, $detail)){
+                DB::rollback();
+            }
+            if(!$archive->generateTagUrl()){
+                DB::rollback();
+            }
+            DB::commit();
+        }else{
+            DB::rollback();
+            return response()->json(['error'=>2,'msg'=>'发布失败！']);
         }
-
-        $tags = explode(',', $request->tags);
-        if (!empty($tags[0])) {
-            $tags = array_slice($tags, 0, 3);
-            $tags = Tag::wrapToIds($tags, true, true);
-            $tags = Tag::convertToPrimaries($tags);
-            $archive->tags()->attach($tags->all());
-        }
-
-        $archive->generateTagUrl();
 
         return response()->json(['修改成功！', '继续修改']);
     }
