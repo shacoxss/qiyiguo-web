@@ -18,7 +18,7 @@ class TagController extends Controller
 
     public function index(Request $request)
     {
-        $tags = Tag::orderBy('created_at', 'desc')->get()->take(200);
+        $tags = Tag::orderBy('created_at', 'desc')->get();
         return view('tag.index')
             ->with('tags', $tags);
     }
