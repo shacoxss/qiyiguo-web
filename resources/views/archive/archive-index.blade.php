@@ -163,9 +163,7 @@
 
 @section('scripts')
 <!-- DataTables JavaScript -->
-<script src={{asset("vendor/datatables/js/jquery.dataTables.min.js")}}></script>
-<script src={{asset("vendor/datatables-plugins/dataTables.bootstrap.min.js")}}></script>
-<script src={{asset("vendor/datatables-responsive/dataTables.responsive.js")}}></script>
+@include('inc.scripts.require-datatables')
 
 <!-- Custom Theme JavaScript -->
 <script>
@@ -236,25 +234,6 @@
 //            console.log(url)
         })
     @endif
-
-    $(document).ready(function() {
-        $('#dataTables-userlist').DataTable({
-            columnDefs: [
-                {orderable : false, targets: [0,9]}
-            ],
-            responsive: true,
-            pageLength:10,
-            sPaginationType: "full_numbers",
-            oLanguage: {
-                oPaginate: {
-                    sFirst: "<<",
-                    sPrevious: "<",
-                    sNext: ">",
-                    sLast: ">>"
-                }
-            }
-        });
-    });
 
     $(document).ready(function () {
         $('input[type=checkbox]').on('click', function (event) {

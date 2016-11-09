@@ -315,6 +315,9 @@ class ArchiveController extends Controller
     public function toggle(Archive $archive, $name)
     {
         $this->checkMaster();
+        if ($name == 'review') {
+            $archive->tags()->update(['status' => 2]);
+        }
         $archive->togglePattern($name);
         return response()->json(['msg' => '操作成功！']);
     }
@@ -366,7 +369,7 @@ class ArchiveController extends Controller
     //过滤掉标签首的空白
     private function genContent($content)
     {
-        return preg_replace('#(<(?:[a-z]|h[1-6])[^>]*>)(?:&nbsp;|\s)+#is', '$1', $content);
+        return preg_replace('#(<(?:[a-z]|h[1-6])[^>]*>)(?:&nbsp;|\s)+#is', '$1', clean($content));
     }
 
 }
