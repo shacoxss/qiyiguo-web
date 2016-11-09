@@ -1,4 +1,4 @@
-
+@if($paginator->hasPages())
     <ul class="am-pagination am-pagination-default tab-news-pagination">
         {{-- Previous Page Link --}}
         @if ($paginator->onFirstPage())
@@ -33,3 +33,4 @@
             <li class="disabled"><span><i class="am-icon-angle-right"></i></span></li>
         @endif
     </ul>
+@endif

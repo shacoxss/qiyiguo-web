@@ -11,32 +11,20 @@ namespace App\Helpers;
 
 class Content
 {
-    public $content;
-    const MIN_LEN = 5000;
-    const PAGE_FLAG = '<!--page-->';
+    const PAGE_FLAG = '<!--[#page#]-->';
+    private $content;
+    private $page = 0;
 
     public function __construct($content)
     {
-        $this->content = $content;
+        $this->content = explode(self::PAGE_FLAG, $content);
+        $page = isset($_REQUEST['page']) ? (int)$_REQUEST['page'] : 1;
+
+        $this->page = is_integer($page) && $page > 0 ? $page : 1;
     }
 
-    public function cut($page = 1)
+    public function __toString()
     {
-        preg_match_all('#<([a-z1-6]+)[^>]*>(?:[^<>]|(?R))*(?:</\\1>)?#isu', $this->content, $temp);
-
-        $sections = preg_replace('#<[^>]+>#', '', $temp[0]);
-        $html = '';
-        $count = 0;
-
-        foreach ($sections as $index => $sec) {
-            $count += strlen($sec);
-            $html .= $temp[0][$index];
-            if ($count > self::MIN_LEN /*&& !preg_match('#^<h#', $temp[0][$index])*/) {
-                $count = 0;
-                $html .= self::PAGE_FLAG;
-            }
-        }
-
-        return $html;
+        return isset($this->content[$this->page]) ? (string)$this->content[$this->page-1] : '';
     }
 }
