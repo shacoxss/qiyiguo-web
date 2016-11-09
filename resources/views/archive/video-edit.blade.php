@@ -96,8 +96,8 @@
                                                     {{--<!-- 视频预览 -->--}}
                                                 {{--</div>--}}
                                                 <div class="form-group">
-                                                    <label>视频地址(第三方视频网站调用)</label>
-                                                    <input class="form-control " placeholder="视频地址：" name="link" value="{{ $archive->detail->link or '' }}" >
+                                                    <label>直接输入视频网址或者链接html标签，已支持网站腾讯视频、优酷、搜狐视频、bilibili</label>
+                                                    <input class="form-control " placeholder="视频地址或html标签" name="link" value="{{ $archive->detail->link or '' }}" >
                                                 </div>
                                                 <div class="form-group">
                                                     <label>视频简介</label>                                            <!--编辑器开始-->
