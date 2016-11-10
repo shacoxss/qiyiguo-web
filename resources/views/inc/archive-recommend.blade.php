@@ -16,16 +16,12 @@
                     </div>
 
                     <div style="margin-top: 5px;">
-                        <dl class="tab-block-r-ul">
-                            @foreach($v->tags()->get() as $tag)
-                                <dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
-                            @endforeach
-                        </dl>
+                        @include('inc.tags', ['tags' => $v->tags()->get()])
                     </div>
                 </div>
             </a>
         </li>
-            @endforeach
+        @endforeach
 @endif
     </ul>
 </div>
@@ -49,12 +45,7 @@
             <div class="author-recommand-img-tab-shade img-tab-shade-on">
                 <span class="author-recommand-people"></span>
                 <span>{{$v->user->nickname}}</span>
-                <dl class="tab-block-r-ul" style="float: right;margin-right: 10px;">
-                    @foreach($v->tags()->get() as $tag)
-                        <dt style="background: #{{$tag->background_color or '006633'}};"><a href="{{$tag->url}}">{{$tag->name}}</a></dt>
-                        @break
-                    @endforeach
-                </dl>
+                @include('inc.tags', ['tags' => $v->tags()->get()])
             </div>
 
         </div>

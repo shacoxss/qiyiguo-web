@@ -31,7 +31,7 @@
     </a>
 </div>
 
-<header class="am-topbar header tab-header" style="height: auto;">
+<header class="am-topbar header tab-header">
     <div class="content">
         <h1 class="am-topbar-brand header-logo-brand">
             <a href="{{route('index')}}" class="logo tab-logo"></a>

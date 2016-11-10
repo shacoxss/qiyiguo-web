@@ -64,6 +64,9 @@
             height: 120px;
             border: 1px solid #ccc;
         }
+        #lightgallery a {
+            display: inline-block;
+        }
     </style>
     @include('inc.archive-scripts')
     <script>

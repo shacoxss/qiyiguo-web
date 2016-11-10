@@ -1,18 +1,46 @@
 $(function() {
+    var $modal = $('#detail-modal');
+    var img_box = $('#lightgallery')
+    var prev = null;
+    var next = null;
+    var gen_img = function (img) {
+        return $(
+            '<a href="'+img.url+'/raw.jpeg" data-sub-html="<h3>'+img.title+'</h3><p>'+img.description+'</p>">\
+                <img src="'+img.url+'/180x120.jpeg" />\
+            </a>'
+        );
+    };
+
     function click_gen(id) {
-        return function (event) {
-            if(event.target.nodeName == 'A') return;
-            layer.open({
-                type: 2,
-                title: false,
-                area: ['1238px', '1300px'], //宽高
-                closeBtn: 0,
-                shadeClose: true,
-                content: DETAIL_URL + '/' + id
-            });
+        return function(e) {
+            var load = layer.load(0,{shade:[0.5, '#FFF']});
+            $.getJSON('/gallery/'+id, function (res) {
+                img_box.html('');
+                res.images.map(gen_img).forEach(function (img) {img_box.append(img)})
+                lightGallery(document.getElementById('lightgallery'), {
+                    thumbnail:true,
+                    zIndex : 1500
+                });
+                $('.album-article h2').text(res.title)
+                $('.album-article .v-a-content').html(res.detail.content)
+                $('#author').text(res.author)
+                $('#updated_at').text(res.updated_at)
+                prev = res.prev;
+                next = res.next;
+                $modal.modal('open');
+                layer.close(load);
+            })
         }
     }
-
+    function next_gallery(id) {
+        if (id) {
+            click_gen(id)()
+        } else {
+            layer.alert('没有了')
+        }
+    }
+    $('.am-album-modal-prev').on('click', function() {next_gallery(prev)})
+    $('.am-album-modal-next').on('click', function() {next_gallery(next)})
     function list_append(list) {
         //循环append元素
         var $list = $(list).map(function (index, item) {

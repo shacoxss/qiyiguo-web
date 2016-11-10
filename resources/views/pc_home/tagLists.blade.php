@@ -2,7 +2,7 @@
 @section('content')
 
     <!--banner-->
-    <div class="am-g tab-banner" style="margin-top:79px; @if($tag->background_image) background-image:url({{route('image', [$tag->background_image, '1920x780'])}}) @endif">
+    <div class="am-g tab-banner" style="margin-top: 60px; @if($tag->background_image) background-image:url({{route('image', [$tag->background_image, '1920x780'])}}) @endif">
         <div class="am-g width">
             <div class="hotest-tab">
                 <div class="hotest-tab-left">
