@@ -2827,3 +2827,76 @@ margin-left: 20px;
 .news-d-title {
 	margin-top: 79px;
 }
+
+/*details-xiugai*/
+.news-detail-content-left-p p {
+	font-size: 14px;
+	text-indent: 2em;
+	line-height: 25px;
+	margin-bottom: 25px;
+}
+.am-g .news-detail-content-left img{
+	display: block;
+}
+.news-detail-content-left-p p span{
+	border: none;
+}
+.news-detail-content-left-p p a{
+	border-bottom: 1px solid #CCCCCC;
+}
+.am-g .news-detail-content-left{
+	border-right: 1px solid #ccc;
+}
+.news-detail-content{
+	padding-top: 0;
+}
+.am-g.news-detail-content .width{
+	margin-top: 0;
+}
+.am-g .news-detail-content-left{
+	margin-top: 0 !important;
+	padding-top: 60px !important;
+}
+.news-detail-content .am-u-sm-4{
+	padding-top: 60px !important;
+}
+.author-guess-ul-r p{
+	height: 42px;
+	overflow: hidden;
+}
+.tab-header  .header-ul>ul>li>a:focus,
+.tab-header  .header-ul>ul>li>a:hover{
+	background-color: transparent !important;
+}
+.v-lost h2{
+	height: 30px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.tk-liulan span{
+	margin-left: 5px;
+	width: 20px;
+	overflow: hidden;
+	white-space: normal;
+	text-overflow: ellipsis;
+	line-height: 11px;
+}
+.author-name{
+	width: 85px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	display: block;
+}
+.author-detail-bg p{
+	height: 44px;
+	text-align: center;
+	overflow: hidden;
+}
+.author-article-content>a>h3{
+	margin-top: 1.6em;
+}
+.tab-ul-nav-right>li:last-child a{
+	cursor:pointer;
+}
