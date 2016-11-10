@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Member;
 
+use App\Model\Message;
 use App\Model\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,9 +13,12 @@ use Illuminate\Support\Facades\Input;
 class indexController extends Controller
 {
     //普通用户会员中心
+
+
     public function userIndex()
     {
         //签到
+//        /dd(session('message'));
         $user = Users::where('id',session('user')->id)->first();
         $now = $user->sign_in;
         $today = date('Y-m-d',time());
