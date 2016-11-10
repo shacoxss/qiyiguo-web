@@ -2,7 +2,7 @@
 
 
 @section('content')
-		<div class="am-g v-detail" style="margin-top:81px">
+		<div class="am-g v-detail" style="margin-top:60px">
 			<div class="content">
 				{{--<div class="am-g v-d-link">--}}
 					{{--<a href="">首页></a>--}}

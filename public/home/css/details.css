@@ -2971,3 +2971,18 @@ margin-left: 20px;
 .am-g .news-detail-content-left img{
 	margin:0 auto;
 }
+/*news-detail*/
+.news-detail-content .am-u-sm-4 {
+	padding-top: 30px !important;
+}
+.am-g .news-detail-content-left {
+	padding-top: 30px !important;
+}
+
+.v-list .content li{
+	background: #000;
+}
+.v-article p{
+	border-top: 1px dashed #ddd;
+	padding: 20px 0 0;
+}

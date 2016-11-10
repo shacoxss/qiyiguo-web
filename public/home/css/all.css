@@ -887,3 +887,23 @@ a.play-l-button:hover{
     text-overflow: ellipsis;
     text-align: center;
 }
+/*xiugai2*/
+[class*=am-u-]+[class*=am-u-]:last-child {
+    float: right;
+}
+.header-btn{
+    background-color: #67932c;
+    border: none;
+    border-radius: 2px;
+    font-size: 12px;
+}
+.tab-search>div>input{
+    width: 112px !important;
+    background: #333 !important;
+    border: 0px !important;
+    border-radius: 2px !important;
+    height: 26px !important;
+}
+.v-list .content li{
+    background: #000;
+}
