@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 class GalleryController extends Controller
 {
     //
-    const PAGE_COUNT = 10;
+    const PAGE_COUNT = 20;
     public function index(Request $request)
     {
         if ($request->ajax()) {
