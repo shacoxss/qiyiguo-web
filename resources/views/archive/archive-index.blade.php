@@ -148,11 +148,11 @@
                             <a href="javascript:void(0)" class="btn btn-circle btn-danger delete-archives" data-id="{{$a->id}}">删除</a>
                             @if(session('user')->master && $is_master)
                                 @if($a->checkReview()==-1)
-                                    <a data-href="{{route('archives.toggle', [$a->id, 'success'])}}" data-id="{{$a->id}}" data-pass="no" class="ajax-request btn btn-circle btn-default ajax-request">审核2</a>
+                                    <a data-href="{{route('archives.toggle', [$a->id, 'success'])}}" data-id="{{$a->id}}" data-pass="no" class="ajax-request btn btn-circle btn-default ajax-request">审核</a>
                                 @elseif($a->checkReview()==1)
-                                    <a data-href="{{route('archives.toggle', [$a->id, 'fail'])}}" data-id="{{$a->id}}" data-pass="fail"  class="ajax-request btn btn-circle btn-default ajax-request">审核1</a>
+                                    <a data-href="{{route('archives.toggle', [$a->id, 'fail'])}}" data-id="{{$a->id}}" data-pass="fail"  class="ajax-request btn btn-circle btn-default ajax-request">审核</a>
                                 @elseif($a->checkReview()==0)
-                                    <a data-href="{{route('archives.toggle', [$a->id, 'success'])}}" data-id="{{$a->id}}" data-pass="success" class="ajax-request btn btn-circle btn-default ajax-request">审核2</a>
+                                    <a data-href="{{route('archives.toggle', [$a->id, 'success'])}}" data-id="{{$a->id}}" data-pass="success" class="ajax-request btn btn-circle btn-default ajax-request">审核</a>
                                 @endif
                             @endif
                         </td>
