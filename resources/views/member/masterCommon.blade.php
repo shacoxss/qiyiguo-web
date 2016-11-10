@@ -132,6 +132,7 @@
             <nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0">
                 <button class="menubtn pull-left btn "><i class="glyphicon  glyphicon-th"></i> 隐藏/显示导航栏</button>
                 <ul class="nav navbar-top-links navbar-right">
+
                     <li class="dropdown"> <a class="dropdown-toggle userdd" data-toggle="dropdown" href="javascript:void(0)">
                             <div class="userprofile small "> <span class="userpic"> <img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'" alt="" class="userpicimg">  </span>
                                 <div class="textcontainer">

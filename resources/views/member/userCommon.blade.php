@@ -104,6 +104,25 @@
             <nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0">
                 <button class="menubtn pull-left btn "><i class="glyphicon  glyphicon-th"></i> 隐藏/显示导航栏</button>
                 <ul class="nav navbar-top-links navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)"> <i class="fa fa-envelope fa-fw"></i>
+                            @if(session('message_sum')!=0)
+                            <span class="count">{{session('message_sum')}}</span>
+                            @endif
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            @foreach(session('message') as $v)
+                            <li class="@if($v->is_pass) primary @else important @endif statusmail">
+                                <a href="{{url('member/message')}}">
+                                    <div> <strong>系统消息</strong> <span class="pull-right text-muted"> <em>{{$v->updated_at}}</em> </span> </div>
+                                    <div>{{$v->message_info}}</div>
+                                </a>
+                            </li>
+                            @endforeach
+                            <li> <a class="text-center" href="{{url('member/message')}}"> <strong>查看所有消息</strong> <i class="fa fa-angle-right"></i> </a> </li>
+                        </ul>
+                        <!-- /.dropdown-messages -->
+                    </li>
                     <li class="dropdown"> <a class="dropdown-toggle userdd" data-toggle="dropdown" href="javascript:void(0)">
                             <div class="userprofile small "> <span class="userpic"> <img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'" alt="" class="userpicimg"> </span>
                                 <div class="textcontainer">

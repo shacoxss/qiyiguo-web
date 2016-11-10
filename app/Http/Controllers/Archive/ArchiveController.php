@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Archive;
 use App\Helpers\HTML;
 use App\Helpers\UploadFile;
 use App\Model\Category;
+use App\Model\Message;
 use App\Models\Archive\Archive;
 use App\Models\Archive\ArchiveType;
 use App\Models\Archive\Article;
@@ -334,6 +335,9 @@ class ArchiveController extends Controller
             DB::rollback();
             return response()->json(['error'=>2,'msg'=>'发布失败！']);
         }
+        //删除message
+        Message::where('archive_id',$archive->id)->delete();
+
 
         return response()->json(['修改成功！', '继续修改']);
     }
@@ -375,8 +379,18 @@ class ArchiveController extends Controller
         if ($name == 'review') {
             $archive->tags()->update(['status' => 2]);
         }
-        $archive->togglePattern($name);
-        return response()->json(['msg' => '操作成功！']);
+        //$archive->togglePattern($name);
+        //dd($name);
+        if($name=='success'){
+            $result = $archive->passReview();
+        }else{
+            $result = $archive->noPassReview();
+        }
+        if($result){
+            return response()->json(['msg' => '操作成功！']);
+        }else{
+            return response()->json(['msg' => '操作失败！']);
+        }
     }
 
     public function toggles($archives, $name)
@@ -430,4 +444,8 @@ class ArchiveController extends Controller
         return HTML::filter($content);
     }
 
+    public function noPassReason()
+    {
+        
+    }
 }
