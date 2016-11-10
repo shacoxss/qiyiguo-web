@@ -1,4 +1,4 @@
-<div class="am-g" style="margin-top:81px">
+<div class="am-g" style="margin-top:60px">
     <div class="slider">
         <div class="bd">
             <ul>

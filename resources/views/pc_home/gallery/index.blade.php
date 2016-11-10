@@ -182,7 +182,7 @@
                             {{--</div>--}}
                         {{--</div>--}}
                         <div class="am-g">
-                            <div class="am-u-sm-11 am-u-sm-centered am-album-child-recommand" style="background-color: #FFFFFF;width: 280px;margin-top: 10px;">
+                            <div class="am-u-sm-11 am-u-sm-centered am-album-child-recommand" style="background-color: #FFFFFF;width: 280px;">
                                 <div class="am-u-sm-6 am-u-sm-centered r-title">精彩推荐</div>
                                 <div class="am-u-sm-6 am-u-sm-centered bg-url">
                                     <h2>有点意思</h2>

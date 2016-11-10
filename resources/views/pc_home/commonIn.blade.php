@@ -79,7 +79,7 @@
                 <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm header-btn u-login tab-btn">登录</button>
             </div>
 @else
-            <div class="am-topbar-right already-l" style="margin-top:30px">
+            <div class="am-topbar-right already-l" style="margin-top:14px">
                 <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
                     <a href=""><span class="l-pic"><img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'"></span>
 
