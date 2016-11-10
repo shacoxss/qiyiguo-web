@@ -96,7 +96,7 @@
                     <th>标签</th>
                     <th width="100">点击</th>
                     <th width="150">权限</th>
-                    <th width="150">操作</th>
+                    <th width="200">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -234,7 +234,7 @@
                 layer.confirm('未通过原因', {
                     title:'请选择未通过原因',
                     area: ['500px', '300px'],
-                    content:"<select class='form-control input-sm' id='nopass' ><option value='0'>请选择未通过原因</option><option value='3'>内容质量太差</option> <option value='3'>存在大量相似内容</option><option value='2'>文章涉及政治，军事，宗教等内容</option></select><br/>其他：<br/><textarea style='width:460px;height:110px;' id='other'></textarea>",
+                    content:"<select class='form-control input-sm' id='nopass' ><option value='0'>请选择未通过原因</option><option value='3'>内容质量太差或存在大量相似内容</option><option value='2'>文章涉及政治，军事，宗教等内容</option></select><br/>其他：<br/><textarea class='form-control' rows='3' name='description' id='other' ></textarea>",
                     btn: ['确定', '取消']
                 },
                 function(){
@@ -251,6 +251,7 @@
                             msg = response.msg;
                         })
                     }else{
+                        var node = $status_3
                         $this
                                 .addClass(node[0])
                                 .removeClass(node[1])
