@@ -32,6 +32,7 @@
 			     	 </div>
 			     	 <div class="am-g table-cont">
 			     	 	<ul>
+							@if($list)
 							@foreach($list as $v)
 			     	 		<li>
 								@if($cate=='news')
@@ -48,13 +49,15 @@
 			     	 			<div class="am-u-sm-3">{{worldTime(strtotime($v->updated_at))}}</div>
 			     	 		</li>
 							@endforeach
+								@endif
 			     	 	</ul>
 			     	 </div>
 			     	</div>
 			     	
 						<div class="am-u-sm-6 am-u-sm-offset-6 pagination">
+							@if($list)
 						{{$list->links()}}
-			     	
+			     			@endif
 			     		</div>
 			     	<div class="am-u-sm-4" style="padding: 0;width: 360px;overflow: hidden;">
 			     		<div class="am-g" style="padding: 0; border-bottom:#CCCCCC 2px solid ; height: 40px;">
