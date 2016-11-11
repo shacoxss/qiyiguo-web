@@ -32,6 +32,7 @@
 			     	 </div>
 			     	 <div class="am-g table-cont">
 			     	 	<ul>
+							@if($list)
 							@foreach($list as $v)
 			     	 		<li>
 								@if($cate=='news')
@@ -48,6 +49,7 @@
 			     	 			<div class="am-u-sm-3">{{worldTime(strtotime($v->updated_at))}}</div>
 			     	 		</li>
 							@endforeach
+								@endif
 			     	 	</ul>
 			     	 </div>
 			     	</div>
