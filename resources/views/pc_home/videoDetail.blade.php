@@ -8,11 +8,11 @@
 @section('content')
 		<div class="am-g v-detail" style="margin-top:60px">
 			<div class="content">
-				{{--<div class="am-g v-d-link">--}}
-					{{--<a href="">首页></a>--}}
-					{{--<a href="">首页></a>--}}
-					{{--<a href="">首页></a>--}}
-				{{--</div>--}}
+				<div class="am-g v-d-link">
+					<a href="{{url('/')}}">首页></a>
+					<a href="{{url('video')}}">视频></a>
+					<a href="javascript:void(0)">{{$archive->title}}</a>
+				</div>
 				<div class="am-g v-d-title">
 					@if(!$review)
 						<h2 style="color:red;">该篇内容尚未通过审核，现属于预览状态！</h2>
@@ -31,6 +31,21 @@
 								<a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
 						</div>
 					</div>
+						<script>
+							window._bd_share_config = {
+								"common": {
+									"bdSnsKey": {},
+									"bdText": "",
+									"bdMini": "2",
+									"bdMiniList": false,
+									"bdPic": "",
+									"bdStyle": "0",
+									"bdSize": "24"
+								},
+								"share": {}
+							};
+							with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+						</script>
 				</div>
 				<div class="am-g">
 					<div class="am-u-sm-9 v-container" style="height:512px">
