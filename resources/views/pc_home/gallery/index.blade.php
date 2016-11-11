@@ -3,8 +3,8 @@
     <title>奇异果聚合-图库</title>
     <meta name="Keywords" content="">
     <meta name="description" content="" />
-@show
-@section('title')
+
+
     <link type="text/css" rel="stylesheet" href="{{asset('vendor/lightgallery/css/lightgallery.css')}}" />
     <script type="text/javascript" src="{{asset('vendor/lightgallery/js/lightgallery.js')}}"></script>
     <script type="text/javascript" src="{{asset('vendor/lightgallery/js/lg-thumbnail.js')}}"></script>
