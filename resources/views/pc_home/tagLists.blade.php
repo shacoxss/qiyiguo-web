@@ -1,4 +1,9 @@
 @extends('pc_home.commonIn')
+@section('title')
+    <title>奇异果聚合-标签列表</title>
+    <meta name="Keywords" content="">
+    <meta name="description" content="" />
+    @show
 @section('content')
 
     <!--banner-->
