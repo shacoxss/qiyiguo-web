@@ -24,8 +24,8 @@ class CreateAnchorsTable extends Migration
             $table->string('avatar');
             $table->unsignedInteger('online');
             $table->string('category_id');
-            $table->text('live_stream');
-            $table->tinyInteger('status');
+            $table->text('live_stream')->nullable();
+            $table->tinyInteger('status')->default(0);
         });
     }
 
