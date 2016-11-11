@@ -3012,3 +3012,18 @@ margin-left: 20px;
 	border-radius: 5px;
 	line-height: 15px;
 }
+
+/*1111*/
+.news-d-title {
+    margin-top: 60px;
+}
+
+.tab-block-r-ul dt{
+    padding-top: 1px;
+}
+.tk-liulan span:first-child{
+    margin-left: 0;
+}
+.news-d-word{
+    line-height: 30px;
+}

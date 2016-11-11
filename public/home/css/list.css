@@ -1701,3 +1701,13 @@ a.jctj-more {
 	position: relative;
 	float: left;
 }
+/*---*/
+.v-l-ul li{
+	margin: 0 20px 20px 0;
+}
+.nl-width .am-u-sm-8{
+	padding: 0;
+}
+.v-lost-h{
+	height: 64px;
+}
