@@ -2986,3 +2986,44 @@ margin-left: 20px;
 	border-top: 1px dashed #ddd;
 	padding: 20px 0 0;
 }
+/*
+*/
+.v-d-recommand>div{
+	overflow: hidden;
+}
+.more{
+	width: 100%;
+}
+.r-width>div>div{
+	overflow: hidden;
+}
+.tk-liulan{
+	padding: 11px 0 0;
+}
+.v-article p{
+	border-top:0;
+	padding: 0;
+}
+.v-article p:last-child{
+	border-top: 1px dashed #ddd;
+	padding: 20px 0 0;
+}
+.all-tabs-inside ul li{
+	border-radius: 5px;
+	line-height: 15px;
+}
+
+/*1111*/
+.news-d-title {
+    margin-top: 60px;
+}
+
+.tab-block-r-ul dt{
+    padding-top: 1px;
+}
+.tk-liulan span:first-child{
+    margin-left: 0;
+}
+.news-d-word{
+    line-height: 30px;
+}

@@ -74,7 +74,7 @@
 						</div>
 						</div>
 						<div class="am-g" style="background-color: #F4F4F4;padding-top: 10px;">
-						<ul class="pbtn">
+						<ul class="pbtn v-l-ul">
 
 					@foreach($videoList as $archive)
 					<li>

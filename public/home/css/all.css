@@ -907,3 +907,53 @@ a.play-l-button:hover{
 .v-list .content li{
     background: #000;
 }
+
+/*xiugai2*/
+[class*=am-u-]+[class*=am-u-]:last-child {
+    float: right;
+}
+.header-btn{
+    background-color: #67932c;
+    border: none;
+    border-radius: 2px;
+    font-size: 12px;
+}
+.tab-search>div>input{
+    width: 112px !important;
+    background: #333 !important;
+    border: 0px !important;
+    border-radius: 2px !important;
+    height: 26px !important;
+}
+.v-list .content li{
+    background: #000;
+}
+[class*=am-u-]+[class*=am-u-].am-u-end {
+    float: left !important;
+}
+.v-lost-r img{
+    float: left;
+    display: block;
+    margin-top: 2px;
+}
+.tab-block-r-ul dt{
+    width: 60px;
+    text-align: center;
+    border-radius: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.news-d-title{
+    margin-top: 60px;
+}
+
+.topic-left a {
+    display: inline-block;
+}
+
+
+
+.topic-left span:last-child {
+    float: none;
+}
