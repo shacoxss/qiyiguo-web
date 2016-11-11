@@ -43,24 +43,20 @@
                   </tr>
                   @endforeach
                 </table>
-                  <table class="table">
-                      <tr>
-                          <td class="read" style="text-align: center">
+
                               @if($count<15)
-                                  <strong >没有更多信息了</strong>
+                                  <strong style="margin-left: 400px;">没有更多信息了</strong>
                               @else
-                                  <a class="text-center" href="javascript:void(0)" id="more"><strong>更多消息</strong><i class="fa fa-angle-right"></i> </a>
+                                  <a class="text-center" href="javascript:void(0)" id="more"><strong style="margin-left: 400px;">更多消息</strong><i class="fa fa-angle-right"></i> </a>
                               @endif
-                          </td>
-                      </tr>
-                  </table>
+
               </div>
             </div>
           </div>
           <div class="col-md-6 col-lg-7">
 
             <div class="maillist detail" data-id="">
-                    @if(empty($messages))
+                    @if(count($messages)==0)
                     <div class="col-lg-12" >
                         <h2 class="page-header text-center">没有任何消息</h2>
                     </div>
