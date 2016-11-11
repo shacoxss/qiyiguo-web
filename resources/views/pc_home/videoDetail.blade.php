@@ -1,5 +1,9 @@
 @extends('pc_home.commonIn')
-
+@section('title')
+	<title>奇异果聚合-{{$archive->title}}</title>
+	<meta name="Keywords" content=""
+	<meta name="description" content="{!! $archive->detail->content !!}" />
+@show
 
 @section('content')
 		<div class="am-g v-detail" style="margin-top:60px">
