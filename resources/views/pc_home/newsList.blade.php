@@ -14,7 +14,7 @@
 				<div class="zm-u-sm-6 am-u-sm-centered banner-t">
 					<h2>{{ $cate->cate_name }} </h2>
 				</div>
-				<div class="am-g nl-width">
+				<div class="am-g">
 					<div class="am-u-sm-3 nl-box">
 						<div class="am-thumbnail banner-v">
 							<a href=""><img src="{{asset('home/images/hot-holder-1.jpg')}}" alt="" /></a>
