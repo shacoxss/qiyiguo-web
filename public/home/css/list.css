@@ -1723,10 +1723,14 @@ a.jctj-more {
 	overflow: hidden;
 	height: 332px;
 	margin: 0 10px;}
+.slider .bd li {
+	overflow: hidden;
+	height: 332px;
+	margin: 0 10px;}
 .slider .pnBtn .blackBg-l {
 	display: block;
 	position: absolute;
-	left: -109px;
+	left: -131px;
 	top: 0;
 	width: 100%;
 	height: 332px;
@@ -1737,7 +1741,7 @@ a.jctj-more {
 .slider .pnBtn .blackBg-r {
 	display: block;
 	position: absolute;
-	left: 151px;
+	left: 128px;
 	top: 0;
 	width: 100%;
 	height: 332px;
@@ -1745,6 +1749,13 @@ a.jctj-more {
 	filter: alpha(opacity=50);
 	opacity: 0.8;
 }
+
+.slider .bd {
+	width: 1200px;
+	position: absolute;
+	margin-left: -632px;
+	left: 50%;}
+
 
 /*---*/
 .v-l-ul li{
