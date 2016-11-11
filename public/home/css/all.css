@@ -947,3 +947,13 @@ a.play-l-button:hover{
 .news-d-title{
     margin-top: 60px;
 }
+
+.topic-left a {
+    display: inline-block;
+}
+
+
+
+.topic-left span:last-child {
+    float: none;
+}

@@ -58,7 +58,7 @@
         var BASE_URL = '{{route('galleries.index')}}';
         var DETAIL_URL = '{{url('gallery/')}}';
     </script>
-    <link rel="stylesheet" href="{{asset('css/album/list_moment.css')}}">
+    <link rel="stylesheet" href="{{asset('home/css/album/list_moment.css')}}">
     <script type="text/javascript" src="{{asset('js/album/jquery.masonry.js')}}"></script>
     <script type="text/javascript" src={{asset('js/album/openmodal.js')}}></script>
 @endsection
