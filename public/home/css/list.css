@@ -1711,3 +1711,10 @@ a.jctj-more {
 .v-lost-h{
 	height: 64px;
 }
+.nl-width {
+	width: 1200px;
+	padding: 0;
+	margin-top: 35px;
+	overflow: hidden;
+	padding-left: 20px;
+}
