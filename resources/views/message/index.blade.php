@@ -14,61 +14,64 @@
     </ol>    
     <!-- /.row -->
     <div class="row">
-      <div class="col-md-12">
-        <div class="col-lg-12" style="padding:0">
-        <div class="panel panel-primary">
-          <div class="col-md-6 col-lg-5">
-            <div class="row">
-              <div class="col-md-12 padding borderbtm">
-                <input type="checkbox" id="checkall">
-                <label for="check1"></label>
-                <button type="button" class="btn btn-default " id="del"><i class="fa fa-trash-o  "></i> 删除</button>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-            <div class="row">
-              <div class="maillist">
-                <table class="mailmessages table">
-                  @foreach($messages as $v)
-                  <tr id="{{$v->id}}">
-                    <td class="@if($v->view==1) default @else @if($v->is_pass) primary @else important @endif @endif statusmail view"  data-id="{{$v->id}}" data-head_img="{{$v->user['head_img']}}" data-updated_at="{{$v->created_at}}" data-nickname="{{$v->user['nickname']}}" data-message_info="{{$v->message_info}}" data-message="{!! $v->message !!}" data-is_pass="{{$v->is_pass}}">
-                      <input type="checkbox" id="check{{$v->id}}" class="select-id" data-id="{{$v->id}}">
-                      <label for="check{{$v->id}}"></label>
-                      <a href="javascript:void(0)">
-                      <div class="imgpic"><img src="{{asset('img/100100.png')}}" alt=""> </div>
-                      <div class="textmail"> <strong>系统消息</strong> <span class="pull-right text-muted">{{$v->created_at}}</span>
-                        <p>{{$v->message_info}}</p>
-                      </div>
-                      </a></td>
-                  </tr>
-                  @endforeach
-                </table>
+        @if(count($messages)==0)
+                <div class="col-lg-12">
+                    <h1 class="page-header text-center">没有任何消息</h1>
+                </div>
+        @else
+            <div class="col-md-12">
+                <div class="col-lg-12" style="padding:0">
+                    <div class="panel panel-primary">
+                        <div class="col-md-6 col-lg-5">
+                            <div class="row">
+                                <div class="col-md-12 padding borderbtm">
+                                    <input type="checkbox" id="checkall">
+                                    <label for="check1"></label>
+                                    <button type="button" class="btn btn-default " id="del"><i class="fa fa-trash-o  "></i> 删除</button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <div class="maillist">
+                                    <table class="mailmessages table">
+                                        @foreach($messages as $v)
+                                            <tr id="{{$v->id}}">
+                                                <td class="@if($v->view==1) default @else @if($v->is_pass) primary @else important @endif @endif statusmail view"  data-id="{{$v->id}}" data-head_img="{{$v->user['head_img']}}" data-updated_at="{{$v->created_at}}" data-nickname="{{$v->user['nickname']}}" data-message_info="{{$v->message_info}}" data-message="{!! $v->message !!}" data-is_pass="{{$v->is_pass}}">
+                                                    <input type="checkbox" id="check{{$v->id}}" class="select-id" data-id="{{$v->id}}">
+                                                    <label for="check{{$v->id}}"></label>
+                                                    <a href="javascript:void(0)">
+                                                        <div class="imgpic"><img src="{{asset('img/100100.png')}}" alt=""> </div>
+                                                        <div class="textmail"> <strong>系统消息</strong> <span class="pull-right text-muted">{{$v->created_at}}</span>
+                                                            <p>{{$v->message_info}}</p>
+                                                        </div>
+                                                    </a></td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
 
-                              @if($count<15)
-                                  <strong style="margin-left: 400px;">没有更多信息了</strong>
-                              @else
-                                  <a class="text-center" href="javascript:void(0)" id="more"><strong style="margin-left: 400px;">更多消息</strong><i class="fa fa-angle-right"></i> </a>
-                              @endif
+                                    @if($count<15)
+                                        <strong>没有更多消息了</strong>
+                                    @else
+                                        <a class="text-center" href="javascript:void(0)" id="more"><strong>更多消息</strong><i class="fa fa-angle-right"></i> </a>
+                                    @endif
 
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-7">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-7">
 
-            <div class="maillist detail" data-id="">
-                    @if(count($messages)==0)
-                    <div class="col-lg-12" >
-                        <h2 class="page-header text-center">没有任何消息</h2>
+                            <div class="maillist detail" data-id="">
+
+                            </div>
+
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
-                    @endif
-          </div>
+                </div>
+            </div>
+            <!-- /.row -->
+        @endif
 
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      </div>
-    </div>
-    <!-- /.row --> 
     
   </div>
   <!-- /#page-wrapper -->
