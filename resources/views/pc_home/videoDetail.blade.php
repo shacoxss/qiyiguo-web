@@ -147,6 +147,7 @@
 							</div>
 							<div class="news-detail-content-left-p">
 								{!! $archive->detail->content !!}
+								<hr data-am-widget="divider" style="" class="am-divider am-divider-dashed" />
 								<p style="text-align: center;">
 									<button type="button"
 											class="am-btn am-btn-success btn like" @if($archive->isLiked(session('user'))) disabled @endif>

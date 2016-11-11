@@ -2132,6 +2132,7 @@ padding: 5px 20px;
 	position: absolute;
 	right: 5px;
 	top: 0;
+	padding-top: 4px;
 	color: #838383;
 }
 .tab-banner{
@@ -3032,4 +3033,28 @@ margin-left: 20px;
 }
 .bg-url {
 	height: 23px;
+}
+
+/*video-detail修改*/
+.v-article .v-article{
+	padding-left: 0 !important;
+}
+.am-album-modal-btn{
+	z-index: 99999;
+}
+.album-article, .v-article{
+	text-align: left;
+}
+.v-article p:last-child{
+	border-top:none;
+	padding: 0;
+}
+.v-d-title {
+	padding-bottom: 10px;
+	padding-top: 5px;
+}
+.v-d-link {
+	font-size: 12px;
+	color: #999999;
+	padding: 5px 0 0;
 }
