@@ -262,34 +262,4 @@ $(function() {
 		}
 	}
 	videoPages.init();
-
-	var login = {
-		init: function() {
-			$('.u-login').click(function() {
-				layer.open({
-					type: 1,
-					title: false,
-					closeBtn: 0,
-					shadeClose: true,
-					content: '<div class="login-pop"data-point="dlk"><div class="login-pop-close"></div><div class="login-pop-tab"><ul><li><a href="#" class="t-login current">登录</a></li><li><a href="" target="_blank">注册</a></li></ul></div><div class="login-pop-cont clearfix"><div class="c-item clearfix popLogin"><form method="post" action=""><input type="hidden" name="fmdo" value="login"><input type="hidden" name="dopost" value="login"><input type="hidden" name="gourl" value=""><p><input class="ipt" type="text" name="userid" id="txtUsername" placeholder="昵称"></p><p><input class="ipt" type="password" name="pwd" id="txtPassword" placeholder="密码"></p><p><input class="ipt" type="text" name="vdcode" id="vdcode" placeholder="验证码" maxlength="4" style="width:150px;margin-right:7px;"><img id="" align="absmiddle" onclick="this.src=this.src+\'?\'" style="cursor: pointer;" alt="看不清？点击更换" title="看不清？点击更换" src="images/login/ewm.jpg"/></p><div class="toreg clearfix"><input class="btn-sub"type="submit"value="登录"><p>没有账号？<a href="" title="马上注册" target="_blank">马上注册</a></p></div></form></div><div class="c-oth"><p>用第三方账号直接登录</p><div><a href="/member/qqlogin.php" class="btn-qq"target="_blank"title="QQ账号登录"data-point-2="qq"><span class="dy-icon dy-sina"></span><span>QQ账号登录</span></a></div><div><a href="/member/wechatLogin.php" class="btn-wx"target="_blank"title="微信登录"data-point-2="qq"><span class="dy-icon dy-wx"></span><span>微信登录</span></a></div><p class="forget-pass"><a href="/member/resetpassword.php" target="_blank">忘记密码？</a></p></div></div></div>'
-				})
-				$(".t-login").on("click", function() {
-					$(".t-login").addClass("current");
-					$(".t-reg").removeClass("current");
-					$(".popLogin").removeClass("hide");
-					$(".popReg").addClass("hide");
-				})
-				$(".t-reg").on("click", function() {
-					$(".t-reg").addClass("current");
-					$(".t-login").removeClass("current");
-					$(".popLogin").addClass("hide");
-					$(".popReg").removeClass("hide");
-				})
-				$(".login-pop-close").on("click", function() {
-					layer.closeAll();
-				})
-			})
-		}
-	}
-	login.init();
 })

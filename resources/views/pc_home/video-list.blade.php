@@ -4,7 +4,12 @@
 		<!--轮播图-->
 		@include('inc.top-slide')
 		<!--轮播图-->
-
+<style>
+	.am-g{
+		margin: 0 auto;
+		width: auto;
+	}
+</style>
 		<div class="am-g v-list">
 			<div class="content">
 				<ul>

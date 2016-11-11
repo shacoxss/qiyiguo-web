@@ -17,11 +17,12 @@ class messageController extends Controller
     public function index()
     {
         $user = session('user');
-        $messages = Message::where('user_id',$user->id)->where('is_del',0)->orderBy('updated_at','desc')->get();
+        $messages = Message::where('user_id',$user->id)->where('is_del',0)->orderBy('updated_at','desc')->take(15)->get();
+        $count = Message::where('user_id',$user->id)->where('is_del',0)->count();
         foreach($messages as $v){
             $v->user = Users::where('id',$v->user_id)->first();
         }
-        return view('message.index',compact('messages'));
+        return view('message.index',compact('messages','count'));
     }
 
     public function nopass()
@@ -31,11 +32,11 @@ class messageController extends Controller
                 $data['archive_id'] = $archive->id;
                 $data['user_id'] = $archive->user_id;
                 $data['reviewed_id'] = session('user')->id;
+                $data['message_info'] = "您发布的文章《".$archive->title."》没有通过审核，请修改后提交！";
                 if(!empty($input['other'])){
                     $data['message'] = trim($input['other']);
                 }else{
                     $data['message_no'] = $input['message_no'];
-                    $data['message_info'] = "您发布的文章《".$archive->title."》没有通过审核，请修改后提交！";
                     switch ($data['message_no']) {
                         case '2':
                             $data['message'] = "请不要发布涉及军事·政治·宗教·信仰等信息奇异果聚合旨在提供原创的直播相关内容，请不要发布无关内容。";
@@ -96,5 +97,16 @@ class messageController extends Controller
         }else{
             return 'error';
         }
+    }
+
+    public function more($page)
+    {
+        $skip = $page * 15;
+        $user = session('user');
+        $messages = Message::where('user_id',$user->id)->where('is_del',0)->orderBy('updated_at','desc')->skip($skip)->take(15)->get();
+        foreach($messages as $v){
+            $v->user = Users::where('id',$v->user_id)->first();
+        }
+        return response()->json($messages);
     }
 }
