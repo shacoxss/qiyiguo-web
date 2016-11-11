@@ -1774,3 +1774,7 @@ a.jctj-more {
 	overflow: hidden;
 	padding-left: 20px;
 }
+
+.nl-box:last-child {
+	margin: 0;
+}
