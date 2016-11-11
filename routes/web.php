@@ -113,6 +113,7 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::any('message/nopass','messageController@nopass');
     Route::post('message/change','messageController@change');
     Route::post('message/destroy','messageController@destroy');
+    Route::get('message/more/{page}','messageController@more');
 });
 Route::get('noAuth',function(){
    return view('member.noAuth');

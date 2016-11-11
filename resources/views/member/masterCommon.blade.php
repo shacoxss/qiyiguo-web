@@ -147,7 +147,13 @@
                                     </a>
                                 </li>
                             @endforeach
-                            <li> <a class="text-center" href="{{url('member/message')}}"> <strong>查看所有消息</strong> <i class="fa fa-angle-right"></i> </a> </li>
+                            <li> <a class="text-center" href="{{url('member/message')}}">
+                                    @if(session('message_sum')!=0)
+                                        <strong>查看所有消息</strong>
+                                    @else
+                                        <strong>没有新的信息</strong>
+                                    @endif
+                                    <i class="fa fa-angle-right"></i> </a> </li>
                         </ul>
                         <!-- /.dropdown-messages -->
                     </li>

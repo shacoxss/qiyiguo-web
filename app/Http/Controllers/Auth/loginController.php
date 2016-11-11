@@ -16,6 +16,9 @@ class loginController extends Controller
     //用户登录
     public function login()
     {
+        if(session('user')){
+            return redirect('/');
+        }
         return view('auth.login');
     }
     //验证码

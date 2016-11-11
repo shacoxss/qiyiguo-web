@@ -137,7 +137,7 @@
                             @if($a->checkReview()==1)
                                 <span class="status active">开放浏览</span>
                             @elseif($a->checkReview()==-1)
-                                <span class="status inactive">待审核</span>
+                                <span class="status btn-warning">待审核</span>
                             @elseif($a->checkReview()==0)
                                 <span class="status inactive">未通过</span>
                             @endif
