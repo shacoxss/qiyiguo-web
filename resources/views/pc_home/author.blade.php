@@ -48,6 +48,7 @@
                 <div class="am-g author-detail">
                     <div class="author-detail-bg">
                         <div class="author-name">{{ $user->nickname or $user->phone }}</div>
+                        {{dd(session('user'))}}
                         @if(session('user') && session('user')->isFollowed($user))
                             <button class="news-d-about-author-r-add" data-follow="1" style="background-image: url({{asset('home/images/tab/del.png')}})"></button>
                         @else
