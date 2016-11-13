@@ -112,19 +112,14 @@
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                             <div class="col-lg-3">
-                                                @if(isset($archive) && $archive->cover)
-                                                    <img style="max-width:250px;" src="{{route('image', [$archive->cover, '250'])}}" />
-                                                @endif
-                                                <a href="javascript:;" class="uploadImgGroup btn btn-primary btn-xl"><i class="fa fa-plus"></i> 点击上传封面
-                                                    <input type="file" name="cover" style="display: none;">
-                                                </a>
-                                                <label>默认使用图集第一张图片作为封面</label>
+                                                @include('inc.scripts.archive-cover')
+                                                <p>默认使用图集第一张图片作为封面</p>
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary">提 交</button>
-                                            <button type="reset" class="btn btn-default">重 置</button>
+                                            <button class="btn btn-default">预 览</button>
                                         </div>
                                     </form>
                                     <!--Tab End-->
@@ -154,6 +149,8 @@
     <script src="{{ asset('js/Sortable.js') }}"></script>
     <script src="{{ asset('js/jquery.binding.js') }}"></script>
     <script>
+        $extract_tags_url = '{{route('tag.extract')}}';
+
         var $files = [];
         function generateItem(file, index) {
             return $(
@@ -264,80 +261,12 @@
                         window.location.reload()
                     })
                 }
-                layer.confirm(response[0], {
-                    title: '信息',
-                    btn: ['确定', response[1]] //按钮
-                }, function () {
-                    window.location.href = '{{$left == 'master' ? route('archives.index', ['master']) : route('archives.index')}}'
-                }, function () {
-                    window.location.reload()
-                })
             })
             .fail(function (response) {
                 layer.msg("失败", {icon: 2})
             })
             return false;
         })
-
-        $extract_tags_url = '{{route('tag.extract')}}';
-
-        var gen_add_tag = function () {
-            $('#extract a.btn-xss').on('click', function () {
-                var input = $(this).parents('div.form-group').find('input')
-                input.val(input.val() + (input.val() ? ',' : '') + $(this).text())
-                if ($('#extract a.btn-xss').length == 1) $(this).parents('p').css('display', 'none')
-                $(this).remove()
-            })
-        }
-
-        $editor_change = function () {
-            var lock_count, lock_time, lock_response
-            lock_count = lock_time = lock_response = false
-            return function () {
-                var text = editor.$txt.text().replace(/\s\s/g, '');
-
-                lock_count = Math.abs(text.length - $content_length) < 20
-                        ? true : false
-
-
-
-                if (lock_count || lock_time || lock_response) return ;
-
-                lock_time = lock_response = true
-                setTimeout(function () {lock_time = false}, 5000)
-                $content_length = text.length
-                $.ajax({
-                    url : $extract_tags_url,
-                    type : 'POST',
-                    data : {
-                        'text' : text,
-                        '_token' : $_token
-                    }
-                }).done(function (response) {
-                    var sort = [];
-                    for (var tag in response) {
-                        sort.push({tag:tag, weight: response[tag]})
-                    }
-                    sort = sort.sort(function down(x, y) {
-                        return (x.weight < y.weight) ? 1 : -1
-
-                    });
-                    var $extract = $('#extract');
-                    $extract.html('')
-                    for (var i = 0; i < sort.length; i++) {
-                        $extract.append('<a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> '+sort[i].tag+'</a>')
-                        if(i>7) break;
-                    }
-                    gen_add_tag()
-                    $extract.parents('p').css('display', 'block')
-                    lock_response = false
-                }).fail(function () {
-                    lock_response = false;
-                })
-            }
-
-        }
-
     </script>
     <script type="text/javascript" src={{asset("pulgin/wangEditor/dist/js/wangEditor.js")}}></script>
     <!--<script type="text/javascript" src="pulgin/wangEditor/dist/js/wangEditor.min.js"></script>-->

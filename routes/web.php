@@ -107,7 +107,13 @@ Route::group(['prefix'=>'member','namespace'=>'Member','middleware'=>'loginAuth'
     Route::get('masterCategoryDel/{id}','categoryController@delete')->middleware('catAuth');
     Route::get('masterCategory/{id}','categoryController@edit')->middleware('catAuth');
     Route::post('masterCategory/{id}','categoryController@update')->middleware('catAuth');
-
+    Route::resource('links','linksController');
+    Route::post('links/status','linksController@status');
+    Route::any('message','messageController@index');
+    Route::any('message/nopass','messageController@nopass');
+    Route::post('message/change','messageController@change');
+    Route::post('message/destroy','messageController@destroy');
+    Route::get('message/more/{page}','messageController@more');
 });
 Route::get('noAuth',function(){
    return view('member.noAuth');

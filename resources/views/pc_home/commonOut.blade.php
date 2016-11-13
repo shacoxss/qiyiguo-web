@@ -184,22 +184,11 @@
 
         <div class="am-g interlink">
             <ul>
+                @foreach($links as $v)
                 <li>
-                    <a href="">快科技</a>
+                    <a href="{{$v->link_url}}">{{$v->name}}</a>
                 </li>
-                <li>
-                    <a href="">快科技</a>
-                </li>
-                <li>
-                    <a href="">快科技</a>
-                </li>
-                <li>
-                    <a href="">快科技</a>
-                </li>
-                <li>
-                    <a href="">快科技</a>
-                </li>
-
+                @endforeach
             </ul>
         </div>
         <div class="am-g">

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Archive;
 
+use App\Helpers\HTML;
 use App\Helpers\UploadFile;
 use App\Model\Category;
+use App\Model\Message;
 use App\Models\Archive\Archive;
 use App\Models\Archive\ArchiveType;
 use App\Models\Archive\Article;
@@ -12,6 +14,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 
@@ -107,6 +110,8 @@ class ArchiveController extends Controller
      */
     public function store(Request $request, ArchiveType $type)
     {
+        //基本信息
+        DB::beginTransaction();
         $new = $request->only($this->fields);
         $new['archive_type_id'] = $type->id;
         $new['mode'] = $this->calcMode($request);
@@ -150,30 +155,77 @@ class ArchiveController extends Controller
 
         $validator = Validator::make($input,$rules,$message);
         if($validator->passes()){
-            $archive = Archive::create($new);
+            if($archive = Archive::create($new)){
+
+                $tags = explode(',', $request->tags);
+                $tags = array_slice($tags, 0, 3);
+                if (!empty($tags[0])) {
+                    $tags = Tag::wrapToIds($tags, true, true);
+                    $tags = Tag::convertToPrimaries($tags);
+                    $archive->tags()->attach($tags->all());
+                }
+                //详情信息
+                $detail = $request->only(explode(',', $type->fields));
+                if(isset($detail['link'])){
+                    //优酷
+                    if(preg_match('/<embed(.*)<\/embed>/',$detail['link'])||preg_match('/<object(.*)<\/object>/',$detail['link'])){
+
+                    }else{
+                        if(preg_match('/v.youku.com/',$detail['link'])){
+                            $content = file_get_contents("compress.zlib://".$detail['link']);
+                            if(preg_match('/<embed(.*)<\/embed>/',$content,$link)){
+                                $detail['link'] = $link[0];
+                            }else{
+                                return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                            }
+                        }elseif(preg_match('/v.qq.com/',$detail['link'])){
+                            //腾讯
+                            $content = file_get_contents("compress.zlib://".$detail['link']);
+                            if(!$content){
+                                DB::rollback();
+                                return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                            }
+                            preg_match('/vid:(\s*)"(.*)",/', $content, $match);
+                            $link = $match[2];
+                            $detail['link'] = '<embed src="http://static.video.qq.com/TPout.swf?vid='.$link.'&auto=0" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>';
+                        }elseif(preg_match('/sohu.com/',$detail['link'])){
+                            //搜狐
+                            $content = file_get_contents("compress.zlib://".$detail['link']);
+                            if(!$content){
+                                DB::rollback();
+                                return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                            }
+                            preg_match('/(var)(\s*)vid(\s*)=(\s*)"(.*)";/', $content, $match);
+                            $vid = $match[5];
+                            preg_match('/(var)(\s*)playlistId(\s*)=(\s*)"(.*)";/', $content, $matches);
+                            $pid = $matches[5];
+                            $detail['link'] = '<object width=1460 height=639><param name="movie" value="http://share.vrs.sohu.com/'.$vid.'/v.swf&topBar=1&autoplay=false&plid='.$pid.'&pub_catecode=0&from=page"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><param name="wmode" value="Transparent"></param><embed width=1460 height=639 wmode="Transparent" allowfullscreen="true" allowscriptaccess="always" quality="high" src="http://share.vrs.sohu.com/'.$vid.'/v.swf&topBar=1&autoplay=false&plid='.$pid.'&pub_catecode=0&from=page" type="application/x-shockwave-flash"/></embed></object>';
+                        }else{
+                            DB::rollback();
+                            return response()->json(['error'=>2,'msg'=>'视频链接错误，仅支持腾讯，优酷，搜狐视频或html视频代码！']);
+                        }
+                    }
+                }
+                $detail['content'] = $this->genContent($detail['content']);
+                $model = $type->model;
+                if(!$model::saveDetail($archive, $detail)){
+                    DB::rollback();
+                }
+                if(!$archive->generateTagUrl()){
+                    DB::rollback();
+                }
+                DB::commit();
+            }
         }else{
             return response()->json(['error'=>1,'msg'=>$validator->errors()]);
         }
-
-
-        $tags = explode(',', $request->tags);
-        $tags = array_slice($tags, 0, 3);
-        if (!empty($tags[0])) {
-            $tags = Tag::wrapToIds($tags, true, true);
-            $tags = Tag::convertToPrimaries($tags);
-            $archive->tags()->attach($tags->all());
-        }
-        $detail = $request->only(explode(',', $type->fields));
-        $model = $type->model;
-        $model::saveDetail($archive, $detail);
-
-        $archive->generateTagUrl();
 
         return response()->json(['发布成功！', '继续发布']);
     }
 
     public function update(Request $request, Archive $archive)
     {
+        DB::beginTransaction();
         $user = session('user');
         ($archive->user_id == $user->id) || $this->checkMaster();
 
@@ -211,30 +263,81 @@ class ArchiveController extends Controller
             $archive->mode = $this->calcMode($request, $archive->mode);
             $input = $request->only($this->fields);
             $archive->fill($input);
-            $archive->save();
+            $result = $archive->save();
         }else{
             return response()->json(['error'=>1,'msg'=>$validator->errors()]);
         }
+        if($result){
+            $detail = $request->only(explode(',', $archive->type->fields));
+            if(isset($detail['link'])){
+                //优酷
+                if(preg_match('/<embed(.*)<\/embed>/',$detail['link'])||preg_match('/<object(.*)<\/object>/',$detail['link'])){
 
-        $detail = $request->only(explode(',', $archive->type->fields));
-        $model = $archive->type->model;
-        $model::saveDetail($archive, $detail);
+                }else{
+                    if(preg_match('/v.youku.com/',$detail['link'])){
+                        $content = file_get_contents("compress.zlib://".$detail['link']);
+                        if(preg_match('/<embed(.*)<\/embed>/',$content,$link)){
+                            $detail['link'] = $link[0];
+                        }else{
+                            return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                        }
+                    }elseif(preg_match('/v.qq.com/',$detail['link'])){
+                        //腾讯
+                        $content = file_get_contents("compress.zlib://".$detail['link']);
+                        if(!$content){
+                            DB::rollback();
+                            return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                        }
+                        preg_match('/vid:(\s*)"(.*)",/', $content, $match);
+                        $link = $match[2];
+                        $detail['link'] = '<embed src="http://static.video.qq.com/TPout.swf?vid='.$link.'&auto=0" allowFullScreen="true" quality="high" width="480" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>';
+                    }elseif(preg_match('/sohu.com/',$detail['link'])){
+                        //搜狐
+                        $content = file_get_contents("compress.zlib://".$detail['link']);
+                        if(!$content){
+                            DB::rollback();
+                            return response()->json(['error'=>2,'msg'=>'视频链接错误!']);
+                        }
+                        preg_match('/(var)(\s*)vid(\s*)=(\s*)"(.*)";/', $content, $match);
+                        $vid = $match[5];
+                        preg_match('/(var)(\s*)playlistId(\s*)=(\s*)"(.*)";/', $content, $matches);
+                        $pid = $matches[5];
+                        $detail['link'] = '<object width=1460 height=639><param name="movie" value="http://share.vrs.sohu.com/'.$vid.'/v.swf&topBar=1&autoplay=false&plid='.$pid.'&pub_catecode=0&from=page"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><param name="wmode" value="Transparent"></param><embed width=1460 height=639 wmode="Transparent" allowfullscreen="true" allowscriptaccess="always" quality="high" src="http://share.vrs.sohu.com/'.$vid.'/v.swf&topBar=1&autoplay=false&plid='.$pid.'&pub_catecode=0&from=page" type="application/x-shockwave-flash"/></embed></object>';
+                    }else{
+                        DB::rollback();
+                        return response()->json(['error'=>2,'msg'=>'视频链接错误，仅支持腾讯，优酷，搜狐视频或html视频代码！']);
+                    }
+                }
+            }
+            $tags = $archive->tags()->get()->pluck('id')->all();
+            if (!empty($tags)) {
+                $archive->tags()->detach($tags);
+            }
 
+            $tags = explode(',', $request->tags);
+            if (!empty($tags[0])) {
+                $tags = array_slice($tags, 0, 3);
+                $tags = Tag::wrapToIds($tags, true, true);
+                $tags = Tag::convertToPrimaries($tags);
+                $archive->tags()->attach($tags->all());
+            }
 
-        $tags = $archive->tags()->get()->pluck('id')->all();
-        if (!empty($tags)) {
-            $archive->tags()->detach($tags);
+            $detail['content'] = $this->genContent($detail['content']);
+            $model = $archive->type->model;
+            if(!$model::saveDetail($archive, $detail)){
+                DB::rollback();
+            }
+            if(!$archive->generateTagUrl()){
+                DB::rollback();
+            }
+            DB::commit();
+        }else{
+            DB::rollback();
+            return response()->json(['error'=>2,'msg'=>'发布失败！']);
         }
+        //删除message
+        Message::where('archive_id',$archive->id)->delete();
 
-        $tags = explode(',', $request->tags);
-        if (!empty($tags[0])) {
-            $tags = array_slice($tags, 0, 3);
-            $tags = Tag::wrapToIds($tags, true, true);
-            $tags = Tag::convertToPrimaries($tags);
-            $archive->tags()->attach($tags->all());
-        }
-
-        $archive->generateTagUrl();
 
         return response()->json(['修改成功！', '继续修改']);
     }
@@ -273,8 +376,21 @@ class ArchiveController extends Controller
     public function toggle(Archive $archive, $name)
     {
         $this->checkMaster();
-        $archive->togglePattern($name);
-        return response()->json(['msg' => '操作成功！']);
+        if ($name == 'review') {
+            $archive->tags()->update(['status' => 2]);
+        }
+        //$archive->togglePattern($name);
+        //dd($name);
+        if($name=='success'){
+            $result = $archive->passReview();
+        }else{
+            $result = $archive->noPassReview();
+        }
+        if($result){
+            return response()->json(['msg' => '操作成功！']);
+        }else{
+            return response()->json(['msg' => '操作失败！']);
+        }
     }
 
     public function toggles($archives, $name)
@@ -321,4 +437,15 @@ class ArchiveController extends Controller
         return true;
     }
 
+    //过滤掉标签首的空白
+    private function genContent($content)
+    {
+        $content = preg_replace('#(<(?:[a-z]|h[1-6])[^>]*>)(?:&nbsp;|\s)+#is', '$1', $content);
+        return HTML::filter($content);
+    }
+
+    public function noPassReason()
+    {
+        
+    }
 }

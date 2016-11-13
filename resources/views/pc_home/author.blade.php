@@ -1,7 +1,7 @@
 @extends('pc_home.commonIn')
 
 @section('title')
-    <title></title>
+    <title>{{$user->nickname}}的主页</title>
     <meta name="Keywords" content="">
     <meta name="description" content="" />
 @endsection

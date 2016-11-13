@@ -221,11 +221,13 @@ $(function() {
 					var _thisList = $(this);
 					_thisList.find($(".v-list .v-btn")).show();
 					_thisList.find($(".v-list-shade")).css("bottom", "-50px");
+					_thisList.find($("img")).css("opacity","0.5")
 				},
 				function() {
 					var _thisList = $(this);
 					_thisList.find($(".v-list .v-btn")).hide();
 					_thisList.find($(".v-list-shade")).css("bottom", "0px");
+					_thisList.find($("img")).css("opacity","1")
 				}
 			)
 		},
@@ -260,9 +262,4 @@ $(function() {
 		}
 	}
 	videoPages.init();
-
-
 })
-
-
-

@@ -17,18 +17,18 @@
 <!-- /.row -->
 <div class="row">
     <div class="col-md-12">
+        <div class="row">
+            <p>
+                <button type="button" class="btn btn-primary btn-xs" onclick="window.open('{{ route('tag.create') }}','_self')"><i class="fa fa-plus"></i> 新增</button>
+                <button type="button" class="btn btn-success btn-xs checked_all"><i class="fa fa-arrows"></i> 全选</button>
+                <button type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> 审核</button>
+                <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> 停用</button>
+            </p>
+        </div>
         <table class="table table-bordered table-hover" id="dataTables-userlist">
             <thead>
-            <div class="row">
-                <p>
-                    <button type="button" class="btn btn-primary btn-xs" onclick="window.open('masterTagAdd.php','_self')"><i class="fa fa-plus"></i> 新增</button>
-                    <button type="button" class="btn btn-success btn-xs"><i class="fa fa-arrows"></i> 全选</button>
-                    <button type="button" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i> 审核</button>
-                    <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-times"></i> 停用</button>
-                </p>
-            </div>
             <tr>
-                <th width="100"><input type="checkbox" /> </th>
+                <th width="100"><input type="checkbox" class="checked_all" /> </th>
                 <th width="100">ID</th>
                 <th>标签名</th>
                 <th>文档数</th>
@@ -76,11 +76,7 @@
 
 @section('scripts')
     <script src="{{asset('js/vue.js')}}"></script>
-    <!-- DataTables JavaScript -->
-    <script src={{asset("vendor/datatables/js/jquery.dataTables.min.js")}}></script>
-    <script src={{asset("vendor/datatables-plugins/dataTables.bootstrap.min.js")}}></script>
-    <script src={{asset("vendor/datatables-responsive/dataTables.responsive.js")}}></script>
-
+    @include('inc.scripts.require-datatables')
     <!-- Custom Theme JavaScript -->
     <script>
         var $status_4 = [
@@ -91,40 +87,34 @@
             'btn-success', 'btn-danger', '启用', 2,
             '<span class="status inactive">已停用</span>'
         ];
-        $(document).ready(function() {
-            $('#dataTables-userlist').DataTable({
-                responsive: true,
-                pageLength:10,
-                sPaginationType: "full_numbers",
-                oLanguage: {
-                    oPaginate: {
-                        sFirst: "<<",
-                        sPrevious: "<",
-                        sNext: ">",
-                        sLast: ">>"
-                    }
-                }
-            });
-            function gen_status () {
-                $('.ajax-request').on('click', function () {
-                    var $this = $(this)
-                    $.getJSON($this.data('href'), function (response) {
-                        var node = $this.hasClass('btn-success') ? $status_4 : $status_2
-                        $this[0].dataset.href = "/member/tag/"+$this[0].dataset.pinyin+"/status/" + node[3]
-                        $this
-                                .addClass(node[0])
-                                .removeClass(node[1])
-                                .text(node[2]).parents('tr')
-                                .find('.tag-status')
-                                .html(node[4])
-                        layer.msg(response.msg, {icon: 1})
-                    })
-                })
+        $('.ajax-request').on('click', function () {
+            var $this = $(this)
+            $.getJSON($this.data('href'), function (response) {
+                var node = $this.hasClass('btn-success') ? $status_4 : $status_2
+                $this[0].dataset.href = "/member/tag/"+$this[0].dataset.pinyin+"/status/" + node[3]
+                $this
+                        .addClass(node[0])
+                        .removeClass(node[1])
+                        .text(node[2]).parents('tr')
+                        .find('.tag-status')
+                        .html(node[4])
+                layer.msg(response.msg, {icon: 1})
+            })
+        })
+
+        $('input[type=checkbox]').on('click', function (event) {
+            if ($(event.target).hasClass('checked_all')) return ;
+            $('.checked_all').prop('checked', false)}
+        )
+
+        $('.checked_all').on('click', function (event) {
+
+            if (event.target.tagName != 'INPUT') {
+                $(this).prop('checked', !$(this).prop('checked'))
             }
 
-            gen_status()
+            $('input[type=checkbox]').prop('checked', $(this).prop('checked'))
+        })
 
-            $('.paginate_button').on('click' , gen_status)
-        });
     </script>
 @endsection

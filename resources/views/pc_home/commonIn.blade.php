@@ -31,7 +31,7 @@
     </a>
 </div>
 
-<header class="am-topbar header tab-header" style="height: auto;">
+<header class="am-topbar header tab-header">
     <div class="content">
         <h1 class="am-topbar-brand header-logo-brand">
             <a href="{{route('index')}}" class="logo tab-logo"></a>
@@ -79,7 +79,7 @@
                 <button class="am-btn am-btn-primary am-topbar-btn am-btn-sm header-btn u-login tab-btn">登录</button>
             </div>
 @else
-            <div class="am-topbar-right already-l" style="margin-top:30px">
+            <div class="am-topbar-right already-l" style="margin-top:14px">
                 <div class="am-dropdown" data-am-dropdown="{boundary: '.am-topbar'}">
                     <a href=""><span class="l-pic"><img src="{{session('user')->head_img}}" onerror="this.src='{{asset('img/100100.png')}}'"></span>
 
@@ -180,21 +180,11 @@
 
         <div class="am-g interlink ">
             <ul>
-                <li>
-                    <a href=" ">快科技</a>
-                </li>
-                <li>
-                    <a href=" ">快科技</a>
-                </li>
-                <li>
-                    <a href=" ">快科技</a>
-                </li>
-                <li>
-                    <a href=" ">快科技</a>
-                </li>
-                <li>
-                    <a href=" ">快科技</a>
-                </li>
+                @foreach($links as $v)
+                    <li>
+                        <a href="{{$v->link_url}}">{{$v->name}}</a>
+                    </li>
+                @endforeach
 
             </ul>
         </div>

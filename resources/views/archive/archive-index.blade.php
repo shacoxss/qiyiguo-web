@@ -96,7 +96,7 @@
                     <th>标签</th>
                     <th width="100">点击</th>
                     <th width="150">权限</th>
-                    <th width="150">操作</th>
+                    <th width="200">操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -134,10 +134,12 @@
                         </td>
                         <td class="center">{{$a->visit_count}}</td>
                         <td class="center tag-status">
-                            @if($a->hasPattern('review'))
+                            @if($a->checkReview()==1)
                                 <span class="status active">开放浏览</span>
-                            @else
-                                <span class="status inactive">待审核</span>
+                            @elseif($a->checkReview()==-1)
+                                <span class="status btn-warning">待审核</span>
+                            @elseif($a->checkReview()==0)
+                                <span class="status inactive">未通过</span>
                             @endif
                         </td>
                         <td class="center">
@@ -145,10 +147,12 @@
                             <a href="{{route('archive.show', [$a->id])}}" class="btn btn-circle btn-success " target="_blank">预览</a>
                             <a href="javascript:void(0)" class="btn btn-circle btn-danger delete-archives" data-id="{{$a->id}}">删除</a>
                             @if(session('user')->master && $is_master)
-                                @if($a->hasPattern('review'))
-                                    <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" data-id="{{$a->id}}" class="ajax-request btn btn-circle btn-danger ajax-request">不准看</a>
-                                @else
-                                    <a data-href="{{route('archives.toggle', [$a->id, 'review'])}}" data-id="{{$a->id}}" class="ajax-request btn btn-circle btn-success ajax-request">审核</a>
+                                @if($a->checkReview()==-1)
+                                    <a data-href="{{route('archives.toggle', [$a->id, 'success'])}}" data-id="{{$a->id}}" data-pass="no" class="ajax-request btn btn-circle btn-default ajax-request">审核</a>
+                                @elseif($a->checkReview()==1)
+                                    <a data-href="{{route('archives.toggle', [$a->id, 'fail'])}}" data-id="{{$a->id}}" data-pass="fail"  class="ajax-request btn btn-circle btn-default ajax-request">审核</a>
+                                @elseif($a->checkReview()==0)
+                                    <a data-href="{{route('archives.toggle', [$a->id, 'success'])}}" data-id="{{$a->id}}" data-pass="success" class="ajax-request btn btn-circle btn-default ajax-request">审核</a>
                                 @endif
                             @endif
                         </td>
@@ -163,9 +167,7 @@
 
 @section('scripts')
 <!-- DataTables JavaScript -->
-<script src={{asset("vendor/datatables/js/jquery.dataTables.min.js")}}></script>
-<script src={{asset("vendor/datatables-plugins/dataTables.bootstrap.min.js")}}></script>
-<script src={{asset("vendor/datatables-responsive/dataTables.responsive.js")}}></script>
+@include('inc.scripts.require-datatables')
 
 <!-- Custom Theme JavaScript -->
 <script>
@@ -196,26 +198,90 @@
     });
     @if($is_master)
         var $status_4 = [
-            'btn-danger', 'btn-success', '不准看', '',
+            'btn-success', 'btn-success', '审核', '',
             '<span class="status active">开放浏览</span>'
         ];
-        var $status_2 = [
+        var $status_3 = [
             'btn-success', 'btn-danger', '审核', '',
-            '<span class="status inactive">待审核</span>'
+            '<span class="status inactive">未通过</span>'
         ];
 
         $('.ajax-request').on('click', function () {
             var $this = $(this)
-            $.getJSON($this.data('href'), function (response) {
-                var node = $this.hasClass('btn-success') ? $status_4 : $status_2
-                $this
-                        .addClass(node[0])
-                        .removeClass(node[1])
-                        .text(node[2]).parents('tr')
-                        .find('.tag-status')
-                        .html(node[4])
-                layer.msg(response.msg, {icon: 1})
-            })
+            layer.confirm('通过审核？', {
+                btn: ['通过','不通过'] //按钮
+            }, function(){
+                if($this.data('pass')=='fail'){
+                    layer.msg('已审核！');
+                    return false;
+                }
+                $.getJSON($this.data('href'), function (response) {
+                    var node = $status_4
+                    $this
+                            .addClass(node[0])
+                            .removeClass(node[1])
+                            .text(node[2]).parents('tr')
+                            .find('.tag-status')
+                            .html(node[4])
+                    layer.msg(response.msg, {icon: 1})
+                })
+            }, function(){
+                if($this.data('pass')=='success'){
+                    layer.msg('已审核！');
+                    return;
+                }
+
+                layer.confirm('未通过原因', {
+                    title:'请选择未通过原因',
+                    area: ['500px', '300px'],
+                    content:"<select class='form-control input-sm' id='nopass' ><option value='0'>请选择未通过原因</option><option value='3'>内容质量太差或存在大量相似内容</option><option value='2'>文章涉及政治，军事，宗教等内容</option></select><br/>其他：<br/><textarea class='form-control' rows='3' name='description' id='other' ></textarea>",
+                    btn: ['确定', '取消']
+                },
+                function(){
+                    var msg = '';
+                    if($this.data('pass')!='no'){
+                        $.getJSON($this.data('href'), function (response) {
+                            var node = $status_3
+                            $this
+                                    .addClass(node[0])
+                                    .removeClass(node[1])
+                                    .text(node[2]).parents('tr')
+                                    .find('.tag-status')
+                                    .html(node[4])
+                            msg = response.msg;
+                        })
+                    }else{
+                        var node = $status_3
+                        $this
+                                .addClass(node[0])
+                                .removeClass(node[1])
+                                .text(node[2]).parents('tr')
+                                .find('.tag-status')
+                                .html(node[4])
+                        msg = "操作成功！";
+                    }
+                    //未通过原因
+                    var message_no = $('#nopass').val();
+                    var other = $('#other').val();
+                    var token = "{{csrf_token()}}";
+                    var id = $this.data('id');
+                    $.ajax({
+                        type:"post",
+                        url:"{{url('member/message/nopass')}}",
+                        data:{_token:token,message_no:message_no,other:other,id:id},
+                        success:function(data){
+                            if(data=='success'){
+                                layer.msg(msg, {icon: 1})
+                            }else{
+                                layer.msg('操作失败', {icon: 2})
+                            }
+                        }
+                    })
+                },
+                function(){
+
+                });
+            });
         })
 
         $('.set_review').on('click', function () {
@@ -236,25 +302,6 @@
 //            console.log(url)
         })
     @endif
-
-    $(document).ready(function() {
-        $('#dataTables-userlist').DataTable({
-            columnDefs: [
-                {orderable : false, targets: [0,9]}
-            ],
-            responsive: true,
-            pageLength:10,
-            sPaginationType: "full_numbers",
-            oLanguage: {
-                oPaginate: {
-                    sFirst: "<<",
-                    sPrevious: "<",
-                    sNext: ">",
-                    sLast: ">>"
-                }
-            }
-        });
-    });
 
     $(document).ready(function () {
         $('input[type=checkbox]').on('click', function (event) {

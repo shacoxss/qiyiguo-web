@@ -1,10 +1,14 @@
 @extends('pc_home.commonIn')
+@section('title')
+	<title>奇异果聚合-视频列表</title>
+	<meta name="Keywords" content="">
+	<meta name="description" content="" />
+@show
 @section('content')
 
 		<!--轮播图-->
 		@include('inc.top-slide')
 		<!--轮播图-->
-
 		<div class="am-g v-list">
 			<div class="content">
 				<ul>
@@ -74,7 +78,7 @@
 						</div>
 						</div>
 						<div class="am-g" style="background-color: #F4F4F4;padding-top: 10px;">
-						<ul class="pbtn">
+						<ul class="pbtn v-l-ul">
 
 					@foreach($videoList as $archive)
 					<li>

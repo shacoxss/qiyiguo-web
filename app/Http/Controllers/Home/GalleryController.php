@@ -13,7 +13,7 @@ use App\Http\Controllers\Controller;
 class GalleryController extends Controller
 {
     //
-    const PAGE_COUNT = 10;
+    const PAGE_COUNT = 20;
     public function index(Request $request)
     {
         if ($request->ajax()) {
@@ -48,59 +48,15 @@ class GalleryController extends Controller
     {
         if (!$archive->hasPattern('review')) return response('没有通过审核', 404);
 
-        $archive->visit($request);
-        $user = session('user');
-        if($user){
-            $author_id = $archive->user->id;
-            $follow = FollowUser::where('user_id',$user->id)->first();
-            if($author_id == $follow['followed_id']){
-                $followed = 1;
-            }else{
-                $followed = 0;
-            }
-        }else{
-            $followed = -1;
-        }
-        //其他文章
-        $others = Archive::where('user_id',$archive->user_id)->orderBy('updated_at','desc')->ofPattern('review')->take(4)->get();
+        $res = $archive->toArray();
+        $res['images'] = $archive->detail->images()->get()->toArray();
+        $res['detail'] = $archive->detail->toArray();
+        $res['author'] = $archive->user->nickname;
+        $res['updated_at'] = worldTime(strtotime($archive->updated_at));
+        $res['prev'] = Archive::where('archive_type_id', 2)->ofPattern('review')->where('id', '<', $archive->id)->value('id');
+        $res['next'] = Archive::where('archive_type_id', 2)->ofPattern('review')->where('id', '>', $archive->id)->value('id');
 
-        //精彩推荐
-        $cate1 = Category::where('cate_name','精彩推荐')->first();
-        if($cate1){
-            $son = Category::where('cate_pid',$cate1->cate_id)->count();
-            if($son){
-                $cate_son = Category::where('cate_pid',$cate1->cate_id)->get();
-                $cate_arr1 = [];
-                foreach($cate_son as $v){
-                    $cate_arr1[] = $v->cate_id;
-                }
-                array_push($cate_arr1,$cate1->cate_id);
-                $cate_ids = implode(',',$cate_arr1);
-                $article_archives =   Archive::where('archive_type_id',1)
-                    ->whereIn('category_id',$cate_ids)
-                    ->orderBy('updated_at','desc')
-                    ->take(6)
-                    ->get()
-                ;
-            }else{
-                $article_archives =   Archive::where('archive_type_id',1)
-                    ->where('category_id',$cate1->cate_id)
-                    ->orderBy('updated_at','desc')
-                    ->take(6)
-                    ->get();
-            }
-        }else{
-            $article_archives = false;
-        }
-
-        return view($archive->type->t_show)
-            ->with('archive', $archive)
-            ->with('followed',$followed)
-            ->with('user',$user)
-            ->with('article_archives',$article_archives)
-            ->with('others',$others)
-            ->with('body_only', '')
-        ;
+        return response()->json($res);
     }
 
     private function getType()

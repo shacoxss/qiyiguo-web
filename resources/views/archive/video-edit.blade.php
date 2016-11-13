@@ -14,7 +14,7 @@
     </div>
     <!-- /.row -->
     <ol class="breadcrumb">
-        <li><a href="{{'member/archives?type=video'}}">全部视频</a></li>
+        <li><a href="{{'/member/archives?type=video'}}">全部视频</a></li>
         @if(isset($archive))
             <li class="active">编辑视频</li>
         @else
@@ -96,8 +96,8 @@
                                                     {{--<!-- 视频预览 -->--}}
                                                 {{--</div>--}}
                                                 <div class="form-group">
-                                                    <label>视频地址(第三方视频网站调用)</label>
-                                                    <input class="form-control " placeholder="视频地址：" name="link" value="{{ $archive->detail->link or '' }}" >
+                                                    <label>直接输入视频网址或者链接html标签，已支持网站腾讯视频、优酷、搜狐视频、bilibili</label>
+                                                    <input class="form-control " placeholder="视频地址或html标签" name="link" value="{{ $archive->detail->link or '' }}" >
                                                 </div>
                                                 <div class="form-group">
                                                     <label>视频简介</label>                                            <!--编辑器开始-->
@@ -131,17 +131,13 @@
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                             <div class="col-lg-3">
-                                                <h3>缩略图上传</h3>
-                                                @if(isset($archive) && $archive->cover)
-                                                    <img style="max-width:250px;" src="{{route('image', [$archive->cover, '250'])}}" />
-                                                @endif
-                                                <input type="file" name="cover">
+                                                @include('inc.scripts.archive-cover')
                                             </div>
                                             <!-- /.col-lg-6 (nested) -->
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary">提 交</button>
-                                            <button type="reset" class="btn btn-default">重 置</button>
+                                            <button onclick="preview()" class="btn btn-default">预 览</button>
                                         </div>
                                     </form>
                                     <!--Tab End-->
@@ -163,6 +159,7 @@
 
 @section('scripts')
     <script>
+        $extract_tags_url = '{{route('tag.extract')}}';
 
         $('#archive').on('submit', function () {
             var data =  new FormData($('#archive')[0]);
@@ -179,8 +176,9 @@
                 contentType: false
             })
                     .done(function (response) {
-                        console.log(response);
-                        if(response.error){
+                        if(response.error==2){
+                            layer.msg(response.msg);
+                        }else if(response.error==1){
                             if(typeof(response.msg.title)!='undefined'){
                                 layer.msg(response.msg.title[0]);
                                 return false;
@@ -210,65 +208,6 @@
                     })
             return false;
         })
-
-        $extract_tags_url = '{{route('tag.extract')}}';
-
-        var gen_add_tag = function () {
-            $('#extract a.btn-xss').on('click', function () {
-                var input = $(this).parents('div.form-group').find('input')
-                input.val(input.val() + (input.val() ? ',' : '') + $(this).text())
-                if ($('#extract a.btn-xss').length == 1) $(this).parents('p').css('display', 'none')
-                $(this).remove()
-            })
-        }
-
-        $editor_change = function () {
-            var lock_count, lock_time, lock_response
-            lock_count = lock_time = lock_response = false
-            return function () {
-                var text = editor.$txt.text().replace(/\s\s/g, '');
-
-                lock_count = Math.abs(text.length - $content_length) < 20
-                        ? true : false
-
-
-
-                if (lock_count || lock_time || lock_response) return ;
-
-                lock_time = lock_response = true
-                setTimeout(function () {lock_time = false}, 5000)
-                $content_length = text.length
-                $.ajax({
-                    url : $extract_tags_url,
-                    type : 'POST',
-                    data : {
-                        'text' : text,
-                        '_token' : $_token
-                    }
-                }).done(function (response) {
-                    var sort = [];
-                    for (var tag in response) {
-                        sort.push({tag:tag, weight: response[tag]})
-                    }
-                    sort = sort.sort(function down(x, y) {
-                        return (x.weight < y.weight) ? 1 : -1
-
-                    });
-                    var $extract = $('#extract');
-                    $extract.html('')
-                    for (var i = 0; i < sort.length; i++) {
-                        $extract.append('<a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> '+sort[i].tag+'</a>')
-                        if(i>7) break;
-                    }
-                    gen_add_tag()
-                    $extract.parents('p').css('display', 'block')
-                    lock_response = false
-                }).fail(function () {
-                    lock_response = false;
-                })
-            }
-
-        }
     </script>
     <script type="text/javascript" src={{asset("pulgin/wangEditor/dist/js/wangEditor.js")}}></script>
     <!--<script type="text/javascript" src="pulgin/wangEditor/dist/js/wangEditor.min.js"></script>-->

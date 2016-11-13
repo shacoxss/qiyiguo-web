@@ -2,6 +2,7 @@
 
 namespace App\Models\Archive;
 
+use App\Model\Message;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -63,7 +64,7 @@ class Archive extends Model
     }
 
     public function detachPattern($pattern)
-    {
+    {   //未通过审核
         $this->mode &= ~$pattern;
     }
 
@@ -84,6 +85,29 @@ class Archive extends Model
         return $this->save();
     }
 
+    //通过审核
+    public function passReview()
+    {
+        $this->mode = $this->mode | 8;
+        $data['is_pass'] = 1;
+        $data['archive_id'] = $this->id;
+        $data['user_id'] = $this->user_id;
+        $data['message_no'] = 1;
+        $data['message_info'] = '恭喜！您发布的《'.$this->title.'》已经通过审核!';
+        $data['message'] = "奇异果聚合旨在提供原创的直播相关内容，感谢您的贡献！<br>奖励：积分+200 ";
+        $data['reviewed_id'] = session('user')->id;
+        \DB::table('users')->where('id',$this->user_id)->increment('points',200);
+        Message::where('archive_id',$this->id)->delete();
+        Message::create($data);
+        return $this->save();
+    }
+    //未通过审核
+    public function noPassReview()
+    {
+        $this->mode &= ~8;
+        return $this->save();
+    }
+
 
     public function generateTagUrl()
     {
@@ -94,7 +118,11 @@ class Archive extends Model
             $content =  preg_replace('/'.$name.'/', "<a class='tag' href='$tag->url'>$tag->name</a>", $content, 1);
         }
         $model->content = $content;
-        $model->save();
+        if($model->save()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function scopeOfPattern($query, $pattern)
@@ -106,5 +134,14 @@ class Archive extends Model
     public function collect()
     {
         return $this->belongsTo('App\Model\Collect','archive_id','id');
+    }
+
+    public function checkReview()
+    {
+        if($message = Message::where('archive_id',$this->id)->first()){
+            return $message->is_pass;
+        }else{
+            return -1;
+        }
     }
 }

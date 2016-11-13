@@ -160,17 +160,13 @@
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                         <div class="col-lg-3">
-                                            @if(isset($archive) && $archive->cover)
-                                                <img style="max-width:250px;" src="{{route('image', [$archive->cover, '250'])}}" />
-                                            @endif
-                                            <h3>封面上传</h3>
-                                            <input type="file" name="cover">
+                                            @include('inc.scripts.archive-cover')
                                         </div>
                                         <!-- /.col-lg-6 (nested) -->
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary">提 交</button>
-                                        <button type="reset" class="btn btn-default">重 置</button>
+                                        <button onclick="preview()" class="btn btn-default">预 览</button>
                                     </div>
                                 </form>
                                 <!--Tab End-->
@@ -197,13 +193,8 @@
         $uploadImgUrl = '{{route('archives.upload')}}';
         $extract_tags_url = '{{route('tag.extract')}}';
 
-        var gen_add_tag = function () {
-            $('#extract a.btn-xss').on('click', function () {
-                var input = $(this).parents('div.form-group').find('input')
-                input.val(input.val() + (input.val() ? ',' : '') + $(this).text())
-                if ($('#extract a.btn-xss').length == 1) $(this).parents('p').css('display', 'none')
-                $(this).remove()
-            })
+        function preview() {
+            return false
         }
 
         $('#archive').on('submit', function () {
@@ -249,54 +240,6 @@
             })
             return false;
         })
-
-        $editor_change = function () {
-            var lock_count, lock_time, lock_response
-            lock_count = lock_time = lock_response = false
-            return function () {
-                var text = editor.$txt.text().replace(/\s\s/g, '');
-                
-                lock_count = Math.abs(text.length - $content_length) < 20
-                    ? true : false
-
-                
-
-                if (lock_count || lock_time || lock_response) return ;
-
-                lock_time = lock_response = true
-                setTimeout(function () {lock_time = false}, 5000)
-                $content_length = text.length
-                $.ajax({
-                    url : $extract_tags_url,
-                    type : 'POST',
-                    data : {
-                        'text' : text,
-                        '_token' : $_token
-                    }
-                }).done(function (response) {
-                    var sort = [];
-                    for (var tag in response) {
-                        sort.push({tag:tag, weight: response[tag]})
-                    }
-                    sort = sort.sort(function down(x, y) {
-                        return (x.weight < y.weight) ? 1 : -1
-
-                    });
-                    var $extract = $('#extract');
-                    $extract.html('')
-                    for (var i = 0; i < sort.length; i++) {
-                        $extract.append('<a href="#" class="btn btn-primary btn-xss"><i class="fa fa-plus"></i> '+sort[i].tag+'</a>')
-                        if(i>7) break;
-                    }
-                    gen_add_tag()
-                    $extract.parents('p').css('display', 'block')
-                    lock_response = false
-                }).fail(function () {
-                    lock_response = false;
-                })
-            }
-
-        }
     </script>
     <!--wangEditor js-->
     <script type="text/javascript" src={{asset("pulgin/wangEditor/dist/js/wangEditor.js")}}></script>

@@ -40,3 +40,28 @@
 .list_moment_type {padding: 10px;}
 .list_moment_type a {border:1px solid #79a200; color: #79a200; border-radius: 3px; padding:0 3px; margin: 3px; line-height: 20px; float: left;}
 .list_moment_type a:hover,.list_moment_type a.thisclass {background: #79a200; color: #fff;}
+
+.item{
+	border-radius: 0px;
+}
+.item_t{
+	overflow: hidden;
+	padding: 0;
+}
+.item_t .img{
+	width: 220px;
+}
+.item_t .img img{
+	width: 100%;
+}
+.item_t .title{
+	padding-left: 5px;
+}
+.tk-liulan{
+	padding-right: 5px;
+}
+.item_t>div:last-child{
+	background: #fafafa;
+	padding-left: 5px !important;
+	padding-right:5px !important;
+}
