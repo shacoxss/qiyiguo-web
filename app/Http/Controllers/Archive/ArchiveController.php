@@ -110,6 +110,7 @@ class ArchiveController extends Controller
      */
     public function store(Request $request, ArchiveType $type)
     {
+        set_time_limit(0);
         //基本信息
         DB::beginTransaction();
         $new = $request->only($this->fields);
@@ -225,6 +226,7 @@ class ArchiveController extends Controller
 
     public function update(Request $request, Archive $archive)
     {
+        set_time_limit(0);
         DB::beginTransaction();
         $user = session('user');
         ($archive->user_id == $user->id) || $this->checkMaster();
