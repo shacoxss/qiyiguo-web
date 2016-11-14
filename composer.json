@@ -15,7 +15,8 @@
         "barryvdh/laravel-debugbar": "^2.3",
         "intervention/image": "^2.3",
         "mews/purifier": "^2.0",
-        "yajra/laravel-datatables-oracle": "^6.21"
+        "yajra/laravel-datatables-oracle": "^6.21",
+        "socialiteproviders/qq": "^2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
