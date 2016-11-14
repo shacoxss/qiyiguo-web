@@ -170,7 +170,7 @@ class ArchiveController extends Controller
                 if(isset($detail['link'])){
                     //优酷
                     if(preg_match('/<embed(.*)<\/embed>/',$detail['link'])||preg_match('/<object(.*)<\/object>/',$detail['link'])){
-
+                        $detail['link'] = str_replace(',',' ',$detail['link']);
                     }else{
                         if(preg_match('/v.youku.com/',$detail['link'])){
                             $content = file_get_contents("compress.zlib://".$detail['link']);
@@ -274,7 +274,7 @@ class ArchiveController extends Controller
             if(isset($detail['link'])){
                 //优酷
                 if(preg_match('/<embed(.*)<\/embed>/',$detail['link'])||preg_match('/<object(.*)<\/object>/',$detail['link'])){
-
+                    $detail['link'] = str_replace(',',' ',$detail['link']);
                 }else{
                     if(preg_match('/v.youku.com/',$detail['link'])){
                         $content = file_get_contents("compress.zlib://".$detail['link']);
